@@ -22,7 +22,6 @@ defaults:
 
 # Build settings
 destination: _site
-paginate: 10
 permalink: /:year/:title/
 markdown: kramdown
 highlighter: rouge
@@ -30,6 +29,14 @@ highlighter: rouge
 sass:
     sass_dir: _sass
     style: compressed
+
+paginate_multiple:
+  - paginate: 10
+    paginate_path: '/technical/:num/'
+    sub_dir: '/technical'
+  - paginate: 10
+    paginate_path: '/personal/:num/'
+    sub_dir: '/personal'
 
 kramdown:
   # use Github Flavored Markdown
@@ -40,5 +47,6 @@ kramdown:
 gems:
     - jekyll-paginate
     - jekyll-redirect-from
+    - jekyll-paginate-multiple
 
-exclude: ['README.md', 'Gemfile', 'Gemfile.lock']
+exclude: ['README.md', 'Gemfile', 'LICENSE', 'Gemfile.lock']

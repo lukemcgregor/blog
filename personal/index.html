@@ -1,8 +1,6 @@
 ---
 layout: default
 robots: noindex
-redirect_from:
-  - Index/Posts
 ---
 
 <div class="main-post-list">
@@ -24,8 +22,8 @@ redirect_from:
   </ol>
 
   <hr class="post-list__divider ">
+
   {% if paginator.previous_page or paginator.next_page %}
       {% include pagination.html %}
   {% endif %}
-
 </div>
