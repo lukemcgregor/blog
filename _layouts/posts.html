@@ -1,12 +1,11 @@
 ---
 layout: default
 robots: noindex
-redirect_from:
-  - Index/Posts
 ---
 
 <div class="main-post-list">
 
+  {{ content }}
   <ol class="post-list">
     {% for post in paginator.posts %}
       <li>

@@ -22,7 +22,6 @@ defaults:
 
 # Build settings
 destination: _site
-paginate: 10
 permalink: /:year/:title/
 markdown: kramdown
 highlighter: rouge
@@ -37,8 +36,17 @@ kramdown:
   # do not replace newlines by <br>s
   hard_wrap: false
 
-gems:
-    - jekyll-paginate
+plugins:
+    - jekyll-paginate-v2
     - jekyll-redirect-from
 
 exclude: ['README.md', 'Gemfile', 'Gemfile.lock']
+
+pagination:
+  enabled: true
+  per_page: 10
+  permalink: '/page/:num/'
+  title: 'StaticVoid - page :num'
+  limit: 0
+  sort_field: 'date'
+  sort_reverse: true
