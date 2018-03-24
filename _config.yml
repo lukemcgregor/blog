@@ -40,7 +40,7 @@ plugins:
     - jekyll-paginate-v2
     - jekyll-redirect-from
 
-exclude: ['README.md', 'Gemfile', 'Gemfile.lock']
+exclude: ['README.md', 'Gemfile', 'Gemfile.lock', vendor]
 
 pagination:
   enabled: true
