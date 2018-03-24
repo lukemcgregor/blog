@@ -3,10 +3,10 @@
   <channel>
     <title>StaticVoid</title>
     <description>A coding blog</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 23 Mar 2018 22:43:18 +1300</pubDate>
-    <lastBuildDate>Fri, 23 Mar 2018 22:43:18 +1300</lastBuildDate>
+    <link>http://blog.staticvoid.co.nz/</link>
+    <atom:link href="http://blog.staticvoid.co.nz/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sat, 24 Mar 2018 10:50:13 +0000</pubDate>
+    <lastBuildDate>Sat, 24 Mar 2018 10:50:13 +0000</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -264,9 +264,9 @@
 
 &lt;p&gt;I ran this test on both my Windows box (i7) and my macbook (i5) both gave similar proportional results, however the timer resolution for go on windows is very low (0.5ms) which didn’t give as useful figures. As expected Go and rust were the fastest followed by dotnet and nodejs.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 28 Jun 2017 00:00:00 +1200</pubDate>
-        <link>http://localhost:4000/2017/Comparing_apis_in_go_node_and_dotnet_core/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/Comparing_apis_in_go_node_and_dotnet_core/</guid>
+        <pubDate>Wed, 28 Jun 2017 00:00:00 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2017/Comparing_apis_in_go_node_and_dotnet_core/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2017/Comparing_apis_in_go_node_and_dotnet_core/</guid>
         
         
         <category>technical</category>
@@ -367,9 +367,9 @@
 &lt;h3 id=&quot;how-to-pick-a-communication-method&quot;&gt;How to pick a communication method&lt;/h3&gt;
 &lt;p&gt;Selecting a communication method is about working out the characteristics your consumers will require and selecting a method which will satisfy those. For example if you need to provide data on request (synchronous) to clients which are not part of your organisation (untrusted) then you should use HTTP requests as a method.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 31 May 2017 00:00:00 +1200</pubDate>
-        <link>http://localhost:4000/2017/microservices-communication-methods/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/microservices-communication-methods/</guid>
+        <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2017/microservices-communication-methods/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2017/microservices-communication-methods/</guid>
         
         
         <category>technical</category>
@@ -516,9 +516,9 @@
 &lt;/ul&gt;
 
 </description>
-        <pubDate>Wed, 03 May 2017 00:00:00 +1200</pubDate>
-        <link>http://localhost:4000/2017/migrating-my-blog-to-jekyll-and-github-pages/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/migrating-my-blog-to-jekyll-and-github-pages/</guid>
+        <pubDate>Wed, 03 May 2017 00:00:00 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2017/migrating-my-blog-to-jekyll-and-github-pages/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2017/migrating-my-blog-to-jekyll-and-github-pages/</guid>
         
         
         <category>technical</category>
@@ -636,9 +636,9 @@
 
 &lt;p&gt;Versioning is a powerful tool which enables you to iterate on the contracts you provide from your services in a way that gives a clear and consistent experience for consumers. It is critical for allowing microservices to grow and change over time without causing cascade failures to their consumers.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 22 Mar 2017 16:51:13 +1300</pubDate>
-        <link>http://localhost:4000/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/</guid>
+        <pubDate>Wed, 22 Mar 2017 03:51:13 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/</guid>
         
         
         <category>technical</category>
@@ -685,9 +685,9 @@
 
 &lt;p&gt;Libraries naturally have lower overheads as they operate without requiring serialisation and other cross process/machine costs which microservice transports are subject to. While there are techniques to mitigate these costs, microservices will always have some kind of overhead which may affect synchronous communication. However when it comes to asynchronous communication microservices allow the processing to be spread across multiple machines easily which gives a horizontal scaling characteristic.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 07 Mar 2017 00:00:00 +1300</pubDate>
-        <link>http://localhost:4000/2017/library_vs_microservice/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/library_vs_microservice/</guid>
+        <pubDate>Tue, 07 Mar 2017 00:00:00 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2017/library_vs_microservice/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2017/library_vs_microservice/</guid>
         
         
         <category>technical</category>
@@ -720,9 +720,9 @@
 &lt;h3 id=&quot;microservice-communication&quot;&gt;&lt;a href=&quot;/2017/microservices-communication-methods/&quot;&gt;Microservice communication&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Communication between microservices allows us to build complex behaviours out of simple components. Most people tend to think of webservices when thinking of microservices however there are a number of other communication methods which are applicable in different situations.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 07 Mar 2017 00:00:00 +1300</pubDate>
-        <link>http://localhost:4000/2017/my_guide_to_microservices/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/my_guide_to_microservices/</guid>
+        <pubDate>Tue, 07 Mar 2017 00:00:00 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2017/my_guide_to_microservices/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2017/my_guide_to_microservices/</guid>
         
         
         <category>technical</category>
@@ -788,9 +788,9 @@ Host the APIs on the same server as the proxy, and always request the instance o
 &lt;p&gt;Tip 2:
 Introduce caching on your claims generation. The generation step is probably the most costly part of the proxy and by caching this lookup you can remove time out of your requests. If you weren’t previously caching the authentication check in your application this may well improve performance overall. Do note you will also need a good invalidation mechanism.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 16 Nov 2016 00:00:00 +1300</pubDate>
-        <link>http://localhost:4000/2016/the_authentication_proxy/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/the_authentication_proxy/</guid>
+        <pubDate>Wed, 16 Nov 2016 00:00:00 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2016/the_authentication_proxy/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2016/the_authentication_proxy/</guid>
         
         
         <category>technical</category>
@@ -958,9 +958,9 @@ Introduce caching on your claims generation. The generation step is probably the
 
 &lt;p&gt;This method allows you to push far more logic into SQL for processing. Be very careful to keep in mind the queries you are generating with nested projection and be sure that the SQL you are generating is kept performant. If you aren’t careful about what you write (as with any LINQ based query) you can execute things which are a little crazy when transpiled to SQL.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 24 Oct 2016 00:00:00 +1300</pubDate>
-        <link>http://localhost:4000/2016/composable_repositories_-_nesting_extensions/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/composable_repositories_-_nesting_extensions/</guid>
+        <pubDate>Mon, 24 Oct 2016 00:00:00 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2016/composable_repositories_-_nesting_extensions/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2016/composable_repositories_-_nesting_extensions/</guid>
         
         
         <category>technical</category>
@@ -1003,9 +1003,9 @@ Introduce caching on your claims generation. The generation step is probably the
 
 &lt;p&gt;I hope it goes without saying, but &lt;strong&gt;do not use noauth in production&lt;/strong&gt; or you’re gunna have a bad time.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 17 Oct 2016 00:00:00 +1300</pubDate>
-        <link>http://localhost:4000/2016/ui_tests_for_oauth_applications_are_hard/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/ui_tests_for_oauth_applications_are_hard/</guid>
+        <pubDate>Mon, 17 Oct 2016 00:00:00 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2016/ui_tests_for_oauth_applications_are_hard/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2016/ui_tests_for_oauth_applications_are_hard/</guid>
         
         
         <category>technical</category>
@@ -1038,9 +1038,9 @@ Introduce caching on your claims generation. The generation step is probably the
 
 &lt;p&gt;Manual decisions are the the enemy of consistency.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 11 Oct 2016 00:00:00 +1300</pubDate>
-        <link>http://localhost:4000/2016/when-deploying-decisions-are-liabilities/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/when-deploying-decisions-are-liabilities/</guid>
+        <pubDate>Tue, 11 Oct 2016 00:00:00 +0000</pubDate>
+        <link>http://blog.staticvoid.co.nz/2016/when-deploying-decisions-are-liabilities/</link>
+        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2016/when-deploying-decisions-are-liabilities/</guid>
         
         
         <category>technical</category>

@@ -3,24 +3,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2017/Comparing_apis_in_go_node_and_dotnet_core/</loc>
+      <loc>http://blog.staticvoid.co.nz/2017/Comparing_apis_in_go_node_and_dotnet_core/</loc>
       
-        <lastmod>2017-06-28T00:00:00+12:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2017/microservices-communication-methods/</loc>
-      
-        <lastmod>2017-05-31T00:00:00+12:00</lastmod>
+        <lastmod>2017-06-28T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -33,24 +18,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2017/migrating-my-blog-to-jekyll-and-github-pages/</loc>
+      <loc>http://blog.staticvoid.co.nz/2017/microservices-communication-methods/</loc>
       
-        <lastmod>2017-05-03T00:00:00+12:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/</loc>
-      
-        <lastmod>2017-03-22T16:51:13+13:00</lastmod>
+        <lastmod>2017-05-31T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -63,24 +33,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2017/library_vs_microservice/</loc>
+      <loc>http://blog.staticvoid.co.nz/2017/migrating-my-blog-to-jekyll-and-github-pages/</loc>
       
-        <lastmod>2017-03-07T00:00:00+13:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2017/my_guide_to_microservices/</loc>
-      
-        <lastmod>2017-03-07T00:00:00+13:00</lastmod>
+        <lastmod>2017-05-03T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -93,24 +48,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2016/the_authentication_proxy/</loc>
+      <loc>http://blog.staticvoid.co.nz/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/</loc>
       
-        <lastmod>2016-11-16T00:00:00+13:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2016/composable_repositories_-_nesting_extensions/</loc>
-      
-        <lastmod>2016-10-24T00:00:00+13:00</lastmod>
+        <lastmod>2017-03-22T03:51:13+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -123,24 +63,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2016/ui_tests_for_oauth_applications_are_hard/</loc>
+      <loc>http://blog.staticvoid.co.nz/2017/library_vs_microservice/</loc>
       
-        <lastmod>2016-10-17T00:00:00+13:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2016/when-deploying-decisions-are-liabilities/</loc>
-      
-        <lastmod>2016-10-11T00:00:00+13:00</lastmod>
+        <lastmod>2017-03-07T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -153,24 +78,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2015/composable_repositories/</loc>
+      <loc>http://blog.staticvoid.co.nz/2017/my_guide_to_microservices/</loc>
       
-        <lastmod>2015-09-08T00:00:00+12:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2015/useful_tests/</loc>
-      
-        <lastmod>2015-05-28T00:00:00+12:00</lastmod>
+        <lastmod>2017-03-07T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -183,24 +93,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2015/making_good_tool_choices/</loc>
+      <loc>http://blog.staticvoid.co.nz/2016/the_authentication_proxy/</loc>
       
-        <lastmod>2015-03-24T00:00:00+13:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2015/server-side_rendering_with_reactjs.net/</loc>
-      
-        <lastmod>2015-02-12T00:00:00+13:00</lastmod>
+        <lastmod>2016-11-16T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -213,24 +108,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2014/new_beginnings/</loc>
+      <loc>http://blog.staticvoid.co.nz/2016/composable_repositories_-_nesting_extensions/</loc>
       
-        <lastmod>2014-12-23T00:00:00+13:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2014/how_nservicebus_uses_msmq_to_provide_durable_messaging/</loc>
-      
-        <lastmod>2014-06-02T00:00:00+12:00</lastmod>
+        <lastmod>2016-10-24T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -243,24 +123,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2013/a_case_for_generic_repositories/</loc>
+      <loc>http://blog.staticvoid.co.nz/2016/ui_tests_for_oauth_applications_are_hard/</loc>
       
-        <lastmod>2013-02-25T00:00:00+13:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2012/company_blogs_and_my_new_blog_engine/</loc>
-      
-        <lastmod>2012-12-26T00:00:00+13:00</lastmod>
+        <lastmod>2016-10-17T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -273,24 +138,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2012/one_day_projects-stacktweeter/</loc>
+      <loc>http://blog.staticvoid.co.nz/2016/when-deploying-decisions-are-liabilities/</loc>
       
-        <lastmod>2012-09-30T00:00:00+12:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2012/building_a_latency_router_for_testing/</loc>
-      
-        <lastmod>2012-09-29T00:00:00+12:00</lastmod>
+        <lastmod>2016-10-11T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -303,24 +153,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2012/the_affect_of_latency_on_mssql_inserts/</loc>
+      <loc>http://blog.staticvoid.co.nz/2015/composable_repositories/</loc>
       
-        <lastmod>2012-08-27T00:00:00+12:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2012/mssql_and_large_insert_statements/</loc>
-      
-        <lastmod>2012-08-17T00:00:00+12:00</lastmod>
+        <lastmod>2015-09-08T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -333,24 +168,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2012/entity_framework_performance_cheat_sheet/</loc>
+      <loc>http://blog.staticvoid.co.nz/2015/useful_tests/</loc>
       
-        <lastmod>2012-08-01T00:00:00+12:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2012/entity_framework-navigation_property_basics_with_code_first/</loc>
-      
-        <lastmod>2012-08-01T00:00:00+12:00</lastmod>
+        <lastmod>2015-05-28T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -363,24 +183,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2012/entityframework_performance_and_autodetectchanges/</loc>
+      <loc>http://blog.staticvoid.co.nz/2015/making_good_tool_choices/</loc>
       
-        <lastmod>2012-05-07T00:00:00+12:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2012/making_dapper_faster_with_transactions/</loc>
-      
-        <lastmod>2012-04-26T00:00:00+12:00</lastmod>
+        <lastmod>2015-03-24T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -393,24 +198,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2012/entity_framework_and_asnotracking/</loc>
+      <loc>http://blog.staticvoid.co.nz/2015/server-side_rendering_with_reactjs.net/</loc>
       
-        <lastmod>2012-04-26T00:00:00+12:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2012/entity_framework_comparative_performance/</loc>
-      
-        <lastmod>2012-03-24T00:00:00+13:00</lastmod>
+        <lastmod>2015-02-12T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -423,24 +213,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2012/using_a_rest_wcf_service/</loc>
+      <loc>http://blog.staticvoid.co.nz/2014/new_beginnings/</loc>
       
-        <lastmod>2012-02-15T00:00:00+13:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2012/staticvoid_repository_pattern_-_github/</loc>
-      
-        <lastmod>2012-01-21T00:00:00+13:00</lastmod>
+        <lastmod>2014-12-23T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -453,24 +228,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2012/multiple_repository_data_contexts_with_my_repository_pattern/</loc>
+      <loc>http://blog.staticvoid.co.nz/2014/how_nservicebus_uses_msmq_to_provide_durable_messaging/</loc>
       
-        <lastmod>2012-01-09T00:00:00+13:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2011/staticvoid_io_extentions-nuget/</loc>
-      
-        <lastmod>2011-11-21T00:00:00+13:00</lastmod>
+        <lastmod>2014-06-02T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -483,24 +243,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2011/staticvoid_repository_pattern-nuget/</loc>
+      <loc>http://blog.staticvoid.co.nz/2013/a_case_for_generic_repositories/</loc>
       
-        <lastmod>2011-10-13T00:00:00+13:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2011/custom_errors_and_sharepoint_2010/</loc>
-      
-        <lastmod>2011-06-14T00:00:00+12:00</lastmod>
+        <lastmod>2013-02-25T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -513,24 +258,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/2011/sharepoint_alternate_access_mappings/</loc>
+      <loc>http://blog.staticvoid.co.nz/2012/company_blogs_and_my_new_blog_engine/</loc>
       
-        <lastmod>2011-05-25T00:00:00+12:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://localhost:4000/2011/sharepoint_managed_paths/</loc>
-      
-        <lastmod>2011-05-24T00:00:00+12:00</lastmod>
+        <lastmod>2012-12-26T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -543,9 +273,279 @@
   
     
     <url>
-      <loc>http://localhost:4000/2010/adding_a_custom_verb_to_all_web_parts_in_sharepoint/</loc>
+      <loc>http://blog.staticvoid.co.nz/2012/one_day_projects-stacktweeter/</loc>
       
-        <lastmod>2010-08-16T00:00:00+12:00</lastmod>
+        <lastmod>2012-09-30T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/building_a_latency_router_for_testing/</loc>
+      
+        <lastmod>2012-09-29T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/the_affect_of_latency_on_mssql_inserts/</loc>
+      
+        <lastmod>2012-08-27T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/mssql_and_large_insert_statements/</loc>
+      
+        <lastmod>2012-08-17T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/entity_framework_performance_cheat_sheet/</loc>
+      
+        <lastmod>2012-08-01T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/entity_framework-navigation_property_basics_with_code_first/</loc>
+      
+        <lastmod>2012-08-01T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/entityframework_performance_and_autodetectchanges/</loc>
+      
+        <lastmod>2012-05-07T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/making_dapper_faster_with_transactions/</loc>
+      
+        <lastmod>2012-04-26T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/entity_framework_and_asnotracking/</loc>
+      
+        <lastmod>2012-04-26T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/entity_framework_comparative_performance/</loc>
+      
+        <lastmod>2012-03-24T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/using_a_rest_wcf_service/</loc>
+      
+        <lastmod>2012-02-15T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/staticvoid_repository_pattern_-_github/</loc>
+      
+        <lastmod>2012-01-21T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2012/multiple_repository_data_contexts_with_my_repository_pattern/</loc>
+      
+        <lastmod>2012-01-09T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2011/staticvoid_io_extentions-nuget/</loc>
+      
+        <lastmod>2011-11-21T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2011/staticvoid_repository_pattern-nuget/</loc>
+      
+        <lastmod>2011-10-13T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2011/custom_errors_and_sharepoint_2010/</loc>
+      
+        <lastmod>2011-06-14T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2011/sharepoint_alternate_access_mappings/</loc>
+      
+        <lastmod>2011-05-25T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2011/sharepoint_managed_paths/</loc>
+      
+        <lastmod>2011-05-24T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://blog.staticvoid.co.nz/2010/adding_a_custom_verb_to_all_web_parts_in_sharepoint/</loc>
+      
+        <lastmod>2010-08-16T00:00:00+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -561,9 +561,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/feed.xml</loc>
+      <loc>http://blog.staticvoid.co.nz/feed.xml</loc>
       
-        <lastmod>2018-03-23T22:43:18+13:00</lastmod>
+        <lastmod>2018-03-24T10:50:13+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -700,9 +700,9 @@
   
     
     <url>
-      <loc>http://localhost:4000/redirects.json</loc>
+      <loc>http://blog.staticvoid.co.nz/redirects.json</loc>
       
-        <lastmod>2018-03-23T22:43:18+13:00</lastmod>
+        <lastmod>2018-03-24T10:50:13+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
