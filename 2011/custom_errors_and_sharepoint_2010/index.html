@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Custom Errors and SharePoint 2010</title>
+  <meta name="description" content="We recently had a client who wanted to replace all SharePoint error pages with their own custom ones. This lead me to find a whole bunch of nasty gotchas inside of SharePoint in regards to the way it generates and handles errors.
+
+">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Custom Errors and SharePoint 2010">
+  <meta name="twitter:description" content="We recently had a client who wanted to replace all SharePoint error pages with their own custom ones. This lead me to find a whole bunch of nasty gotchas inside of SharePoint in regards to the way it generates and handles errors.
+
+">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Custom Errors and SharePoint 2010">
+  <meta property="og:description" content="We recently had a client who wanted to replace all SharePoint error pages with their own custom ones. This lead me to find a whole bunch of nasty gotchas inside of SharePoint in regards to the way it generates and handles errors.
+
+">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2011/custom_errors_and_sharepoint_2010/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="14 Jun 2011" class="post-meta__date date">14 Jun 2011</time>
+      
+    </div>
+    <h1 class="post-title">Custom Errors and SharePoint 2010</h1>
+  </header>
+
+  <section class="post">
+    <p>We recently had a client who wanted to replace all SharePoint error pages with their own custom ones. This lead me to find a whole bunch of nasty gotchas inside of SharePoint in regards to the way it generates and handles errors.</p>
+
+<h4 id="sharepoint-built-in-error-pages">SharePoint Built-in Error Pages</h4>
+
+<p>Out of the box SharePoint comes with a set of error pages. Notably this set does not include a custom 404 Page. Below are some of the errors you have probably seen</p>
+
+<p><img src="/images/posts/2011/custom-error-1.png" alt="An unexpected error has occurred" /></p>
+
+<p><img src="/images/posts/2011/custom-error-2.png" alt="Access denied" /></p>
+
+<p>One of the critical things to understand about these pages is that while they look like an error page they are actually returning an HTTP 200 (OK) result instead of the 500 or 401 codes they are hiding. This isn’t exactly best practice.</p>
+
+<h4 id="the-object-model-and-error-pages">The Object Model and Error Pages</h4>
+
+<p>The SharePoint object model contains a method for implementing a 404 error message. This is done through the <code class="highlighter-rouge">SPWebApplication.FileNotFoundPage</code> property which allows you to specify a custom page to which 404’s are sent. This however has some limitations; it doesn’t work in all situations.</p>
+
+<p>There is also no way to change the 500 or 401 pages via the object model so I was forced to use more drastic measures to replace the error pages.</p>
+
+<h4>SharePoint Error Handling</h4>
+
+<p>SharePoint does some really interesting things in the process of requesting pages which really threw some serious spanners in the works of my custom error handling code. This is because SharePoint uses error codes internally to make sure that page requests go to the correct place. For example when you request a page in the <code class="highlighter-rouge">_layouts</code> directory underneath a subsite (eg <a href="#">http://sharepoint/subsite/_layouts/settings.aspx</a>) SharePoint returns a permissions denied error on the first request, this is then translated by SharePoint’s error handling code to a <code class="highlighter-rouge">Server.TransferRequest</code> to the root level layouts folder (eg <a href="#">http://sharepoint/_layouts/settings.aspx</a>) which in turn checks your relevant permissions to the page and returns the appropriate status code. A similar process if followed if a site uses a team wiki template, the root is 401’d then redirected to SitePages/Home.aspx.</p>
+
+<p>Basically this makes catching errors difficult as it’s not obvious if it’s supposed to error and get caught later.</p>
+
+<h4 id="using-an-http-module-to-create-custom-errors">Using an HTTP Module to Create Custom Errors</h4>
+
+<p>In the end I used an HTTP Module to do my custom error handling. Below is the code I used to handle errors and pass them to my custom error pages:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">void</span> <span class="nf">Init</span><span class="p">(</span><span class="n">HttpApplication</span> <span class="n">context</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">_httpApp</span> <span class="p">=</span> <span class="n">context</span><span class="p">;</span>
+	<span class="n">_httpApp</span><span class="p">.</span><span class="n">PreSendRequestContent</span> <span class="p">+=</span> <span class="k">new</span> <span class="nf">EventHandler</span><span class="p">(</span><span class="n">WebApp_PreSendRequestContent</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">void</span> <span class="nf">WebApp_PreSendRequestContent</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="c1">// avoid errors in a global module.</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">_httpApp</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span> <span class="n">_httpApp</span><span class="p">.</span><span class="n">Request</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span> <span class="n">_httpApp</span><span class="p">.</span><span class="n">Response</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="n">HttpResponse</span> <span class="n">res</span> <span class="p">=</span> <span class="n">_httpApp</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span>
+	<span class="n">HttpRequest</span> <span class="n">req</span> <span class="p">=</span> <span class="n">_httpApp</span><span class="p">.</span><span class="n">Request</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">Url</span><span class="p">.</span><span class="n">AbsolutePath</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="s">"_layouts/AccessDenied.aspx"</span><span class="p">))</span>
+	<span class="p">{</span>
+	 	<span class="n">_httpApp</span><span class="p">.</span><span class="n">Server</span>
+			<span class="p">.</span><span class="nf">TransferRequest</span><span class="p">(</span><span class="n">SPUtility</span><span class="p">.</span><span class="nf">GetServerRelativeUrlFromPrefixedUrl</span><span class="p">(</span><span class="s">"~site/"</span> <span class="p">+</span> <span class="n">AccessDeniedUrl</span><span class="p">));</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">res</span><span class="p">.</span><span class="n">StatusCode</span> <span class="p">&lt;</span> <span class="m">400</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="c1">// if the request is ok just ignore it</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">res</span><span class="p">.</span><span class="n">StatusCode</span> <span class="p">==</span> <span class="m">404</span>
+		<span class="p">&amp;&amp;</span> <span class="p">!</span><span class="n">req</span><span class="p">.</span><span class="n">Url</span><span class="p">.</span><span class="n">AbsolutePath</span><span class="p">.</span><span class="nf">EndsWith</span><span class="p">(</span><span class="n">PageNotFoundUrl</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">InvariantCultureIgnoreCase</span><span class="p">))</span>
+	 <span class="p">{</span>
+	 	<span class="n">_httpApp</span><span class="p">.</span><span class="n">Server</span>
+			<span class="p">.</span><span class="nf">TransferRequest</span><span class="p">(</span><span class="n">SPUtility</span><span class="p">.</span><span class="nf">GetServerRelativeUrlFromPrefixedUrl</span><span class="p">(</span><span class="s">"~site/"</span> <span class="p">+</span> <span class="n">PageNotFoundUrl</span><span class="p">));</span>
+		<span class="k">return</span><span class="p">;</span>
+	 <span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">res</span><span class="p">.</span><span class="n">StatusCode</span> <span class="p">&gt;=</span> <span class="m">500</span> <span class="p">&amp;&amp;</span> <span class="n">res</span><span class="p">.</span><span class="n">StatusCode</span> <span class="p">&lt;</span> <span class="m">600</span> <span class="p">&amp;&amp;</span> <span class="p">!</span><span class="n">req</span><span class="p">.</span><span class="n">Url</span><span class="p">.</span><span class="n">AbsolutePath</span><span class="p">.</span><span class="nf">EndsWith</span><span class="p">(</span><span class="n">ErrorUrl</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">InvariantCultureIgnoreCase</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="n">_httpApp</span><span class="p">.</span><span class="n">Server</span>
+			<span class="p">.</span><span class="nf">TransferRequest</span><span class="p">(</span><span class="n">SPUtility</span><span class="p">.</span><span class="nf">GetServerRelativeUrlFromPrefixedUrl</span><span class="p">(</span><span class="s">"~site/"</span> <span class="p">+</span> <span class="n">ErrorUrl</span> <span class="p">+</span> <span class="s">"?statuscode="</span> <span class="p">+</span> <span class="n">res</span><span class="p">.</span><span class="n">StatusCode</span><span class="p">));</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In a nutshell what I am doing here is the following</p>
+
+<ul>
+  <li>
+    <p>Catching any requests to the friendly permission denied page, as discussed earlier 401s are used extensively for redirects inside of SharePoint so catching them will cause havoc. By catching requests to the access denied page I am hacking around the need to detect a 401.</p>
+  </li>
+  <li>
+    <p>Ignoring any OK requests</p>
+  </li>
+  <li>
+    <p>Catching anything which is a 404 in the web application (except the 404 page itself) and redirecting to my 404 page.</p>
+  </li>
+  <li>
+    <p>Catching anything with an error code in the web application (except the error page itself) and redirecting to my Error page. I also included the actual status code so I can emulate it in the response.</p>
+  </li>
+</ul>
+
+<p>This however wasn’t enough. Remember earlier how I said that the actual error pages in SharePoint return a 200 result? What this basically means is that you can’t simply catch the errors here as SharePoint is hiding them. So one more hack is required.</p>
+
+<p>SharePoint error messages are enabled and disabled with a <code class="highlighter-rouge">web.config</code> node called <code class="highlighter-rouge">SafeMode.CallStack</code>. This is a pretty deceptive name but basically what it does is turn on or off the SharePoint custom error messages. You need to set <code class="highlighter-rouge">CallStack</code> true and everything will start working.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;SharePoint&gt;</span>
+	<span class="nt">&lt;SafeMode</span> <span class="na">MaxControls=</span><span class="s">"200"</span> <span class="na">CallStack=</span><span class="s">"true"</span> <span class="na">DirectFileDependencies=</span><span class="s">"10"</span> <span class="na">TotalFileDependencies=</span><span class="s">"50"</span> <span class="na">AllowPageLevelTrace=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;PageParserPaths&gt;</span>
+		<span class="nt">&lt;/PageParserPaths&gt;</span>
+	<span class="nt">&lt;/SafeMode&gt;</span>
+<span class="nt">&lt;SharePoint&gt;</span>
+</code></pre></div></div>
+
+<p>Don’t forget to make your <code class="highlighter-rouge">web.config</code> changes with <code class="highlighter-rouge">SPWebConfigModification</code>.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2011/custom_errors_and_sharepoint_2010/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2011/custom_errors_and_sharepoint_2010'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Custom Errors and SharePoint 2010",
+ "wordcount": "1000",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2011/custom_errors_and_sharepoint_2010/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2011-06-14 00:00:00 +1200",
+ "description": "<p>We recently had a client who wanted to replace all SharePoint error pages with their own custom ones. This lead me to find a whole bunch of nasty gotchas inside of SharePoint in regards to the way it generates and handles errors.</p>
+
+",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

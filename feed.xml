@@ -1,34 +1,1051 @@
----
-layout: null
-redirect_from:
-  - feed
-  - feed.atom
-  - feeds/posts/default
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.title | xml_escape }}</title>
-    <description>{{ site.description | xml_escape }}</description>
-    <link>{{ site.url }}{{ site.baseurl }}/</link>
-    <atom:link href="{{ site.url }}{{ site.baseurl }}/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
-    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
-    <generator>Jekyll v{{ jekyll.version }}</generator>
-    {% for post in site.posts limit:10 %}
+    <title>StaticVoid</title>
+    <description>A coding blog</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Fri, 23 Mar 2018 22:43:18 +1300</pubDate>
+    <lastBuildDate>Fri, 23 Mar 2018 22:43:18 +1300</lastBuildDate>
+    <generator>Jekyll v3.6.2</generator>
+    
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.content | xml_escape }}</description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
-        <guid isPermaLink="true">{{ post.url | prepend: site.baseurl | prepend: site.url }}</guid>
-        {% for tag in post.tags %}
-        <category>{{ tag | xml_escape }}</category>
-        {% endfor %}
-        {% for cat in post.categories %}
-        <category>{{ cat | xml_escape }}</category>
-        {% endfor %}
+        <title>Comparing APIs in go, rust, node and dotnet core</title>
+        <description>&lt;p&gt;APIs are an important part of modern web applications. They provide a gateway for communication between a back end server and a frontend application. APIs also provide an integration point for other applications. I come from a dotnet background but I am really interested in seeing how APIs work in other languages, so for fun I wrote basic APIs in dotnet core, go and node.&lt;/p&gt;
+
+&lt;p&gt;I built the APIs to cover two different methods&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GET &lt;code class=&quot;highlighter-rouge&quot;&gt;/add/x/to/y&lt;/code&gt; which returns a JSON response &lt;code class=&quot;highlighter-rouge&quot;&gt;{ &quot;sum&quot;: &amp;lt;x + y&amp;gt; }&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;POST &lt;code class=&quot;highlighter-rouge&quot;&gt;/add&lt;/code&gt; which takes a list of numbers in XML &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;numbers&amp;gt;&amp;lt;value&amp;gt;x&amp;lt;/value&amp;gt;...&amp;lt;/numbers&amp;gt;&lt;/code&gt; and returns &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;sum&amp;gt;123&amp;lt;/sum&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This gives an idea on how serialisation, routing, verbs and body processing work in each language.&lt;/p&gt;
+
+&lt;h2 id=&quot;dotnet&quot;&gt;dotnet&lt;/h2&gt;
+
+&lt;p&gt;Dotnet core scaffolds a WebApi for you with the &lt;code class=&quot;highlighter-rouge&quot;&gt;dotnet new webapi&lt;/code&gt; command.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/dotnet-core-scaffold.png&quot; alt=&quot;Project structure&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I then deleted some of the un-needed bits from the project like logging and config files. This left me with a total of 85 lines of code across 5 files to implement the basic api. This included many of the scaffolded files like the &lt;code class=&quot;highlighter-rouge&quot;&gt;.csproj&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Startup.cs&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-code&quot;&gt;The code&lt;/h3&gt;
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;[XmlRoot(ElementName = &quot;numbers&quot;)]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Numbers&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;   
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;XmlElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;     
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Values&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AddController&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Controller&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpGet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;add/{x}/to/{y}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpPost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;add&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FromBody&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Numbers&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In addition I also needed to add &lt;code class=&quot;highlighter-rouge&quot;&gt;.AddXmlSerializerFormatters()&lt;/code&gt; to the ConfigureServices method in &lt;code class=&quot;highlighter-rouge&quot;&gt;Startup.cs&lt;/code&gt; to enable XML support&lt;/p&gt;
+
+&lt;p&gt;I find this code reasonably simple and easy to read. I like that the route information is inline however I dont find the &lt;code class=&quot;highlighter-rouge&quot;&gt;IActionResult&lt;/code&gt; return type particularly intuitive. The Serialisation is automatically handled by content type negotiation&lt;/p&gt;
+
+&lt;h2 id=&quot;nodejs&quot;&gt;nodejs&lt;/h2&gt;
+
+&lt;p&gt;For the node example I started with a blank file and looked at a few tutorials to work out what I needed. The node example is a total of &lt;del&gt;42&lt;/del&gt; 38 lines (&lt;a href=&quot;https://github.com/lukemcgregor/basic-api/pull/1&quot;&gt;thanks tcoats&lt;/a&gt;) over two files (including the &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt;). I also added content type negotiation to the POST method (&lt;code class=&quot;highlighter-rouge&quot;&gt;res.format()&lt;/code&gt;) for another 6 lines. This is not strictly necessary for the scenario but I thought it might be nice to compare.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-code-1&quot;&gt;The code&lt;/h3&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'express'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)()&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'xml'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bodyParser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'body-parser'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'body-parser-xml'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bodyParser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;use&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bodyParser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;use&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bodyParser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/add/:x/to/:y'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;parseInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;parseInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/add'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;parseInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reduce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})),&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;listen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8080&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I really liked the experience of writing an API in node, it was super simple and all of the serialisation was very easy. The thing I disliked the most was having to parse the int values out of strings (in both the XML and the querystring). This was annoying, if anyone knows a way to get typed stuff out on first go that would be really interesting.&lt;/p&gt;
+
+&lt;h2 id=&quot;go&quot;&gt;Go&lt;/h2&gt;
+
+&lt;p&gt;I was really excited about doing the Go example as I like quite a lot of the language features. Go came to a total of 48 lines with another 5 if i wanted content type negotiation. I couldnt manage to get the request body to automatically negotiate de-serialisation which was a bit of a shame but I would love to here how to do that if someone knows.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-code-2&quot;&gt;The code&lt;/h3&gt;
+
+&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;encoding/xml&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;log&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;net/http&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;strconv&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;github.com/jchannon/negotiator&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;github.com/julienschmidt/httprouter&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`xml:&quot;value&quot;`&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sum&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;`xml:&quot;,chardata&quot; json:&quot;sum&quot;`&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;httprouter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;New&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/add/:x/to/:y&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;responseWriter&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ResponseWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;httprouter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strconv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ParseInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strconv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ParseInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;y&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;negotiator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Negotiate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;responseWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+			&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;responseWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StatusInternalServerError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;POST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/add&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;responseWriter&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ResponseWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;httprouter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decoder&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xml&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewDecoder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decoder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+			&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;responseWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StatusInternalServerError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+			&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defer&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Body&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;total&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+			&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;total&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+		&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;negotiator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Negotiate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;responseWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;total&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+			&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;responseWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StatusInternalServerError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+		&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+	&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+	&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Fatal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ListenAndServe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:8080&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;x&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I was the least happy with how this code turned out. The serialisation stuff was difficult to do, especially in comparison to node. I also find the code to be much less succinct than either of the other languages. I expect this could be alleviated if I knew a few more libraries to help with these things. Its also important to note that this was my very first go program, whereas I have quite a bit of experience with both c# and client-side javascript.&lt;/p&gt;
+
+&lt;h2 id=&quot;rust-thankskazetsukai&quot;&gt;Rust (thanks&lt;a href=&quot;https://github.com/lukemcgregor/basic-api/pull/2&quot;&gt;@Kazetsukai&lt;/a&gt;)&lt;/h2&gt;
+
+&lt;p&gt;I know absolutely nothing about rust (before today), so fun times.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The rust example is 42 lines without content type negotiation (including the config files required).&lt;/p&gt;
+
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;feature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plugin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;plugin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rocket_codegen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rocket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elementtree&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;#[macro_use]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rocket_contrib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;rocket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;rocket_contrib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;elementtree&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;#[get(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/add/&amp;lt;x&amp;gt;/to/&amp;lt;y&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;)]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add_json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;json!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;sum&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;#[post(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/add&quot;&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;numbers&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;)]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add_xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from_reader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.unwrap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.find_all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.unwrap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;sum&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.set_text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.unwrap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nn&quot;&gt;rocket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ignite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.mount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;routes!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add_xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.launch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I find looking a the code the JSON GET example is very elegant and simple, less so the XML POST example. The routing is also super cool, you decorate a function with its route information and then just pass a list of functions to the server. That is super succinct. The performance of the rust service was also amazing being the fastest code example. However the service was not very stable, if I made more concurrent requests than there were cores on the machine the service went into some kind of deadlock, which is pretty poor. Rocket recommends putting the API behind NGINX which would prevent this issue. The tooling support was also much lower than for the other languages. I couldnt get a debugger to work at all, though there are some that are available. This means it wasn’t launchable from VS Code.&lt;/p&gt;
+
+&lt;h2 id=&quot;performance&quot;&gt;Performance&lt;/h2&gt;
+
+&lt;p&gt;To get a better idea of the differences between the languages I wrote a load tester which hits each APIs &lt;code class=&quot;highlighter-rouge&quot;&gt;/add/x/to/y&lt;/code&gt; method with a million requests. Just for fun I wrote this in Go which gave me a bit of a chance to play with the concurrency features such as channels.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt; &lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Median&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Mean&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Max&lt;/th&gt;
+      &lt;th&gt;Total time&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;strong&gt;go&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.21ms&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.22ms&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;151.7ms&lt;/td&gt;
+      &lt;td&gt;28.1s&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;strong&gt;nodejs&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.80ms&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.97ms&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;34.34ms&lt;/td&gt;
+      &lt;td&gt;123.3s&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;strong&gt;dotnet&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.39ms&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.43ms&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1045.2ms&lt;/td&gt;
+      &lt;td&gt;54.5s&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;strong&gt;rust&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.20ms&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.21&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;8.73ms&lt;/td&gt;
+      &lt;td&gt;27.9s&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;There are a couple of points of interest in this data&lt;/p&gt;
+
+&lt;h3 id=&quot;nodejs-total-time&quot;&gt;nodejs total time&lt;/h3&gt;
+
+&lt;p&gt;Node is inherently single threaded, I was hitting the api with concurrent load which is why the total time was so long. I did some research and there are a few ways to get around this, either run a load balancer across multiple instances (which would make sense if this was a docker process) or run a &lt;a href=&quot;https://nodejs.org/api/cluster.html&quot;&gt;node cluster&lt;/a&gt; which is essentially a single machine load balancer across processes.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A single instance of Node.js runs in a single thread. To take advantage of multi-core systems the user will sometimes want to launch a cluster of Node.js processes to handle the load.&lt;/p&gt;
+
+  &lt;p&gt;The cluster module allows easy creation of child processes that all share server ports.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;dotnet-max-time&quot;&gt;dotnet max time&lt;/h3&gt;
+
+&lt;p&gt;Dotnet processes perform a process called JIT (Just In Time compilation) which lazy loads code components as they are required, theres a great article about how this works &lt;a href=&quot;http://www.telerik.com/blogs/understanding-net-just-in-time-compilation&quot;&gt;here&lt;/a&gt;. This means that on first request the process is loading modules into memory and performing compilation. This affects the first request on dotnet processes. There are ways of getting around this such as heating the process on deploy or using NGen to produce a native binary that doesn’t require JIT.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h3&gt;
+
+&lt;p&gt;I ran this test on both my Windows box (i7) and my macbook (i5) both gave similar proportional results, however the timer resolution for go on windows is very low (0.5ms) which didn’t give as useful figures. As expected Go and rust were the fastest followed by dotnet and nodejs.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 28 Jun 2017 00:00:00 +1200</pubDate>
+        <link>http://localhost:4000/2017/Comparing_apis_in_go_node_and_dotnet_core/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/Comparing_apis_in_go_node_and_dotnet_core/</guid>
+        
+        
+        <category>technical</category>
+        
       </item>
-    {% endfor %}
+    
+      <item>
+        <title>Microservice communication methods</title>
+        <description>&lt;p&gt;Communication between microservices allows us to build complex behaviours out of simple components. Most people tend to think of webservices when thinking of microservices however there are a number of other communication methods which are applicable in different situations.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-does-a-communication-method-need&quot;&gt;What does a communication method need?&lt;/h3&gt;
+&lt;p&gt;In order to use a specific communication method for talking between microservices the method must be versioned and have deployment independence.&lt;/p&gt;
+
+&lt;h4 id=&quot;deployment-independence&quot;&gt;Deployment independence&lt;/h4&gt;
+&lt;p&gt;The entire microservice (including any communication components) must be able to be deployed without orchestration with other services. Similarly the deployment of a consuming service must not necessitate a change from the provider. Or to think of it simply you must be able to deploy both provider and consumer without thinking of the other.&lt;/p&gt;
+
+&lt;h4 id=&quot;versioning&quot;&gt;Versioning&lt;/h4&gt;
+&lt;p&gt;A communication method must support versioning in order to allow for changes in the contracts, ensuring that consumers will not break as the contract changes. For more information on versioning in microservice systems see &lt;a href=&quot;/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/&quot;&gt;Microservice versioning; How to make breaking changes without breaking stuff&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;communication-characteristics&quot;&gt;Communication characteristics&lt;/h3&gt;
+&lt;p&gt;Different communication methods may have different characteristics which suit them to specific use cases.&lt;/p&gt;
+
+&lt;h4 id=&quot;trusted-vs-untrusted&quot;&gt;Trusted vs untrusted&lt;/h4&gt;
+&lt;p&gt;With some communication methods we require that in order to use the medium itself clients must trust each other. For example you might allow external clients to call a webservice but probably not send messages on your message system.&lt;/p&gt;
+
+&lt;h4 id=&quot;synchronous-and-asynchronous&quot;&gt;Synchronous and asynchronous&lt;/h4&gt;
+&lt;p&gt;Synchronous communication methods are generally request-response or call based. Synchronous methods work well for looking up some information or for performing actions which require immediate consistency.&lt;/p&gt;
+
+&lt;p&gt;Asynchronous communication methods are generally event based. Asynchronous methods work well for notifications about events which have occurred or for actions which can have eventual consistency.&lt;/p&gt;
+
+&lt;h3 id=&quot;http-requests&quot;&gt;HTTP Requests&lt;/h3&gt;
+&lt;p&gt;The most common method of microservice communication is via HTTP webservices. This is probably because its familiar for developers using web stacks, and can be used both for services in you network as well as &lt;strong&gt;untrusted&lt;/strong&gt; external access. HTTP is by nature &lt;strong&gt;synchronous&lt;/strong&gt; (request-response).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/microservice-http-communication.png&quot; alt=&quot;HTTP Microservice Communication&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;An HTTP communication method is implemented by the providing service creating an HTTP endpoint at a specific URL. Under this URL resources and methods exist which may be called by another service. The HTTP endpoint itself normally allows untrusted connections however security may be introduced by the service to enforce specific authorisations that may be relevant.&lt;/p&gt;
+
+&lt;p&gt;Ideally authentication should not be performed directly by the service, rather a signed token should be passed with the request which allows the service to perform any required authorisation checks.&lt;/p&gt;
+
+&lt;h3 id=&quot;message-passing&quot;&gt;Message passing&lt;/h3&gt;
+&lt;p&gt;Message passing is a common technique for &lt;strong&gt;asynchronous&lt;/strong&gt; communication with microservices and generally occurs over a &lt;strong&gt;trusted&lt;/strong&gt; medium (eg the messaging system). This involves publishing a message which another microservice can subscribe to, or sending a command to a microservice requesting an eventually consistent action.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/microservice-messaging-communication.png&quot; alt=&quot;Messaging Microservice Communication&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;webhook-subscriptions&quot;&gt;Webhook subscriptions&lt;/h3&gt;
+&lt;p&gt;Webhooks are an HTTP version of pub/sub message passing and are &lt;strong&gt;asynchronous&lt;/strong&gt; by nature. While most messaging systems require all direct users of the system to be trusted, webhooks work well for pub/sub between endpoints which don’t implicitly trust each other (eg &lt;strong&gt;untrusted&lt;/strong&gt;), for example between services maintained by different organisations.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/microservice-webhook-communication.png&quot; alt=&quot;Webhook Microservice Communication&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Versioning for webhooks is done in a similar way to that used for other HTTP based services however instead of the version being associated with the request URL it is associated with the subscription itself.&lt;/p&gt;
+
+&lt;h3 id=&quot;runtime-plugins&quot;&gt;Runtime plugins&lt;/h3&gt;
+&lt;p&gt;Runtime plugins can be used as a communication method with microservices under certain situations. I think most developers wouldn’t even consider runtime plugins in microservice environments as most runtime techniques introduce significant coupling. However with a little cleverness this can be avoided. Runtime plugins are generally &lt;strong&gt;synchronous&lt;/strong&gt; and always &lt;strong&gt;trusted&lt;/strong&gt; as they require injecting code into the consumers running process.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/runtime-microservice-plugins.png&quot; alt=&quot;Runtime plugins&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are two important components when using runtime microservice plugins, which are to do with versioning; &lt;em&gt;the consumer should not need to be changed when the provider changes&lt;/em&gt; and deployment independence; &lt;em&gt;the provider can deploy whenever they want and the consumer should not need to be redeployed (or restarted when the provider changes)&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;versioning-1&quot;&gt;Versioning&lt;/h4&gt;
+&lt;p&gt;By introducing a versioned contract package into our consumer we are able to reference the contract in application code, this allows the implementation to change underneath so long as it continues to support the versioned contract. This allows us to update the implementation at will, in a similar way to how webservices are versioned.&lt;/p&gt;
+
+&lt;h4 id=&quot;deployment-independence-1&quot;&gt;Deployment independence&lt;/h4&gt;
+&lt;p&gt;In order to gain deployment independence we need to ensure two things, firstly that the plugin can be upgraded at runtime based on an external deployment, and secondly that the upgrade will happen in a predictable time window. In order to achieve this we must make the plugin actively watch a repository and in-place upgrade itself when a change occurs. If the repository cannot be contacted within the deployment window the plugin should stop functioning in order to provide a guarantee that a deployment has successfully completed after that window expires.&lt;/p&gt;
+
+&lt;h4 id=&quot;an-example&quot;&gt;An example&lt;/h4&gt;
+&lt;p&gt;In the .NET world runtime plugins can be built using AppDomains and a shared folder (as one example).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Components:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A runtime plugin library&lt;/li&gt;
+  &lt;li&gt;A contracts package; built from the provider services’ solution, deployed to NuGet&lt;/li&gt;
+  &lt;li&gt;The plugin itself; built from the provider services’ solution, deployed to a shared folder&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Lifecycle:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Consumer installs the contracts package and runtime plugin library from NuGet&lt;/li&gt;
+  &lt;li&gt;Consumer requests a proxy to the contract at runtime from the plugin library&lt;/li&gt;
+  &lt;li&gt;Plugin library looks in the shared folder for the current implementation of the plugin, loads it into an isolated app domain and returns a transparent proxy which will call the app-domain&lt;/li&gt;
+  &lt;li&gt;Plugin library starts a directory watcher looking for changes in the shared folder&lt;/li&gt;
+  &lt;li&gt;When a change occurs the plugin library loads the new implementation into a new AppDomain and updates proxies to point at the new AppDomain&lt;/li&gt;
+  &lt;li&gt;Plugin library unloads old AppDomain&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;when-to-use-runtime-plugins&quot;&gt;When to use runtime plugins&lt;/h4&gt;
+&lt;p&gt;Runtime plugins solve a very specific microservice problem. They should generally be approached with caution and only used when other options are inappropriate.&lt;/p&gt;
+
+&lt;p&gt;Scenarios where runtime plugins are appropriate&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Exceptionally low latency is required&lt;/li&gt;
+  &lt;li&gt;Microservices which are heavy on logic but store little to no data (&lt;a href=&quot;/2017/library_vs_microservice/&quot;&gt;eg, because of implementation consistency&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;When client state is important (eg transaction coordination)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;how-to-pick-a-communication-method&quot;&gt;How to pick a communication method&lt;/h3&gt;
+&lt;p&gt;Selecting a communication method is about working out the characteristics your consumers will require and selecting a method which will satisfy those. For example if you need to provide data on request (synchronous) to clients which are not part of your organisation (untrusted) then you should use HTTP requests as a method.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 31 May 2017 00:00:00 +1200</pubDate>
+        <link>http://localhost:4000/2017/microservices-communication-methods/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/microservices-communication-methods/</guid>
+        
+        
+        <category>technical</category>
+        
+      </item>
+    
+      <item>
+        <title>Migrating my blog to Jekyll and GitHub Pages</title>
+        <description>&lt;p&gt;Over the last 5 years I have been using a blog engine I wrote myself. Its not bad but I’m no designer and I would really like it to have a better style and typography. I also wanted to put the content in GitHub so that if people find mistakes they can &lt;a href=&quot;https://github.com/lukemcgregor/lukemcgregor.github.io&quot;&gt;fix them with a pull request&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This makes &lt;a href=&quot;https://pages.github.com&quot;&gt;GitHub pages&lt;/a&gt; (free static site hosting) and &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; (a static site generator GitHub runs) a great solution for running my blog.&lt;/p&gt;
+
+&lt;p&gt;In this article I’m going to talk about my experience with moving to Jekyll and what I liked/disliked about the process.&lt;/p&gt;
+
+&lt;h2 id=&quot;before&quot;&gt;Before&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/old-blog.png&quot; alt=&quot;Before&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;and-after&quot;&gt;And after&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/new-blog.png&quot; alt=&quot;After&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-theme&quot;&gt;The Theme&lt;/h2&gt;
+&lt;p&gt;One of the nice things about Jekyll is the number of themes available for blogs. It looks like a lot of people use Jekyll for tech blogs so there are many themes available. In terms of themes you can either use a &lt;a href=&quot;https://pages.github.com/themes/&quot;&gt;bundled theme&lt;/a&gt;, or get a &lt;a href=&quot;http://jekyllthemes.org&quot;&gt;theme someone else has made&lt;/a&gt; from GitHub and fork it to run your blog.&lt;/p&gt;
+
+&lt;p&gt;Bundled themes are pretty nice in that you can set them up very easily, eg in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yaml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;theme&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;jekyll-theme-architect&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;But there is far less selection available. It also doesn’t offer a great experience if you want to fix or change things about the theme to suit your use case which I ended up needing to do.&lt;/p&gt;
+
+&lt;p&gt;There are thousands of Jekyll themes available on GitHub but I picked &lt;a href=&quot;https://github.com/joshgerdes/jekyll-uno&quot;&gt;jekyll-uno&lt;/a&gt; by &lt;a href=&quot;http://joshgerdes.com/2016/jekyll-uno-a-minimal-responsive-theme-for-jekyll/&quot;&gt;@joshgerdes&lt;/a&gt; as I liked the way it looked.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-upgrade-process&quot;&gt;The upgrade process&lt;/h2&gt;
+
+&lt;p&gt;Setting up Jekyll and migrating my content was reasonably easy. I spent most of my time refactoring old posts into markdown as many of theme dated back to when I used blogspot.&lt;/p&gt;
+
+&lt;h3 id=&quot;creating-a-test-site&quot;&gt;Creating a test site&lt;/h3&gt;
+
+&lt;p&gt;Once I had decided on a theme the next step was to set it up on &lt;a href=&quot;https://pages.github.com&quot;&gt;GitHub pages&lt;/a&gt;. To do this I forked the Jekyll-Uno repository. By default this creates a repository named &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;username&amp;gt;/jekyll-uno&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;GitHub pages requires a repository with a name &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;username&amp;gt;/&amp;lt;username&amp;gt;.github.io&lt;/code&gt; in order to create a site at the root of a domain like my blog, so I renamed the repository as above. To do this go to the settings on the forked repository.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/github-rename.png&quot; alt=&quot;Rename github repo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;NOTE&lt;/strong&gt; After the rename it took a check-in to get GitHub pages to create the site.&lt;/p&gt;
+
+&lt;h3 id=&quot;migrating-the-content&quot;&gt;Migrating the content&lt;/h3&gt;
+
+&lt;p&gt;From here I imported all of my posts (and removed the default one). This meant creating a markdown file for each post in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Each post needs to be named &lt;code class=&quot;highlighter-rouge&quot;&gt;yyyy-mm-dd-name_of_the_article.md&lt;/code&gt;, By default with Jekyll-uno this creates a post hosted at &lt;code class=&quot;highlighter-rouge&quot;&gt;/jekyll-uno/yyyy/name_of_the_article&lt;/code&gt;. As my old blog was already using markdown this wasn’t too bad but some of my older articles were still in HTML so I fixed them up at the same time.&lt;/p&gt;
+
+&lt;p&gt;I added support for setting the canonical link for the page, this allowed me to run my blog on github pages before I migrated the URL without having a duplicate content problem. By default the theme does set the canonical link but in my case I wanted this to point back to my old blog. While I imported each post I took care to add a canonical header to ensure if the new site was crawled at &lt;code class=&quot;highlighter-rouge&quot;&gt;username.github.io&lt;/code&gt; it wouldn’t affect the existing content hosted on my blog.&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;canonical&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http://blog.staticvoid.co.nz/2012/3/24/entity_framework_comparative_performance&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Next I corrected the URL structure by setting a baseurl of &lt;code class=&quot;highlighter-rouge&quot;&gt;''&lt;/code&gt; in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yaml&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;NOTE&lt;/strong&gt; jekyll-uno had some bugs around setting an empty baseurl, you will need &lt;a href=&quot;https://github.com/joshgerdes/jekyll-uno/pull/60&quot;&gt;this pull request&lt;/a&gt; to make it all work properly&lt;/p&gt;
+
+&lt;p&gt;The URL structure was slightly different from my old blog which uses &lt;code class=&quot;highlighter-rouge&quot;&gt;/yyyy/m/d/title&lt;/code&gt; as the format. I quite like just having the year in the URL so instead of re-implementing my old URL scheme I decided to add in redirects from the original URLs to the new ones. To do this I installed a redirection plugin &lt;a href=&quot;https://github.com/jekyll/jekyll-redirect-from&quot;&gt;jekyll-redirect-from&lt;/a&gt;. This allows the addition of front matter to list all of the URLs this page is known by. For some of my older pages this also includes redirects from when I used blogspot.&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;redirect_from&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2012/3/24/entity_framework_comparative_performance&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2012/03/entity-framework-comparative.html&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;personalising&quot;&gt;Personalising&lt;/h3&gt;
+
+&lt;p&gt;I made several modifications to the theme itself to suit what I was wanting for a blog.&lt;/p&gt;
+
+&lt;p&gt;The default theme had a very narrow max content width. This means on a large screen the content band is (IMO) too narrow. I upped this from 640px to 800px, which I felt looks a lot nicer especially with the default font size of 16px (which does make it nice to read).&lt;/p&gt;
+
+&lt;p&gt;I got rid of the full screen landing page and went directly to the post list. While the landing page looked really nice I didn’t think it was terribly functional and as a reader I would just want to see an index. It was also implemented in javascript so if you go to any of the index pages without javascript enabled you see the landing page and cant get access to the actual index. This probably wouldn’t have stopped search bots but I don’t think it would be great for SEO to have your actual content not visible.&lt;/p&gt;
+
+&lt;p&gt;I renamed the ‘Blog’ button to ‘Archive’ as without the landing page it makes more sense that you are going to the index of old posts rather than the blog section of a larger site.&lt;/p&gt;
+
+&lt;p&gt;Images are by default left aligned, I didn’t really like this so I centered everything by default.&lt;/p&gt;
+
+&lt;p&gt;There was no default tab width set for code blocks so it used the default 8 wide tabs, this made all my code samples look super indented, so I set a default tab width of 4 on code blocks (which is now settable in CSS3).&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;pre&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;-moz-tab-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;-o-tab-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;tab-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;      &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I customised the look to bring some of my old blog through (like the logo and favicon) and also added a different background image. For anyone who is interested this image was taken at &lt;a href=&quot;https://www.google.co.nz/maps/place/Lake+Louise,+AB,+Canada/@51.4139042,-116.2406884,15.25z/data=!4m5!3m4!1s0x53775d28a0e1ce11:0x3c373c7b6365bce6!8m2!3d51.4253705!4d-116.1772552&quot;&gt;Lake Louise&lt;/a&gt; in Alberta. I love the snow (which we don’t get much of in New Zealand) and this brings back good memories of our trip there a few years ago.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/cover.jpg&quot; alt=&quot;Lake Louise&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I also did a bunch of minor fixes as pull requests back to the original theme:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/joshgerdes/jekyll-uno/pull/64&quot;&gt;Markdown table style&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/joshgerdes/jekyll-uno/pull/62&quot;&gt;Cache busters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/joshgerdes/jekyll-uno/pull/61&quot;&gt;No tags render&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/joshgerdes/jekyll-uno/pull/60&quot;&gt;Corrected baseurl conventions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It was great to be able to make these fixes back into the original repository.&lt;/p&gt;
+
+&lt;h3 id=&quot;making-it-live&quot;&gt;Making it live&lt;/h3&gt;
+
+&lt;p&gt;The next step was to make the new blog live on my real URL. The first step of this was to go to the repository settings in github and set a custom domain.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/github-custom-domain.png&quot; alt=&quot;Github custom domain&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This makes the github site respond to requests with my blogs URL. The final step was to create a CNAME from my &lt;code class=&quot;highlighter-rouge&quot;&gt;blog.staticvoid.co.nz&lt;/code&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;lukemcgregor.github.io&lt;/code&gt;. This sends traffic to github instead of my old instance. Once the DNS propagated my blog was now live.&lt;/p&gt;
+
+&lt;p&gt;I then made the canonical links point to the new URL scheme (by removing the manual canonical setting on each post). This allows search engines to update their index to point to the new URL scheme avoiding the need for a redirect when someone browses from search results.&lt;/p&gt;
+
+&lt;h3 id=&quot;moving-the-comments&quot;&gt;Moving the comments&lt;/h3&gt;
+
+&lt;p&gt;Given I had changed the URLs for all my posts I also needed to update the paths for Disqus to point old comments to the correct pages. This can be done with the &lt;a href=&quot;https://disqus.com/admin/discussions/migrate/&quot;&gt;Diqus migration tool&lt;/a&gt;. This process was a bit fiddly as the automated mapping tool only respects 30* redirects. As this is a static site when &lt;a href=&quot;https://github.com/jekyll/jekyll-redirect-from&quot;&gt;jekyll-redirect-from&lt;/a&gt; performs a redirect it uses a flat file method (aka meta &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTP-REFRESH&lt;/code&gt;). This means you need to use a csv mapping old to new URLs which was easiest to compile manually.&lt;/p&gt;
+
+&lt;h3 id=&quot;testing-things-out&quot;&gt;Testing things out&lt;/h3&gt;
+&lt;p&gt;As soon as the blog was live I did a manual test (including some of the redirected links) and checked analytics. This let me know that everything was up and running and I was still getting people visit the blog.&lt;/p&gt;
+
+&lt;p&gt;I also have live monitoring on the site with &lt;a href=&quot;https://uptimerobot.com&quot;&gt;Uptime Robot&lt;/a&gt; which emails me when it goes down. It also tracks some basic performance stats for the blog. It was really nice to see a significant performance boost from moving to a static generated site.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/uptime-and-performance.png&quot; alt=&quot;Uptime and performance&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the new blog had been live for a few days I took a look at &lt;a href=&quot;https://www.google.com/webmasters/tools/&quot;&gt;Google webmaster tools&lt;/a&gt; to make sure the site was getting correctly indexed. Organic search accounts for 2/3 of my traffic so I like to do all I can to ensure that my search results in Google are the best they can be.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/acquisition.png&quot; alt=&quot;Acquisition&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;What I saw in webmaster tools was a big jump in the number of pages indexed.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/indexed-pages.png&quot; alt=&quot;Indexed pages&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This number should ideally equal the number of unique content pages in the static site (eg the number of posts). Unfortunately it was also indexing the redirect pages and navigational pages (index, tags, categories). This is something I will need to correct, as google thinks your site is most awesome when your content is unique and each page adds unique value.&lt;/p&gt;
+
+&lt;h3 id=&quot;whats-next&quot;&gt;What’s next&lt;/h3&gt;
+
+&lt;p&gt;There are still a few things I would like to do around my blog itself.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Exclude non-post pages from google index&lt;/li&gt;
+  &lt;li&gt;Look at what happens if I use &lt;a href=&quot;https://www.cloudflare.com&quot;&gt;cloudflare&lt;/a&gt; (and perhaps enable https)&lt;/li&gt;
+  &lt;li&gt;Take a look at &lt;a href=&quot;https://developers.google.com/search/docs/guides/intro-structured-data&quot;&gt;structured data&lt;/a&gt; for &lt;a href=&quot;http://jsonld.com/blog-post/&quot;&gt;blog posts&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Add a link to correct issues via a pull request&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Wed, 03 May 2017 00:00:00 +1200</pubDate>
+        <link>http://localhost:4000/2017/migrating-my-blog-to-jekyll-and-github-pages/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/migrating-my-blog-to-jekyll-and-github-pages/</guid>
+        
+        
+        <category>technical</category>
+        
+      </item>
+    
+      <item>
+        <title>Microservice versioning; How to make breaking changes without breaking stuff</title>
+        <description>&lt;p&gt;Versioning is a tool which allows microservices to gain independence from each other while being able to grow and change. Its critical that when we make changes to a microservice we can do so in a way that we are confident will not break our consumers.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://semver.org/&quot;&gt;Semver&lt;/a&gt; is a great way to think about versioning, as a refresher semver uses the following versioning:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.jontejada.com/blog/galvanize/talk/2016/01/18/semver/&quot;&gt;&lt;img src=&quot;/images/posts/2017/semver.png&quot; alt=&quot;Breaking.Feature.Fix&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;When we are thinking about microservices we need to be concerned about the versioning strategy from both the point of view of provider and consumer. However as we have a live system we actually only need to worry about making breaking changes to our services (ie the first semver number). If we make any non-breaking (feature/fix) change our consumers don’t need to take any action. If we want to be able to make a breaking change to a service we must provide a way of making that change while still supporting the old version of the contract.&lt;/p&gt;
+
+&lt;p&gt;Versioning therefore lets us make breaking changes without breaking things. And lets face it, you will want to make breaking changes at some point in the life of a microservice.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-is-breaking&quot;&gt;What is Breaking&lt;/h3&gt;
+
+&lt;p&gt;Breaking changes are any change to the contract which is provided by the service which is not backward compatible. There are many different types of changes which could have the potential to be breaking.&lt;/p&gt;
+
+&lt;h4 id=&quot;transfer-schemas&quot;&gt;Transfer schemas&lt;/h4&gt;
+
+&lt;p&gt;The transfer schema is the structure of the data you will either receive or emit in response to an external request. In HTTP this includes any response payload and the structure of posted content. In a messaging environment this includes events which you emit and commands you receive.&lt;/p&gt;
+
+&lt;p&gt;A breaking change is anything which would cause an old version of one of these formats to be unacceptable. While this may depends on the serialisation you use examples may include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Deleting a response field&lt;/li&gt;
+  &lt;li&gt;Adding a required field to the posted content or a command&lt;/li&gt;
+  &lt;li&gt;Renaming a field anywhere&lt;/li&gt;
+  &lt;li&gt;Retyping a field anywhere&lt;/li&gt;
+  &lt;li&gt;Removing support for a format (eg moving from XML to JSON)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Generally the following are non-breaking:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Adding a new response field&lt;/li&gt;
+  &lt;li&gt;Deleting a field from the posted content you expect or a command&lt;/li&gt;
+  &lt;li&gt;Adding support for a format (eg allowing a new datatype, or content type negotiation in HTTP)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;endpoints&quot;&gt;Endpoints&lt;/h4&gt;
+
+&lt;p&gt;Endpoints are the place another service would go to connect to your service. They are just as important when versioning as your transfer schemas. In http this is the URL, in messaging the source you are listening to commands on or publishing events to and your routing information.&lt;/p&gt;
+
+&lt;p&gt;Breaking changes may include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Changing the URL structure&lt;/li&gt;
+  &lt;li&gt;Adding required information to the query string&lt;/li&gt;
+  &lt;li&gt;Removing routing information from an event&lt;/li&gt;
+  &lt;li&gt;Changing the command source or event destination&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Generally the following are non-breaking:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Adding new query string parameters&lt;/li&gt;
+  &lt;li&gt;Changing a URL while redirecting the old one&lt;/li&gt;
+  &lt;li&gt;Adding new routing information to events&lt;/li&gt;
+  &lt;li&gt;Changing the command source while redirecting from the old one&lt;/li&gt;
+  &lt;li&gt;Changing the event destination while redirecting to the old one&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; its a good idea to document that your HTTP services may return a redirect response to allow you to change URLs without introducing breaking changes.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;performance&quot;&gt;Performance&lt;/h4&gt;
+
+&lt;p&gt;If you have given any guarantees about the performance or uptime of your service these are part of your versioned contract. Loosening the SLA you have is a breaking change as other services may have made downstream promises relating to your SLA.&lt;/p&gt;
+
+&lt;h4 id=&quot;data&quot;&gt;Data&lt;/h4&gt;
+
+&lt;p&gt;In most cases the actual data (not the schema) does not need to be versioned, however its important to be careful of implicit schemas especially in text based data responses. Its good practice to assume that any text based content has no internal structure, if it does its better to use a defined, versionable type instead of free text based data.&lt;/p&gt;
+
+&lt;h3 id=&quot;versioning-methods&quot;&gt;Versioning Methods&lt;/h3&gt;
+
+&lt;p&gt;There are many different ways of versioning, different communication types will also use different methods.&lt;/p&gt;
+
+&lt;h4 id=&quot;http-url-versioning&quot;&gt;HTTP URL versioning&lt;/h4&gt;
+
+&lt;p&gt;This is the most common way of versioning for HTTP based services. In URL versioning you would put a breaking change version number in the URL, for example &lt;a href=&quot;#&quot;&gt;https://api.staticvoid.co.nz/v1/do-stuff&lt;/a&gt; and then when you make a breaking change provide a second URL with the new change &lt;a href=&quot;#&quot;&gt;https://api.staticvoid.co.nz/v2/do-better-stuff&lt;/a&gt;. This means that if someone calls the v1 URL they will still have their request serviced but new consumers will be able to use the new API.&lt;/p&gt;
+
+&lt;h4 id=&quot;http-content-type-versioning&quot;&gt;HTTP content type versioning&lt;/h4&gt;
+
+&lt;p&gt;Content type versioning exploits the content negotiation feature of HTTP to implement versioning. In this type of versioning the caller will request the version(s) which they are prepared to accept (using the accept header). For example &lt;code class=&quot;highlighter-rouge&quot;&gt;accept: application/json+staticvoid.blogpost.v1&lt;/code&gt; this signals that the response content type must be a version 1 blog post typed object represented in JSON. This is an elegant solution as it enables versioning per transport model.&lt;/p&gt;
+
+&lt;p&gt;However content type versioning comes at the cost of code complexity on both consumer and receiver. It also only addresses transport model versioning which means that you either need another versioning scheme to deal with other types of breaking changes.&lt;/p&gt;
+
+&lt;h4 id=&quot;message-routing-key-versioning&quot;&gt;Message routing key versioning&lt;/h4&gt;
+
+&lt;p&gt;When versioning messages each message can be independently versioned. One way of versioning messages is to put the version into the routing key. For example &lt;code class=&quot;highlighter-rouge&quot;&gt;my-type.v1.otherstuff&lt;/code&gt; (rabbitMQ style). This means consumers can receive older versions by subscribing to older routing key versions.&lt;/p&gt;
+
+&lt;p&gt;In this method the event publisher is required to publish using all supported routing keys, so if there are two versions two messages would be sent, one v1 and one v2. When handling commands the roles are inverted so you would have two handlers one for v1 and one for v2.&lt;/p&gt;
+
+&lt;h3 id=&quot;making-a-breaking-change&quot;&gt;Making a breaking change&lt;/h3&gt;
+
+&lt;p&gt;The whole purpose of versioning is to be able to make breaking changes without breaking things. While versioning adds a lot of overhead it allows breaking changes to be made which will let you progress your service to new and better contracts.&lt;/p&gt;
+
+&lt;p&gt;When making a breaking change you will need to publish a new contract for your service as a new version and then implement the required code to fulfil that new contract alongside the existing supported contracts. In practice I have found its often useful to point the old implementation at the new one and then manipulate it to fulfil the older contract, this allows your code to be DRY and means that bugfixes will be published to both versions at once.&lt;/p&gt;
+
+&lt;h3 id=&quot;contracts-for-deletion&quot;&gt;Contracts for deletion&lt;/h3&gt;
+
+&lt;p&gt;Versioning will leave you supporting older versions for a period of time. If you have no contract around the lifetime of a service it is implicit that you will continue to support that service for the foreseeable future. This isn’t a bad strategy but it will increase the drag of development as you will have to support old versions for a long time. I find it is useful to be explicit about the expected lifetime of each version.&lt;/p&gt;
+
+&lt;p&gt;A good way to do this is to document an end date for the version in your service documentation. For example you might say that on all current leading versions they are supported for a minimum of the next 12 months, and for an old version you can then say its supported until 12 months after it was superseded. This means that you are upfront about the period of support. This period may vary between services.&lt;/p&gt;
+
+&lt;p&gt;At the end of the deletion period you are free to delete the old version or maybe if traffic is still going to the old version 301 to a newer version and expose the consumer to the breaking change (which in many cases may not actually cause an issue for the explicit use case of the consumer).&lt;/p&gt;
+
+&lt;h3 id=&quot;summing-up&quot;&gt;Summing up&lt;/h3&gt;
+
+&lt;p&gt;Versioning is a powerful tool which enables you to iterate on the contracts you provide from your services in a way that gives a clear and consistent experience for consumers. It is critical for allowing microservices to grow and change over time without causing cascade failures to their consumers.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Mar 2017 16:51:13 +1300</pubDate>
+        <link>http://localhost:4000/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/</guid>
+        
+        
+        <category>technical</category>
+        
+      </item>
+    
+      <item>
+        <title>Library vs microservice</title>
+        <description>&lt;p&gt;Both libraries and microservices provide a way of providing a functionality behind a versioned interface. In the case of a microservice the versioning needs to be supported by the service on its external interfaces (eg versioned messages or apis), in the case of a library the version is applied by the version of the package. In each case we have decoupled functionality.&lt;/p&gt;
+
+&lt;p&gt;Each method has particular advantages and scenarios which it suits best.&lt;/p&gt;
+
+&lt;h3 id=&quot;tldr&quot;&gt;TL;DR&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/library-or-microservice.png&quot; alt=&quot;Library or Microservice&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;opt-in-vs-automatic-updates&quot;&gt;Opt in vs automatic updates&lt;/h3&gt;
+
+&lt;p&gt;Libraries and microservices have one defining difference which is who makes the decision to change the running implementation. In the case of a library the consumer opts for a new implementation, in the case of microservices the provider provides a new implementation at will (hopefully) meet the previous version contracts.&lt;/p&gt;
+
+&lt;p&gt;To use an analogy a microservice is similar to a SaaS application whereas a library is like an installed application.&lt;/p&gt;
+
+&lt;h3 id=&quot;globally-vs-internally-consistent-implementation&quot;&gt;Globally vs internally consistent implementation&lt;/h3&gt;
+
+&lt;p&gt;Microservices provide a consistent implementation for all consumers at any given time. This means that changes to the implementation are immediately applied everywhere.  However if an application makes two calls to a microservice the implementation may differ between these calls. In contrast two calls to the same library are guaranteed to use the same implementation, however two applications using the same library are not guaranteed to be using the same implementation.&lt;/p&gt;
+
+&lt;p&gt;To look at it another way if you want repeated calls to return the same result then a library is the best answer, however if you want all consumers to receive the same result then a microservice is best.&lt;/p&gt;
+
+&lt;h3 id=&quot;versioned-vs-unversioned-internal-persisted-state&quot;&gt;Versioned vs unversioned internal persisted state&lt;/h3&gt;
+
+&lt;p&gt;Internal state is state which is used by the implementation, not passed by the caller and shared between all instances of the implementation (for example data in a database). For a library to use internal state it must be backward compatible with all previous versions, so that any version of the implementation can write valid state. This practically means that any new data added by new implementations must be nullable, and old data cannot change its format. In my opinion this restriction means that it’s best not to use internal persisted state with library code. If you require persisted state get it passed in by the caller, who is responsible for handling any version mutations.&lt;/p&gt;
+
+&lt;p&gt;In comparison microservice can have un-versioned internal persisted state without causing an update problem when changing the representation of that state. This allows a microservice to confidently change its internal state representation without breaking any of the consumers of the service.&lt;/p&gt;
+
+&lt;p&gt;In my opinion this is the biggest separator of microservices and libraries.&lt;/p&gt;
+
+&lt;h3 id=&quot;failure-conditions&quot;&gt;Failure conditions&lt;/h3&gt;
+
+&lt;p&gt;Libraries and microservices have different failure conditions. These largely depend on the transport used to consume the microservice. In most cases a library will have far fewer failure scenarios as microservices have more moving parts (for example web servers, other running processes etc.) however if you are using asynchronous communication (such as messaging) microservices have some benefits in terms of failure scenarios. For example if an error occurs in a library the consumer must handle that failure, however if an error occurs inside a microservice consuming a message, the message can be deferred and replayed automatically allowing the error to be resolved rather than handled. This can be a big benefit in some scenarios.&lt;/p&gt;
+
+&lt;p&gt;If your microservice uses synchronous communication (such as http), it is exposed to many more failure conditions, such as what do you do if its is unavailable, slow, or there is some kind of infrastructure issue.&lt;/p&gt;
+
+&lt;h3 id=&quot;low-overheads-vs-horizontal-scaling&quot;&gt;Low overheads vs horizontal scaling&lt;/h3&gt;
+
+&lt;p&gt;Libraries naturally have lower overheads as they operate without requiring serialisation and other cross process/machine costs which microservice transports are subject to. While there are techniques to mitigate these costs, microservices will always have some kind of overhead which may affect synchronous communication. However when it comes to asynchronous communication microservices allow the processing to be spread across multiple machines easily which gives a horizontal scaling characteristic.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 07 Mar 2017 00:00:00 +1300</pubDate>
+        <link>http://localhost:4000/2017/library_vs_microservice/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/library_vs_microservice/</guid>
+        
+        
+        <category>technical</category>
+        
+      </item>
+    
+      <item>
+        <title>How to Microservice</title>
+        <description>&lt;p&gt;Over the last 5 years I have been working with microservices in some form.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The microservice architectural style is an approach to developing a single application as a suite of small services, each running in its own process and communicating with lightweight mechanisms, often an HTTP resource API. These services are built around business capabilities and independently deployable by fully automated deployment machinery. There is a bare minimum of centralized management of these services, which may be written in different programming languages and use different data storage technologies. &lt;em&gt;- &lt;a href=&quot;https://martinfowler.com/articles/microservices.html&quot;&gt;Martin Fowler &amp;amp; James Lewis&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As a software system grows it becomes harder to understand the consequences of a particular change. This has the flow on effect of increasing the cost of development in that system and increasing the risk of a failure. There are many strategies to overcome this codebase scaling problem but by far my favorite is microservices. The heart of microservices is building smaller systems which can be easily understood and then composing these systems together into a larger application. Or as one of my colleagues put it&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The secret to building large systems is not to build large systems &lt;em&gt;- Mark Sargent&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I think that microservices is the best answer we have to building a sufficiently large system. But the practical details of how to go about this can be non trivial. In this series I will look at some of my experiences with microservices and how I approach building them.&lt;/p&gt;
+
+&lt;h3 id=&quot;microservice-or-library&quot;&gt;&lt;a href=&quot;/2017/library_vs_microservice/&quot;&gt;Microservice or library&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Microservices and libraries both have benefits in terms of providing reusable components. This article looks at the differences between microservices and libraries and looks at why you might choose one over another.&lt;/p&gt;
+
+&lt;h3 id=&quot;versioning-how-to-make-breaking-changes-without-breaking-stuff&quot;&gt;&lt;a href=&quot;/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/&quot;&gt;Versioning; How to make breaking changes without breaking stuff&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Versioning is a tool which allows microservices to gain independence from each other while being able to grow and change. Its critical that when we make changes to a microservice we can do so in a way that we are confident will not break our consumers.&lt;/p&gt;
+
+&lt;h3 id=&quot;microservice-communication&quot;&gt;&lt;a href=&quot;/2017/microservices-communication-methods/&quot;&gt;Microservice communication&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Communication between microservices allows us to build complex behaviours out of simple components. Most people tend to think of webservices when thinking of microservices however there are a number of other communication methods which are applicable in different situations.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 07 Mar 2017 00:00:00 +1300</pubDate>
+        <link>http://localhost:4000/2017/my_guide_to_microservices/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/my_guide_to_microservices/</guid>
+        
+        
+        <category>technical</category>
+        
+      </item>
+    
+      <item>
+        <title>The Authentication Proxy</title>
+        <description>&lt;p&gt;SOA and Microservices promote API centric applications where we can build complex sophisticated systems out of smaller simpler ones. This allows us to build bigger and less error prone systems by enabling developers to better understand the impacts of a change. When we break down systems duplication and boiler plate drastically increases complexity. Authentication is one area where complexity can be introduced across all of our services at once. In this post I look at a pattern to decouple authentication from your system and allow a richer authentication experience without introducing complexity to every API in the system.&lt;/p&gt;
+
+&lt;h3 id=&quot;multiple-authentication-paths&quot;&gt;Multiple authentication paths&lt;/h3&gt;
+
+&lt;p&gt;As applications grow many different types of consumers may use APIs. Different consumers have different needs and authentication methods which work well. For example a website may consume your API and it makes sense to use cookies to do so. An automated process may also consume the API and it might make sense to use an API Key type of authentication for that use case. A native mobile application may use OAuth or JWT directly to consume your APIs.&lt;/p&gt;
+
+&lt;p&gt;Each of these scenarios make sense internally but having multiple authentication mechanisms across our APIs make things complex. This gets worse as we have more APIs in our system, especially if they are deployed independently.&lt;/p&gt;
+
+&lt;h4 id=&quot;authentication-is-a-global-concern-authorisation-a-local-one&quot;&gt;Authentication is a global concern authorisation a local one&lt;/h4&gt;
+
+&lt;p&gt;Authentication is essentially the same anywhere throughout our applications, identifying &lt;strong&gt;who&lt;/strong&gt; is using the system is a global concern across the whole system. Allowing access to certain functions on the other hand is a local concern which can only be decided by the function which is currently being executed. Authorisation is not about who but rather about can some(one/thing) like this do that. This is a subtle but important distinction.&lt;/p&gt;
+
+&lt;p&gt;These concerns should be separated and dealt with at the appropriate scope.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-authentication-proxy&quot;&gt;The Authentication Proxy&lt;/h2&gt;
+&lt;p&gt;The authentication proxy pattern separates the global concern of Authentication from the local concern of authorisation by intercepting all requests to APIs and replacing the specific by reference authentication with a standardised by value claims based token. This means that individual APIs need only validate and check authorisation on one token type.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/authentication-proxy.png&quot; alt=&quot;Authentication proxy&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The authentication proxy has the following behavior/pseudocode&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Receive request&lt;/li&gt;
+  &lt;li&gt;Decode authentication used by caller&lt;/li&gt;
+  &lt;li&gt;Produce relevant claims for the authenticated user&lt;/li&gt;
+  &lt;li&gt;Replace the Authentication on the incoming request with a signed set of claims (eg JWT by value)&lt;/li&gt;
+  &lt;li&gt;Forward the request to the API implementation&lt;/li&gt;
+  &lt;li&gt;Send the response back to the caller&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;by-reference-and-by-value&quot;&gt;By reference and by value&lt;/h3&gt;
+
+&lt;p&gt;There are two different types of authentication token, each has their place. By reference tokens simply have a key contained in the token which needs to get looked up server side to get the actual permissions, they are opaque meaning only the server understands the actual information this token contains. By value tokens contain information directly within the token, this means if the token contains the information you need you don’t need to look up any information later. By value tokens can either by opaque or transparent depending on if they are encrypted or signed. By reference tokens are tiny, but require a second lookup stage and by value tokens are bigger but avoid subsequent lookups.&lt;/p&gt;
+
+&lt;p&gt;By reference tokens are useful when they are appended onto every request and bandwidth is important. There is no point transmitting lots of information when a little could do. By value tokens are better when we want to remove a lookup later in the system. With the authentication proxy it makes sense to use by reference tokens externally and by value tokens internally (where bandwidth is less relevant).&lt;/p&gt;
+
+&lt;h3 id=&quot;authorisation&quot;&gt;Authorisation&lt;/h3&gt;
+
+&lt;p&gt;The API implementation can then ignore the actual user lookup and authentication handshake and simply examine the claims to authorise a behavior. For example instead of looking up the user ID and seeing if they are assigned the edit blog post permission we can simply check the claims to see if they have an edit blog post claim. This scales far better especially if we have non-user things in our system as well (such as an API key) which may use an entirely different permission model.&lt;/p&gt;
+
+&lt;p&gt;More importantly that user lookup component (which previously had to be in every API) can now be performed centrally decoupling the permission tree from every API.&lt;/p&gt;
+
+&lt;h3 id=&quot;routing&quot;&gt;Routing&lt;/h3&gt;
+
+&lt;p&gt;Routing is an important component when multiple APIs are at play, how does the authentication proxy know where to send the request. There are many ways to approach this problem but I like the following the best.&lt;/p&gt;
+
+&lt;p&gt;Get your API proxy to receive requests for api.example.con, reserve all subdomains for your actual APIs (it’s important that you control the DNS lookup of &lt;code class=&quot;highlighter-rouge&quot;&gt;*.api.example.con&lt;/code&gt; from your proxy machine for security reasons). Then use the first segment of the url to select the API subdomain to use. eg a request for &lt;a href=&quot;#&quot;&gt;https://api.example.con/posts/v1/edit&lt;/a&gt; might get routed to the API &lt;a href=&quot;#&quot;&gt;https://posts.api.example.con/v1/edit&lt;/a&gt;. This kind of URL routing is readable and presents a contiguous api front to consumers. In this example there is no need to publish the posts.api.example.con API publically, only the proxy needs to be able to access it directly. However in some cases it may be desirable to allow APIs to call each other internally as well as the authentication proxy.&lt;/p&gt;
+
+&lt;p&gt;###Costs
+As with any proxy system the Authentication proxy introduces synchronous latency into your applications, &lt;a href=&quot;https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing&quot;&gt;Latency is not zero&lt;/a&gt; so it is important to understand, measure and minimise the impact of this on your application. While the request overhead may not be controllable in this pattern there are several techniques you can use to minimise latency.&lt;/p&gt;
+
+&lt;p&gt;Tip 1:
+Host the APIs on the same server as the proxy, and always request the instance of the API running on the local machine. This essentially removes the network cost from the latency. You can then load balance the proxy which will in turn load balance the APIs. Do note when you deploy an API you will also need to take the proxy out of the load balancer during the deploy to avoid a failure.&lt;/p&gt;
+
+&lt;p&gt;Tip 2:
+Introduce caching on your claims generation. The generation step is probably the most costly part of the proxy and by caching this lookup you can remove time out of your requests. If you weren’t previously caching the authentication check in your application this may well improve performance overall. Do note you will also need a good invalidation mechanism.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 16 Nov 2016 00:00:00 +1300</pubDate>
+        <link>http://localhost:4000/2016/the_authentication_proxy/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/the_authentication_proxy/</guid>
+        
+        
+        <category>technical</category>
+        
+      </item>
+    
+      <item>
+        <title>Composable Repositories - Nesting Extensions</title>
+        <description>&lt;p&gt;In my previous post &lt;a href=&quot;http://blog.staticvoid.co.nz/2015/9/8/composable_repositories&quot;&gt;Composable Repositories&lt;/a&gt;, I introduced using extension methods as the repository in applications. This allows repositories to get much better reuse and be more expressive in their usage. In this post I will look at two issues with extension method based repositories in LINQ and introduce some libraries I built to resolve these issues.&lt;/p&gt;
+
+&lt;p&gt;First a refresher, in my previous post I used the following query as an example.&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;InRegion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;region&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Addresses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Region&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;region&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IOrderedQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;OrderByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;OrderBy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IOrderedQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pageSize&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;skip&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pageSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Skip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Take&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pageSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PersonModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ToViewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;people&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PersonModel&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Addresses&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Addresses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PostalAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//and the query&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;People&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;InRegion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Shire&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;OrderByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToViewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see this uses chained extension methods to generate the underlying query.&lt;/p&gt;
+
+&lt;h3 id=&quot;issue-one-queryable-extensions-in-the-projection&quot;&gt;Issue one: Queryable extensions in the projection&lt;/h3&gt;
+
+&lt;p&gt;This brings us to the first issue, if you look at the &lt;code class=&quot;highlighter-rouge&quot;&gt;ToViewModels&lt;/code&gt; projection call you will see the following:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Addresses&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Addresses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PostalAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now wouldn’t it be better if we could nest our extension methods here and reuse another projection which relates to addresses? Something like the following:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Addresses&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Addresses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToAddressViewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now if you write this and execute it with Entity Framework you will get the following error:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;LINQ to Entities does not recognize the method ‘ToAddressViewModels(Address)’ method, and this method cannot be translated into a store expression.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is a bit weird as we seem to be able to use extension methods elsewhere in our queries without issue, why is this instance different? Why can we use &lt;code class=&quot;highlighter-rouge&quot;&gt;Select&lt;/code&gt; but not our extension which just does a select internally, The problem here comes down to where this occurs in our expression. As you can see in our extension this is not acting on the root queryable directly but instead effecting what essentially amounts to a sub query.&lt;/p&gt;
+
+&lt;p&gt;When we were acting directly on the queryable the LINQ method was essentially visiting the expression &lt;em&gt;returned&lt;/em&gt; by our extension methods, however when we use an extension inside the results nothing has been returned yet so the expression visitor needs to evaluate and translate that method to an expression. The issue is that the visitor at that point doesn’t know that the extension you wrote is just another expression (or even that it could possibly be an expression).&lt;/p&gt;
+
+&lt;h3 id=&quot;issue-two-single-element-projection&quot;&gt;Issue two: Single element projection&lt;/h3&gt;
+
+&lt;p&gt;Imagine our projection was instead into a singular, for example&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Address&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is a very similar problem to that which we are looking at above with one key distinction, we are no longer acting with set based (queryable) logic, instead we are acting on a singular element. At its heart is the same problem as above but it is a little harder to get around.&lt;/p&gt;
+
+&lt;p&gt;It would be desirable to solve both of these problems to allow even more expressive queries, especially in relation to projection of entities.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-solution&quot;&gt;The solution&lt;/h2&gt;
+
+&lt;p&gt;To be able to solve these problems we need to get into the depths of LINQ and translate our extension methods for the benefit of the downstream expression visitors. This is possible by writing a new expression visitor which replaces the extension method calls in the expression tree with the actual expressions we wanted to execute. This will let our Entity Framework (or generic LINQ based ORM) expression visitor carry on with its translation to SQL without needing to understand the internals of our extension method.&lt;/p&gt;
+
+&lt;h4 id=&quot;plugging-into-the-pipeline&quot;&gt;Plugging into the pipeline&lt;/h4&gt;
+
+&lt;p&gt;The first thing we will need to do is to get our own expression visitor into the mix, we can do this can build a our own &lt;a href=&quot;https://github.com/lukemcgregor/LinqExpander/blob/master/LinqExpander/ExpandableQuery.cs&quot;&gt;queryable implementation&lt;/a&gt;, and a &lt;a href=&quot;https://github.com/lukemcgregor/LinqExpander/blob/master/LinqExpander/AsExpandableExtension.cs&quot;&gt;queryable extension&lt;/a&gt; to convert to our new queryable implementation. This will let us get amongst with our own &lt;a href=&quot;https://github.com/lukemcgregor/LinqExpander/blob/master/LinqExpander/ExpandableVisitor.cs&quot;&gt;expression visitor&lt;/a&gt; which is executed as we walk the expression tree.&lt;/p&gt;
+
+&lt;p&gt;This means we can do something like this to let our expression visitor participate in translating the LINQ query.&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;People&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;AsExpandable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;InRegion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Shire&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;OrderByName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToViewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We are interested especially in the &lt;code class=&quot;highlighter-rouge&quot;&gt;VisitMethodCall&lt;/code&gt; part of the visitor which will get executed for every extension method. At this point we could intercept and do something with every extension method that gets executed in LINQ but this would mean we would need to manually exclude things which Entity Framework understands (like &lt;code class=&quot;highlighter-rouge&quot;&gt;Select&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Where&lt;/code&gt;) and also potentially run into the same problem with things which aren’t actually translatable to SQL, so instead we are going to use a marker attribute to tag extension methods we are OK with replacing, &lt;code class=&quot;highlighter-rouge&quot;&gt;ExpandQueryableAttribute&lt;/code&gt;. Inside the visitor we will then replace any of these queryable replacements with the invoked/expressionised version of the queryable.&lt;/p&gt;
+
+&lt;p&gt;This can be used as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;[ExpandQueryable]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddressModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ToViewModels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IQueryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addresses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addresses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddressModel&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;StreetNumber&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Street&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Line1&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Voila problem one solved.&lt;/p&gt;
+
+&lt;p&gt;The next part will be a little more ninja, to replace the non-queryable parts we don’t have anything to invoke and return us an expression. So we are going to need to change the way we write our extension methods to be a little more expression-like. Lets write our singular projection as an expression:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Expression&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Addresss&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddressModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ToViewModelExpression&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddressModel&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;StreetNumber&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Street&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Line1&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This isn’t really usable in our expression tree yet as we don’t have an entry point from our query. Getting an entry point is a little tricky as how do we can’t just use an expression on a singular without invoking it (which would get us right back to the original problem. So we are going to use a little bit of a trick, let’s create an extension method and use it as a placeholder for the actual expression. We will decorate this with an attribute which points back to the actual expression to execute in its place. When we visit such an extension method in our visitor we will replace it with the expression from the attribute in the expression tree.&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;[ReplaceInExpressionTree(MethodName = nameof(ToViewModelExpression))]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddressModel&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ToViewModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Address&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// We could throw a not implemented exception here as we won't ever&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// execute this unless we use it outside of our visitor. But doing this&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// allows you to use the extension on an in memory object tree without&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// needing our custom visitor to replace it.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ToViewModelExpression&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;entity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This means we can now use our singular extension methods inside our projections, and both of our original problems are solved.&lt;/p&gt;
+
+&lt;p&gt;To save you having to write all of this complex expression magic in you application I have put this library on Nuget and &lt;a href=&quot;https://github.com/lukemcgregor/LinqExpander&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre class=&quot;nuget-button&quot; style=&quot;width:100px&quot;&gt;Install-Package StaticVoid.Core.IO&lt;/pre&gt;
+
+&lt;p&gt;A big thanks to those who helped me learn how expression trees work on StackOverflow in the following questions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/q/39864270/1070291&quot;&gt;Expression visitor only calling VisitParameter for some lambda expressions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/q/39585427/1070291&quot;&gt;Projection of single entities in EF with extension methods&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And to &lt;a href=&quot;http://stackoverflow.com/a/10726256/1070291&quot;&gt;@LordTerabyte&lt;/a&gt;  whose &lt;a href=&quot;http://pastebin.com/4fMjaCMV&quot;&gt;code&lt;/a&gt; I used as a starting point for these extensions.&lt;/p&gt;
+
+&lt;h2 id=&quot;magic-but-whats-the-point&quot;&gt;Magic but whats the point?&lt;/h2&gt;
+
+&lt;p&gt;By enabling nesting in our extension methods we can nest our projections so that we can take our data model and transform it into a more appropriate usage model for use in our applications. We can then reuse these translation extensions so if we want something in the a usage model we always use the same code.&lt;/p&gt;
+
+&lt;p&gt;But probably more importantly this allows us to solve an under/over fetch problem. All of the projection code is essentially executed inside of SQL, this means that the full data model is available so we don’t need to worry about including the joined tables we require to ensure those navigation properties are not null. We also don’t need to worry about including too much information in the result set as we are only going to get the columns which directly map to our projected model. This is a really big benefit in terms of both code complexity and potential performance bottlenecks.&lt;/p&gt;
+
+&lt;h4 id=&quot;a-final-word-of-caution&quot;&gt;A final word of caution&lt;/h4&gt;
+
+&lt;p&gt;This method allows you to push far more logic into SQL for processing. Be very careful to keep in mind the queries you are generating with nested projection and be sure that the SQL you are generating is kept performant. If you aren’t careful about what you write (as with any LINQ based query) you can execute things which are a little crazy when transpiled to SQL.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 24 Oct 2016 00:00:00 +1300</pubDate>
+        <link>http://localhost:4000/2016/composable_repositories_-_nesting_extensions/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/composable_repositories_-_nesting_extensions/</guid>
+        
+        
+        <category>technical</category>
+        
+      </item>
+    
+      <item>
+        <title>UI tests for OAuth applications are hard</title>
+        <description>&lt;p&gt;Automated testing systems with authentication is tricky. You need to make fake users and let them login to your system or fake the token itself. This is even harder if you are using OAuth systems.&lt;/p&gt;
+
+&lt;p&gt;For &lt;a href=&quot;https://dotdev.io&quot;&gt;DotDev&lt;/a&gt; I have a set of UI tests that cover many common actions that users perform on the site. It’s important to have several user accounts to test all of the different scenarios. In addition account creation and login is an important aspect which I want to prove against every deployment.&lt;/p&gt;
+
+&lt;p&gt;As I do not provide any local login to the site I had to create dummy social accounts. This doesn’t seem too bad but all of the social providers I used have measures in place to prevent bot logins. This made my tests unstable and frustrating to manage.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-alternatives-arent-great&quot;&gt;The alternatives aren’t great&lt;/h3&gt;
+
+&lt;p&gt;At this point I had two options to try and resolve the issues with UI Test logins.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;To build a new way of logging in users for my tests which bypassed OAuth.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This would have been a bit of work, but more to the point it would have been work which had no relevance outside of testing. It also would obscure several critical login systems which I specifically want to test.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Find a provider which did not do all of the bot prevention stuff&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This seemed like a better option however It was very hard to find a provider fitting this description. It’s not the kind of thing that a provider would list about themselves and it would have been trial and error to find one. To spite this I tried a few, all of which I eventually discovered had some annoying countermeasure.&lt;/p&gt;
+
+&lt;h2 id=&quot;enter-noauth&quot;&gt;Enter NoAuth&lt;/h2&gt;
+
+&lt;p&gt;I felt the second option was still the right answer to this problem. So I decided to do a mini project to write my own OAuth provider specifically for testing.&lt;/p&gt;
+
+&lt;p&gt;NoAuth is an OAuth provider for testing which offers no security guarantees at all. You can log in with any claims you like without the hassles of passwords or security checks.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/uIakt9N.png&quot; alt=&quot;noauth&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;During your login loop instead of being prompted for a username/password you can enter in a list of claims you want to make. Alternately you can populate a random user from &lt;a href=&quot;https://randomuser.me/&quot;&gt;RandomUser.me&lt;/a&gt; (which is super awesome by the way). This allows for quick and easy creation of test users with some realistic data, and the ability to test some more complex login paths by using different claims.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;NoAuth is &lt;a href=&quot;https://github.com/lukemcgregor/noauth&quot;&gt;open source&lt;/a&gt; and avaliable to use for testing your own sites.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;In addition to the actual OAuth site, I have build &lt;a href=&quot;https://www.nuget.org/packages/Owin.Security.Providers.NoAuth&quot;&gt;owin bindings&lt;/a&gt; to easially integrate noauth into a .net application and some &lt;a href=&quot;https://www.nuget.org/packages/NoAuth.Selenium&quot;&gt;Selenium helpers&lt;/a&gt; to make using noauth in your tests easy. I would love some pull requests for integrations with other languages.&lt;/p&gt;
+
+&lt;p&gt;I hope it goes without saying, but &lt;strong&gt;do not use noauth in production&lt;/strong&gt; or you’re gunna have a bad time.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 17 Oct 2016 00:00:00 +1300</pubDate>
+        <link>http://localhost:4000/2016/ui_tests_for_oauth_applications_are_hard/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/ui_tests_for_oauth_applications_are_hard/</guid>
+        
+        
+        <category>technical</category>
+        
+      </item>
+    
+      <item>
+        <title>Manual decisions are the the enemy of consistency</title>
+        <description>&lt;p&gt;Many of our modern software development methodologies focus on short iteration loops to be able to quickly and safely change and build our software. These iterative methodologies work particularly well with our modern SaaS and automatically deployed applications. Iterative development allows us to fail earlier and fix issues faster. I’m a believer.&lt;/p&gt;
+
+&lt;p&gt;Many organisations adopt some form of continuous delivery whereby as code is checked in, it is tested and packaged for deployment. It may then go through various test and pre-production environments for further manual or automated testing. Deployment is done by someone (normally a developer) pushing that package into production. We are the masters of the system so we know that this deploy will work, we got this, it’s all good, Ship it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.memecaptain.com/gend_images/zyCwXg.jpg&quot; alt=&quot;Ship it&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The problem is that we often aren’t the masters we think we are. I have often found (and I’m sure you have too) situations where the decision to deploy was wrong because we did not take into account some obscure failure condition. These often seem to originate from system interop not necessarily the lines of code we are so sure are ok. This really sucks.&lt;/p&gt;
+
+&lt;p&gt;We must have made a mistake, we will do better next time I promise. We now understand the system a bit better, its all good now. Just watch this deploy will go OK…&lt;/p&gt;
+
+&lt;p&gt;The problem here is that we as humans, and especially developers are ill equipped to perform the kind of checks necessary to deploy a piece of software. These checks are really a collection of many years of requirements and interop. We can at best check only a small portion of the system if we want to keep our iterations short. Worse than that we have a nasty habit of not checking things we are sure will be fine. The net effect is that we may be able to pick up problems with obvious interactions but we are terrible at finding obscure interaction problems or issues with unexpected areas of the system.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;If we want to deploy consistently stable software we need to take the human element out of deployment.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This means automating the decision to put code into production (continuous deployment). If that thought currently scares you it’s probably because you don’t have confidence in your automated testing. The problem is that it’s very hard to be confident in your automated test suite before you give it any formal responsibility.&lt;/p&gt;
+
+&lt;p&gt;So how do you go from fear of automating deployment to confidence?&lt;/p&gt;
+
+&lt;p&gt;The first thing to realise is that automated tests don’t need to be perfect, they just need to be better than the tests you would do. Start building up your automated tests with the goal that they will replace your decision on deployment, check out my article on &lt;a href=&quot;http://blog.staticvoid.co.nz/2015/5/28/useful_tests&quot;&gt;Useful Tests&lt;/a&gt; for some ideas about what your tests should include.&lt;/p&gt;
+
+&lt;p&gt;The next step is to keep a journal of the state of the tests vs your decisions about deployments. Every time your tests are green but you decided not to deploy is an example of a place you may be missing an automated test. By keeping a journal you will gain confidence that your tests are picking up issues which could prevent a stable deploy. When the tests status always matches your deployment decision you are ready for continuous deployment. After you are doing continuous deployment you can measure the success of the system by comparing your journal of deployments pre and post.&lt;/p&gt;
+
+&lt;p&gt;Manual decisions are the the enemy of consistency.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 11 Oct 2016 00:00:00 +1300</pubDate>
+        <link>http://localhost:4000/2016/when-deploying-decisions-are-liabilities/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/when-deploying-decisions-are-liabilities/</guid>
+        
+        
+        <category>technical</category>
+        
+      </item>
+    
   </channel>
 </rss>

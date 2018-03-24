@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Microservice versioning; How to make breaking changes without breaking stuff</title>
+  <meta name="description" content="Versioning is a tool which allows microservices to gain independence from each other while being able to grow and change. Its critical that when we make changes to a microservice we can do so in a way that we are confident will not break our consumers.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Microservice versioning; How to make breaking changes without breaking stuff">
+  <meta name="twitter:description" content="Versioning is a tool which allows microservices to gain independence from each other while being able to grow and change. Its critical that when we make changes to a microservice we can do so in a way that we are confident will not break our consumers.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Microservice versioning; How to make breaking changes without breaking stuff">
+  <meta property="og:description" content="Versioning is a tool which allows microservices to gain independence from each other while being able to grow and change. Its critical that when we make changes to a microservice we can do so in a way that we are confident will not break our consumers.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="22 Mar 2017" class="post-meta__date date">22 Mar 2017</time>
+      
+    </div>
+    <h1 class="post-title">Microservice versioning; How to make breaking changes without breaking stuff</h1>
+  </header>
+
+  <section class="post">
+    <p>Versioning is a tool which allows microservices to gain independence from each other while being able to grow and change. Its critical that when we make changes to a microservice we can do so in a way that we are confident will not break our consumers.</p>
+
+<p><a href="http://semver.org/">Semver</a> is a great way to think about versioning, as a refresher semver uses the following versioning:</p>
+
+<p><a href="http://www.jontejada.com/blog/galvanize/talk/2016/01/18/semver/"><img src="/images/posts/2017/semver.png" alt="Breaking.Feature.Fix" /></a></p>
+
+<p>When we are thinking about microservices we need to be concerned about the versioning strategy from both the point of view of provider and consumer. However as we have a live system we actually only need to worry about making breaking changes to our services (ie the first semver number). If we make any non-breaking (feature/fix) change our consumers don’t need to take any action. If we want to be able to make a breaking change to a service we must provide a way of making that change while still supporting the old version of the contract.</p>
+
+<p>Versioning therefore lets us make breaking changes without breaking things. And lets face it, you will want to make breaking changes at some point in the life of a microservice.</p>
+
+<h3 id="what-is-breaking">What is Breaking</h3>
+
+<p>Breaking changes are any change to the contract which is provided by the service which is not backward compatible. There are many different types of changes which could have the potential to be breaking.</p>
+
+<h4 id="transfer-schemas">Transfer schemas</h4>
+
+<p>The transfer schema is the structure of the data you will either receive or emit in response to an external request. In HTTP this includes any response payload and the structure of posted content. In a messaging environment this includes events which you emit and commands you receive.</p>
+
+<p>A breaking change is anything which would cause an old version of one of these formats to be unacceptable. While this may depends on the serialisation you use examples may include:</p>
+
+<ul>
+  <li>Deleting a response field</li>
+  <li>Adding a required field to the posted content or a command</li>
+  <li>Renaming a field anywhere</li>
+  <li>Retyping a field anywhere</li>
+  <li>Removing support for a format (eg moving from XML to JSON)</li>
+</ul>
+
+<p>Generally the following are non-breaking:</p>
+
+<ul>
+  <li>Adding a new response field</li>
+  <li>Deleting a field from the posted content you expect or a command</li>
+  <li>Adding support for a format (eg allowing a new datatype, or content type negotiation in HTTP)</li>
+</ul>
+
+<h4 id="endpoints">Endpoints</h4>
+
+<p>Endpoints are the place another service would go to connect to your service. They are just as important when versioning as your transfer schemas. In http this is the URL, in messaging the source you are listening to commands on or publishing events to and your routing information.</p>
+
+<p>Breaking changes may include:</p>
+
+<ul>
+  <li>Changing the URL structure</li>
+  <li>Adding required information to the query string</li>
+  <li>Removing routing information from an event</li>
+  <li>Changing the command source or event destination</li>
+</ul>
+
+<p>Generally the following are non-breaking:</p>
+
+<ul>
+  <li>Adding new query string parameters</li>
+  <li>Changing a URL while redirecting the old one</li>
+  <li>Adding new routing information to events</li>
+  <li>Changing the command source while redirecting from the old one</li>
+  <li>Changing the event destination while redirecting to the old one</li>
+</ul>
+
+<blockquote>
+  <p><strong>NOTE:</strong> its a good idea to document that your HTTP services may return a redirect response to allow you to change URLs without introducing breaking changes.</p>
+</blockquote>
+
+<h4 id="performance">Performance</h4>
+
+<p>If you have given any guarantees about the performance or uptime of your service these are part of your versioned contract. Loosening the SLA you have is a breaking change as other services may have made downstream promises relating to your SLA.</p>
+
+<h4 id="data">Data</h4>
+
+<p>In most cases the actual data (not the schema) does not need to be versioned, however its important to be careful of implicit schemas especially in text based data responses. Its good practice to assume that any text based content has no internal structure, if it does its better to use a defined, versionable type instead of free text based data.</p>
+
+<h3 id="versioning-methods">Versioning Methods</h3>
+
+<p>There are many different ways of versioning, different communication types will also use different methods.</p>
+
+<h4 id="http-url-versioning">HTTP URL versioning</h4>
+
+<p>This is the most common way of versioning for HTTP based services. In URL versioning you would put a breaking change version number in the URL, for example <a href="#">https://api.staticvoid.co.nz/v1/do-stuff</a> and then when you make a breaking change provide a second URL with the new change <a href="#">https://api.staticvoid.co.nz/v2/do-better-stuff</a>. This means that if someone calls the v1 URL they will still have their request serviced but new consumers will be able to use the new API.</p>
+
+<h4 id="http-content-type-versioning">HTTP content type versioning</h4>
+
+<p>Content type versioning exploits the content negotiation feature of HTTP to implement versioning. In this type of versioning the caller will request the version(s) which they are prepared to accept (using the accept header). For example <code class="highlighter-rouge">accept: application/json+staticvoid.blogpost.v1</code> this signals that the response content type must be a version 1 blog post typed object represented in JSON. This is an elegant solution as it enables versioning per transport model.</p>
+
+<p>However content type versioning comes at the cost of code complexity on both consumer and receiver. It also only addresses transport model versioning which means that you either need another versioning scheme to deal with other types of breaking changes.</p>
+
+<h4 id="message-routing-key-versioning">Message routing key versioning</h4>
+
+<p>When versioning messages each message can be independently versioned. One way of versioning messages is to put the version into the routing key. For example <code class="highlighter-rouge">my-type.v1.otherstuff</code> (rabbitMQ style). This means consumers can receive older versions by subscribing to older routing key versions.</p>
+
+<p>In this method the event publisher is required to publish using all supported routing keys, so if there are two versions two messages would be sent, one v1 and one v2. When handling commands the roles are inverted so you would have two handlers one for v1 and one for v2.</p>
+
+<h3 id="making-a-breaking-change">Making a breaking change</h3>
+
+<p>The whole purpose of versioning is to be able to make breaking changes without breaking things. While versioning adds a lot of overhead it allows breaking changes to be made which will let you progress your service to new and better contracts.</p>
+
+<p>When making a breaking change you will need to publish a new contract for your service as a new version and then implement the required code to fulfil that new contract alongside the existing supported contracts. In practice I have found its often useful to point the old implementation at the new one and then manipulate it to fulfil the older contract, this allows your code to be DRY and means that bugfixes will be published to both versions at once.</p>
+
+<h3 id="contracts-for-deletion">Contracts for deletion</h3>
+
+<p>Versioning will leave you supporting older versions for a period of time. If you have no contract around the lifetime of a service it is implicit that you will continue to support that service for the foreseeable future. This isn’t a bad strategy but it will increase the drag of development as you will have to support old versions for a long time. I find it is useful to be explicit about the expected lifetime of each version.</p>
+
+<p>A good way to do this is to document an end date for the version in your service documentation. For example you might say that on all current leading versions they are supported for a minimum of the next 12 months, and for an old version you can then say its supported until 12 months after it was superseded. This means that you are upfront about the period of support. This period may vary between services.</p>
+
+<p>At the end of the deletion period you are free to delete the old version or maybe if traffic is still going to the old version 301 to a newer version and expose the consumer to the breaking change (which in many cases may not actually cause an issue for the explicit use case of the consumer).</p>
+
+<h3 id="summing-up">Summing up</h3>
+
+<p>Versioning is a powerful tool which enables you to iterate on the contracts you provide from your services in a way that gives a clear and consistent experience for consumers. It is critical for allowing microservices to grow and change over time without causing cascade failures to their consumers.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Microservice versioning; How to make breaking changes without breaking stuff",
+ "wordcount": "1359",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2017-03-22 15:51:13 +1200",
+ "description": "Versioning is a tool which allows microservices to gain independence from each other while being able to grow and change. Its critical that when we make changes to a microservice we can do so in a way that we are confident will not break our consumers.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

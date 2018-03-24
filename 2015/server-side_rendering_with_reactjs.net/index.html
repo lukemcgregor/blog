@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Server-side rendering a single page app with ReactJS.NET</title>
+  <meta name="description" content="In the last few years web applications have been increasingly built in JavaScript.This provides rich interactive UI's but introduces problems with non-js search crawlers and initial page load performance. In this post I will look at server-side rendering of a JS application to mitigate these problems.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Server-side rendering a single page app with ReactJS.NET">
+  <meta name="twitter:description" content="In the last few years web applications have been increasingly built in JavaScript.This provides rich interactive UI's but introduces problems with non-js search crawlers and initial page load performance. In this post I will look at server-side rendering of a JS application to mitigate these problems.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Server-side rendering a single page app with ReactJS.NET">
+  <meta property="og:description" content="In the last few years web applications have been increasingly built in JavaScript.This provides rich interactive UI's but introduces problems with non-js search crawlers and initial page load performance. In this post I will look at server-side rendering of a JS application to mitigate these problems.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2015/server-side_rendering_with_reactjs.net/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="12 Feb 2015" class="post-meta__date date">12 Feb 2015</time>
+      
+    </div>
+    <h1 class="post-title">Server-side rendering a single page app with ReactJS.NET</h1>
+  </header>
+
+  <section class="post">
+    <p>In the last few years we have seen a shift in the way web applications are built from JavaScript being a complementary tool to augment in functionality toward it being the main language in which an autonomous client side application is developed. Browsers have also helped the single page application paradigm with the introduction of the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history">history API</a> in HTML5. This means many recent web applications have been developed to only make a single page request and then subsequently make ajax calls back to the server to update the application. This gives users a much more responsive experience using web applications.</p>
+
+<h3 id="problems-with-single-page-applications">Problems with single page applications</h3>
+<p>Building applications which render content from JavaScript introduces some interesting problems.</p>
+
+<h4 id="initial-load-flickering">Initial load flickering</h4>
+<p>Traditionally when we browse web pages we get most of the content on the page immediately (with the notable exception of images). This is because a full HTML document complete with all of the content has been sent down from the server. Single page applications tend to send down a skeleton document on initial load and then pull in the correct bits for the actual page via JavaScript. This introduces a lot of movement on the page during initial load while the DOM changes structure as different parts are loaded. This can produce a disconcerting experience for a user watching this happen. There are of course many techniques which can be used to mitigate this effect.</p>
+
+<h4 id="seo-and-search-engines">SEO and search engines</h4>
+<p>While in recent years developers have been building JavaScript heavy applications, many search engine <a href="https://developers.google.com/webmasters/ajax-crawling/docs/learn-more">webcrawlers do not execute javascript when indexing</a> sites. This is a bit of a problem if you have a single page application and want the content to be indexed by Google.</p>
+
+<h3 id="server-side-rendering">Server-side rendering</h3>
+<p>As I posted last week I have just started on <a href="/2014/12/23/new_beginnings">my own project</a> which I will be working on for the next year. My site is going to be heavily reliant on SEO but I don’t want to constrain the user experience because search engines wont execute JavaScript. Enter server-side rendering (SSR).</p>
+
+<p>The principal behind SSR is to take a JavaScript enabled page and optimistically execute the JavaScript required to reach the initial page state and then send down that generated DOM to the client rather than our skeleton page. This is actually pretty similar to what web technologies have been doing for years with server code generating the DOM and sending that down to users, but our language isn’t ASP.Net, Rails or PHP its JavaScript that would normally execute in the browser.</p>
+
+<p>The net effect of this optimistic generation of the DOM is that the page that has been sent to the client doesn’t need to change at until user performs some actions. This means that it will render quickly in the browser rather than needing to wait for JS or possibly AJAX to complete. As a result search crawlers without JS will see complete content. Once that initial DOM is rendered in the browser our single page application can take over and register all the necessary JS events required.</p>
+
+<h4 id="reactjsnet"><a href="http://reactjs.net/">ReactJS.NET</a></h4>
+<p>While I’m sure there are several tools which will enable you to do SSR, I love <a href="http://facebook.github.io/react/">React</a> (made by Facebook) as a front-end rendering technology and Daniel Lo Nigro (<a href="https://twitter.com/daniel15">@daniel15</a> who also works at Facebook) has done a great job building a server side rendering engine for React in .NET. This takes your react components and allows you to render them onto the page with some props passed in via c#.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Html.React("CommentsBox", new { initialComments = Model.Comments })
+</code></pre></div></div>
+
+<p>That’s pretty tidy! What this will do is to generate the react DOM for this control and props and insert it into the page. You can then point react at that piece of DOM on the client-side and it will detect its already rendered, not modify the DOM and attach any additional JS bits it needs. I’m not going to go into any more detail about the actual server-side rendering code as there are plenty of details on the ReactJS.NET site.</p>
+
+<h3 id="using-ssr-to-build-a-single-page-app">Using SSR to build a single page app</h3>
+<p>That’s all great and useful functionality and allows you to render your react controls onto a single page but it isn’t really a single page app just yet. For that to happen we need to have a couple of pages rigged to a router. In my example we will build a little application which has a list and a separate page for the detail of each list item.</p>
+
+<p>Our app will have:</p>
+
+<ul>
+  <li>a mini router</li>
+  <li>a list view</li>
+  <li>a detail view</li>
+  <li>a controller</li>
+</ul>
+
+<p>When we load the page in our server side view we will use the ReactJS.NET helper to render out our react view.</p>
+
+<p>For our detail page we will make the router pass enough information from the list to display the detail page, so there’s no need to ajax back to the server, however when we use the router to go back to our list page we wont pass in enough details to render the page instead we will go back to the server.</p>
+
+<p>The net effect of this will be that we will have a single page app feel where we click an item in the list and immediately have our data available. All we need to do is re-render client side the specific section of the page that’s relevant. This happens really fast. When we go back to the list page we show a loading message while the page goes back and retrieves data from the server. We still don’t need to wait for very much here, only a small section of DOM being rendered and an ajax request, this is faster than doing a whole page request back to the server and re-rendering the entire DOM to the browser.</p>
+
+<h4 id="the-app"><a href="http://seofriendlysinglepageapp.azurewebsites.net/">The app</a></h4>
+
+<p>Have a play with the sample app with JS on and off, and check out the net tab to see requests going back to the server. (note: the back button isn’t implemented properly and just forces a page refresh. In a real app you would use a proper router to help here)</p>
+
+<h4 id="the-source"><a href="https://github.com/lukemcgregor/SeoFriendlySinglePageApp">The source</a></h4>
+
+<p>As you can see this is pretty easy to do and gives a great result with JS on or off so its good for search engines too.</p>
+
+<h4 id="gotchas">gotchas</h4>
+<p>There are a few things to note when doing SSR with a router:</p>
+
+<ul>
+  <li>ReactJS.NET wont do ajax requests or provide access to any browser variables so your initial page state cant call anything like window.</li>
+  <li>You need to have routing on both the server and client, the server must respond to all URLs the browser router creates.</li>
+  <li>If the user middle clicks a link, bypass the router completely as you want them to open the link in a new tab.</li>
+</ul>
+
+<p>This tech is pretty cool, its great that we can build applications that get the best of both worlds when it comes to server vs client side rendering. Keep an eye on my blog over the next few weeks to hear more about my project.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2015/server-side_rendering_with_reactjs.net/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2015/server-side_rendering_with_reactjs.net'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Server-side rendering a single page app with ReactJS.NET",
+ "wordcount": "1194",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2015/server-side_rendering_with_reactjs.net/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2015-02-12 00:00:00 +1300",
+ "description": "In the last few years web applications have been increasingly built in JavaScript.This provides rich interactive UI's but introduces problems with non-js search crawlers and initial page load performance. In this post I will look at server-side rendering of a JS application to mitigate these problems.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

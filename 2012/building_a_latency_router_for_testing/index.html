@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Building a latency router for testing</title>
+  <meta name="description" content="In my previous post I tested the effect of latency on MSSQL insert performance. This post discusses how I built my test harness which allows me to test with multiple levels of latency from the same application.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Building a latency router for testing">
+  <meta name="twitter:description" content="In my previous post I tested the effect of latency on MSSQL insert performance. This post discusses how I built my test harness which allows me to test with multiple levels of latency from the same application.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Building a latency router for testing">
+  <meta property="og:description" content="In my previous post I tested the effect of latency on MSSQL insert performance. This post discusses how I built my test harness which allows me to test with multiple levels of latency from the same application.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2012/building_a_latency_router_for_testing/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="29 Sep 2012" class="post-meta__date date">29 Sep 2012</time>
+      
+    </div>
+    <h1 class="post-title">Building a latency router for testing</h1>
+  </header>
+
+  <section class="post">
+    <p>I recently needed to test SQL insert performance under latency scenarios. As part of this I needed a good way of introducing latency between my test harness and database server. I also wanted to control the latency and if possible have a way to run several different levels of latency at the same time. To do this I built a latency emulating router with Ubuntu server and IPTables.</p>
+
+<p>I decided to set up create the router with a bunch of network interfaces and apply a different level of delay to each interface. What this means is that based on which IP address I accessed my SQL box with the connection was delayed by a set amount of latency.</p>
+
+<p><img src="/images/posts/2012/latency-router.png" alt="Latency router" /></p>
+
+<p>I found this approach to work really well for me so I thought I would do a bit of a write up on how I went about it.</p>
+
+<p>The 5 step program to artificial latency:</p>
+
+<h3 id="step-1">Step 1</h3>
+
+<p>Setup your VM with a bunch of NICs (in my example I used five 1 for an entry point and four for different amounts of latency)</p>
+
+<h3 id="step-2">Step 2</h3>
+
+<p><a href="http://www.ubuntu.com/download/server">Install Ubuntu Server</a> (I just used the latest version from the Ubuntu site) and make sure each of your NICs has an address on a separate subnet (I made each subnet the amount of latency that network would provide)</p>
+
+<p>You can modify your network configs by editing the following:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>nano /etc/network/interfaces
+</code></pre></div></div>
+
+<p>For example to setup eth1 (my second network card) to run subnet 10.1.5.0/24 I used the following config:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iface eth2 inet static
+	address 10.1.5.1
+	netmask 255.255.255.0
+	broadcast 10.1.5.255
+	network 10.1.5.0
+</code></pre></div></div>
+
+<h3 id="step-3">Step 3</h3>
+
+<p>Setup some routing. This means that when we send traffic via our router which we want to go to a specific subnet it will know which NIC to push that traffic out through. Below is a rule to route traffic from 10.1.1.0/24 to 10.1.5.0/24:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo iptables -t nat -A POSTROUTING -s 10.1.1.0/24 -d 10.1.5.0/24 -j SNAT --to 10.1.5.1
+</code></pre></div></div>
+
+<p>Once all of your rules are setup you can save them (so they persist over a reboot) using the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install iptables-persistent
+sudo iptables-save &gt; /etc/iptables/rules.v4
+</code></pre></div></div>
+
+<h3 id="step-4">Step 4</h3>
+<p>Set up your server and client to route through the router. In windows on my local PC I added in a route to send data bound for my latency network to the latency router. You can do this from an administrator command prompt with:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>route ADD 10.1.5.0 MASK 255.255.255.0  10.1.1.3
+</code></pre></div></div>
+
+<p>This will send all traffic bound for 10.1.5.0/24 to my routers address on my subnet (10.1.1.3).</p>
+
+<p>On the server end I simply added a new NIC on the 10.1.5.0/24 subnet with an address of 10.1.5.10.</p>
+
+<p>Once you have this configuration you should be able to run a ping to test your routing, and you should get something similar to the below:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Pinging 10.1.5.10 with 32 bytes of data:
+	Reply from 10.1.5.10: bytes=32 time &gt;1ms TTL=127
+	Reply from 10.1.5.10: bytes=32 time &gt;1ms TTL=127
+	Reply from 10.1.5.10: bytes=32 time &gt;1ms TTL=127
+	Reply from 10.1.5.10: bytes=32 time &gt;1ms TTL=127
+</code></pre></div></div>
+
+<p>Awesome we have connectivity. Its important to note here the path that our data will follow, especially because it may not be what you are expecting.</p>
+
+<p><img src="/images/posts/2012/response-path.png" alt="Response path" /></p>
+
+<p>This is because when we request the routing tells us that because we are sending it to a different subnet it should go through our router but when we respond our SQL box is already part of the destination subnet so doesn’t need to route the message at all.</p>
+
+<h3 id="step-5">Step 5</h3>
+
+<p>The last thing we need to do is to set up the latency. This turns out to be pretty easy with linux traffic shaping tools.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo tc qdisc add dev eth1 root netem delay 5ms
+</code></pre></div></div>
+
+<p>What this says is that we want to delay all packets out of eth1 by 5ms. Great, so if we take a look at our ping test again:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Pinging 10.1.5.10 with 32 bytes of data:
+	Reply from 10.1.5.10: bytes=32 time=5ms TTL=127
+	Reply from 10.1.5.10: bytes=32 time=5ms TTL=127
+	Reply from 10.1.5.10: bytes=32 time=5ms TTL=127
+	Reply from 10.1.5.10: bytes=32 time=5ms TTL=127
+</code></pre></div></div>
+
+<p>And we have our required latency.</p>
+
+<p>What’s really great about this method is that we can add multiple levels of latency at the same time based on the IP we use to access our SQL box. What this means with my test harness is that we can test to the same SQL server with the same data, at practically the same time so our results can be much more accurate and less prone to environmental features.</p>
+
+<p><strong>Disclaimer:</strong> I am by no means a nix guy so I’m sure there are many things I could do better with this config, I would love to hear some feedback on how to improve on this configuration. However practically this example has worked brilliantly for me an my use case.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2012/building_a_latency_router_for_testing/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2012/building_a_latency_router_for_testing'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Building a latency router for testing",
+ "wordcount": "851",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2012/building_a_latency_router_for_testing/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2012-09-29 00:00:00 +1200",
+ "description": "In my previous post I tested the effect of latency on MSSQL insert performance. This post discusses how I built my test harness which allows me to test with multiple levels of latency from the same application.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

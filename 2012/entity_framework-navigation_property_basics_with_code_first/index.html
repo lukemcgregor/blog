@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Entity Framework - Navigation Property Basics with Code First</title>
+  <meta name="description" content="Navigation properties are Entity Frameworks way of representing Foreign Key relationships in databases as C# object references. In this post I explore the basics of how to use Navigation Properties with C# and how they work.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Entity Framework - Navigation Property Basics with Code First">
+  <meta name="twitter:description" content="Navigation properties are Entity Frameworks way of representing Foreign Key relationships in databases as C# object references. In this post I explore the basics of how to use Navigation Properties with C# and how they work.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Entity Framework - Navigation Property Basics with Code First">
+  <meta property="og:description" content="Navigation properties are Entity Frameworks way of representing Foreign Key relationships in databases as C# object references. In this post I explore the basics of how to use Navigation Properties with C# and how they work.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2012/entity_framework-navigation_property_basics_with_code_first/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="1 Aug 2012" class="post-meta__date date">1 Aug 2012</time>
+      
+    </div>
+    <h1 class="post-title">Entity Framework - Navigation Property Basics with Code First</h1>
+  </header>
+
+  <section class="post">
+    <h3 id="what-is-a-navigation-property">What is a navigation property?</h3>
+
+<p>Navigation properties are Entity Frameworks way of representing Foreign Key relationships inside the database. Navigation properties allow you to define relationships between entities (rows in your database) in a way that makes sense in an object oriented language. Consider the following database:</p>
+
+<p><img src="/images/posts/2012/user-post-relationship.png" alt="User-Post relationship" /></p>
+
+<p>As you can see a post has an author and that is relationaly linked inside our database. So how would we represent this same structure inside of an application (if we ignore the way this is implemented in a relational database)? It seems sensible that we would model this same structure with something like the following:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">User</span>
+<span class="p">{</span>
+	<span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">Post</span>
+<span class="p">{</span>
+	<span class="k">public</span> <span class="n">User</span> <span class="n">Author</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Which means we can use it in code like this:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">"{0} wrote this post"</span><span class="p">,</span> <span class="n">post</span><span class="p">.</span><span class="n">Author</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>What Entity Framework navigation proprieties do is to allow us to do just this with our database models. For example the above database structure could be represented as:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">User</span>
+<span class="p">{</span>
+	<span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+	<span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">Post</span>
+<span class="p">{</span>
+	<span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+	<span class="k">public</span> <span class="n">User</span> <span class="n">Author</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="how-do-navigation-properties-work">How do Navigation Properties work?</h3>
+
+<p>When you are using navigation properties in your code you are asking Entity Framework to automatically perform a SQL join between your two tables. For example:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span><span class="p">.</span><span class="n">Posts</span><span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Author</span><span class="p">.</span><span class="n">Name</span> <span class="p">==</span> <span class="s">"Luke"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>will be translated into the following SQL*:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span>
+	 <span class="n">p</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span>
+	 <span class="n">p</span><span class="p">.</span><span class="n">Author_Id</span>
+   <span class="k">FROM</span>  <span class="n">Posts</span> <span class="k">AS</span> <span class="n">p</span>
+	 <span class="k">INNER</span> <span class="k">JOIN</span> <span class="n">Users</span> <span class="k">AS</span> <span class="n">u</span> <span class="k">ON</span> <span class="n">p</span><span class="p">.</span><span class="n">Author_Id</span> <span class="o">=</span> <span class="n">u</span><span class="p">.</span><span class="n">Id</span>
+   <span class="k">WHERE</span> <span class="n">u</span><span class="p">.</span><span class="n">Name</span> <span class="o">=</span> <span class="n">N</span><span class="s1">'Luke'</span>
+</code></pre></div></div>
+
+<p>As you can see our relationship in c# has been converted into the equivalent SQL join.</p>
+
+<h3 id="how-do-i-load-my-properties-why-is-my-navigation-property-null">How do I load my properties (Why is my navigation property null)?</h3>
+
+<p>Navigation properties are not loaded by default, so its important to know how and when you need to load navigation properties. So lets look at some scenarios and see what entity framework will give us. These scenarios are based off the following data:</p>
+
+<h4 id="user">User</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Id</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>Luke</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>Bob</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="post">Post</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Id</th>
+      <th style="text-align: center">Author_Id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">2</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="case-1-">Case 1 :</h4>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span><span class="p">.</span><span class="n">Posts</span><span class="p">.</span><span class="nf">ToArray</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>When we make this request we get the following:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+	</span><span class="s2">"posts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+		</span><span class="p">{</span><span class="w">
+			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+			</span><span class="s2">"author"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+		</span><span class="p">},</span><span class="w">
+		</span><span class="p">{</span><span class="w">
+			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+			</span><span class="s2">"author"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+		</span><span class="p">}</span><span class="w">
+	</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>As you can see we have retrieved all the posts but haven’t received any of the linked authors.</p>
+
+<h4 id="case-2">Case 2:</h4>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span><span class="p">.</span><span class="n">Posts</span><span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Author</span><span class="p">.</span><span class="n">Name</span> <span class="p">==</span> <span class="s">"Luke"</span><span class="p">).</span><span class="nf">ToArray</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>When we make this request we get the following:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+	</span><span class="s2">"posts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+		</span><span class="p">{</span><span class="w">
+			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+			</span><span class="s2">"author"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+		</span><span class="p">}</span><span class="w">
+	</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In this case the <code class="highlighter-rouge">where</code> clause successfully interacts with the author to filter by name, however when the results are returned the author is still not linked.</p>
+
+<h4 id="case-3">Case 3:</h4>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">System.Data.Entity</span><span class="p">;</span> <span class="c1">//this is required for .Include</span>
+<span class="p">...</span>
+<span class="n">context</span><span class="p">.</span><span class="n">Posts</span><span class="p">.</span><span class="nf">Include</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Author</span><span class="p">).</span><span class="nf">ToArray</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>When we make this request we get the following:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+	</span><span class="s2">"posts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+		</span><span class="p">{</span><span class="w">
+			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+			</span><span class="s2">"author"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+				</span><span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+				</span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Luke"</span><span class="w">
+			</span><span class="p">}</span><span class="w">
+		</span><span class="p">},</span><span class="w">
+		</span><span class="p">{</span><span class="w">
+			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+			</span><span class="s2">"author"</span><span class="p">:</span><span class="w">  </span><span class="p">{</span><span class="w">
+				</span><span class="s2">"id"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+				</span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bob"</span><span class="w">
+			</span><span class="p">}</span><span class="w">
+		</span><span class="p">}</span><span class="w">
+	</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>As you can see by adding a <code class="highlighter-rouge">.Include</code> statement we are able to fetch the linked authors.</p>
+
+<h4 id="a-note-on-lazy-loading">A note on lazy loading</h4>
+
+<p>Lazy loading is also an alternative to using the .Include syntax, however I recommend against using it in almost all cases as it makes it very easy to introduce subtle performance issues into your application. in addition using the include syntax makes it much more obvious what queries your code performs so increases readability.</p>
+
+<h3 id="how-does-entity-framework-detect-navigation-properties">How does Entity Framework detect Navigation Properties</h3>
+
+<p>When entity framework examines a class which is attached to the context it finds other complex type properties on the class and assumes that they are a foreign key to that table. Entity framework then creates a foreign key with the name <code class="highlighter-rouge">[PropertyName]_[PropertyIdName]</code> for example in the case of the post class the <code class="highlighter-rouge">Author</code> is <code class="highlighter-rouge">[PropertyName]</code> and in the user table <code class="highlighter-rouge">Id</code> is the Id. This means <code class="highlighter-rouge">Author_Id</code> is generated as the foreign key name.</p>
+
+<p>The rules around navigation properties what’s acceptable and how they are generated are defined by a set of conventions. I’m not going to go into any more detail on how these work but for more information you can take a look at the following pages:</p>
+
+<ul>
+  <li><a href="http://blogs.msdn.com/b/adonet/archive/2011/01/10/ef-feature-ctp5-pluggable-conventions.aspx">EF Feature CTP5: Pluggable Conventions</a></li>
+  <li><a href="http://msdn.microsoft.com/en-us/library/system.data.entity.modelconfiguration.conventions(v=vs.103).aspx">MSDN - System.Data.Entity.ModelConfiguration.Conventions Namespace</a></li>
+  <li><a href="http://stackoverflow.com/a/11081568/1070291">Entity Framework Navigation Property generation rules</a></li>
+</ul>
+
+<h3 id="more-than-the-defaults-with-the-model-builder">More than the defaults with the Model Builder</h3>
+
+<p>Entity framework provides a mechanism to configure additional information about navigation properties. This additional configuration can be done using the Model Builder. The model builder allows control over how Entity Framework represents the database, one of the features of the model builder allows for control over how foreign keys in the database are translated to Navigation Properties in the Entity Framework Model.</p>
+
+<p>To get access to the model builder you will need to override the <code class="highlighter-rouge">OnModelCreating</code> method on your <code class="highlighter-rouge">DbContext</code>. You can then use the <code class="highlighter-rouge">modelBuilder</code> argument to structure your Entity Framework Model.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">MyContext</span> <span class="p">:</span> <span class="n">DbContext</span>
+<span class="p">{</span>
+	<span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnModelCreating</span><span class="p">(</span><span class="n">DbModelBuilder</span> <span class="n">modelBuilder</span><span class="p">)</span>
+	<span class="p">{</span>
+	<span class="p">}</span>   
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The Model Builder uses a two part fluent expression to define navigation properties within the model. The first part of the expression defines the navigation property on the current entity, the second part of the expression defines the reverse navigation property. Navigation properties properties can be either <strong>Optional</strong> (ie <em>0..1 to x</em>), <strong>Required</strong> (ie <em>1 to x</em>) or <strong>Many</strong> (ie ** to x*). So lets take a look at some examples:</p>
+
+<h4 id="optional-relationship">Optional relationship</h4>
+
+<p>If you have the following classes:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">Entity1</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">Entity2</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="n">Entity1</span> <span class="n">Entity1</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Using the following model builder statement</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnModelCreating</span><span class="p">(</span><span class="n">DbModelBuilder</span> <span class="n">modelBuilder</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">modelBuilder</span><span class="p">.</span><span class="n">Entity</span><span class="p">&lt;</span><span class="n">Entity2</span><span class="p">&gt;().</span><span class="nf">HasOptional</span><span class="p">(</span><span class="n">e</span> <span class="p">=&gt;</span> <span class="n">e</span><span class="p">.</span><span class="n">Entity1</span><span class="p">).</span><span class="nf">WithMany</span><span class="p">();</span>
+<span class="p">}</span>  
+</code></pre></div></div>
+
+<p>Will create the following relationship</p>
+
+<p><img src="/images/posts/2012/optional-relationship.png" alt="Optional relationship" /></p>
+
+<p><strong>Note</strong> the two parts of the query the first to define <code class="highlighter-rouge">Entity1</code> navigation property, the first part defines an optional relationship (ie a nullable foreign key) and the second part <code class="highlighter-rouge">.WithMany()</code> defines the remote entity’s (<code class="highlighter-rouge">Entity1</code>) multiplicity. Using <code class="highlighter-rouge">.WithMany()</code> with no argument tells Entity Framework that the relationship does not have a remote navigation property.</p>
+
+<h4 id="required-relationship">Required Relationship</h4>
+
+<p>If you have the following classes:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">Entity1</span>
+<span class="p">{</span>
+   <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+   <span class="k">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Entity2</span><span class="p">&gt;</span> <span class="n">Entity2s</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">Entity2</span>
+<span class="p">{</span>
+   <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+   <span class="k">public</span> <span class="n">Entity1</span> <span class="n">Entity1</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Using the following model builder statement</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnModelCreating</span><span class="p">(</span><span class="n">DbModelBuilder</span> <span class="n">modelBuilder</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">modelBuilder</span><span class="p">.</span><span class="n">Entity</span><span class="p">&lt;</span><span class="n">Entity2</span><span class="p">&gt;()</span>
+		<span class="p">.</span><span class="nf">HasRequired</span><span class="p">(</span><span class="n">e</span> <span class="p">=&gt;</span> <span class="n">e</span><span class="p">.</span><span class="n">Entity1</span><span class="p">)</span>
+		<span class="p">.</span><span class="nf">WithMany</span><span class="p">(</span><span class="n">e</span> <span class="p">=&gt;</span> <span class="n">e</span><span class="p">.</span><span class="n">Entity2s</span><span class="p">);</span>
+<span class="p">}</span>   
+</code></pre></div></div>
+
+<p>Will create the following relationship</p>
+
+<p><img src="/images/posts/2012/required-relationship.png" alt="Required relationship" /></p>
+
+<p><strong>Note</strong> that in this example we have specified a remote collection for the relationship. This means that you can use the <code class="highlighter-rouge">Entity2s</code> property to find all linked entities.</p>
+
+<h4 id="many-relationship">Many Relationship</h4>
+
+<p>If you have the following classes:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">Entity1</span>
+<span class="p">{</span>
+	<span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+	<span class="k">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Entity2</span><span class="p">&gt;</span> <span class="n">Entity2s</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">Entity2</span>
+<span class="p">{</span>
+	<span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+	<span class="k">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Entity1</span><span class="p">&gt;</span> <span class="n">Entity1s</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Using the following model builder statement</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnModelCreating</span><span class="p">(</span><span class="n">DbModelBuilder</span> <span class="n">modelBuilder</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">modelBuilder</span><span class="p">.</span><span class="n">Entity</span><span class="p">&lt;</span><span class="n">Entity2</span><span class="p">&gt;()</span>
+		<span class="p">.</span><span class="nf">HasMany</span><span class="p">(</span><span class="n">e</span> <span class="p">=&gt;</span> <span class="n">e</span><span class="p">.</span><span class="n">Entity1s</span><span class="p">)</span>
+		<span class="p">.</span><span class="nf">WithMany</span><span class="p">(</span><span class="n">e</span> <span class="p">=&gt;</span> <span class="n">e</span><span class="p">.</span><span class="n">Entity2s</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Will produce the following relationship</p>
+
+<p><img src="/images/posts/2012/many-relationship.png" alt="Many relationship" /></p>
+
+<p>With the following database tables
+<img src="/images/posts/2012/many-database-relationship.png" alt="Many database relationship" /></p>
+
+<p><strong>Note</strong> that here we have chained two <code class="highlighter-rouge">.Many</code> statements to produce a many to many relationship. As you can see the Entity Framework has created a link table in the database but the actual link in the model is created as two collections (without a link table) which makes more sense in c#.</p>
+
+<h3 id="wrapping-up">Wrapping up</h3>
+
+<p>In this post we have looked in detail at navigation properties, what they are, how they are detected and how they are configured. As with many ORMs Entity Framework provides an abstraction over database Foreign Keys. As with any abstraction its really important to understand its limitations. I hope this post helps you better understand how Navigation Properties work and enables you to make good decisions when dealing with Entity Framework.</p>
+
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2012/entity_framework-navigation_property_basics_with_code_first/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2012/entity_framework-navigation_property_basics_with_code_first'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Entity Framework - Navigation Property Basics with Code First",
+ "wordcount": "2077",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2012/entity_framework-navigation_property_basics_with_code_first/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2012-08-01 00:00:00 +1200",
+ "description": "Navigation properties are Entity Frameworks way of representing Foreign Key relationships in databases as C# object references. In this post I explore the basics of how to use Navigation Properties with C# and how they work.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

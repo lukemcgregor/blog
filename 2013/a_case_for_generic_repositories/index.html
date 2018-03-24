@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Generic Repositories</title>
+  <meta name="description" content="I have always liked the abstraction provided by a repository pattern. This article aims to articulate why I use generic repositories and what benefits I feel are most important from this approach. I also examine exactly how I use generic repositories in my applications with some practical examples.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Generic Repositories">
+  <meta name="twitter:description" content="I have always liked the abstraction provided by a repository pattern. This article aims to articulate why I use generic repositories and what benefits I feel are most important from this approach. I also examine exactly how I use generic repositories in my applications with some practical examples.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Generic Repositories">
+  <meta property="og:description" content="I have always liked the abstraction provided by a repository pattern. This article aims to articulate why I use generic repositories and what benefits I feel are most important from this approach. I also examine exactly how I use generic repositories in my applications with some practical examples.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2013/a_case_for_generic_repositories/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="25 Feb 2013" class="post-meta__date date">25 Feb 2013</time>
+      
+    </div>
+    <h1 class="post-title">Generic Repositories</h1>
+  </header>
+
+  <section class="post">
+    <p><strong>I no longer use generic repositories. I have instead switched to <a href="/2015/composable_repositories/">Composable repositories</a> which are well worth a look as they allow for better reuse.</strong> This is really the logical conclusion of extension methods to add functionality. However if you are interested specifically in the generic repository pattern read on :)</p>
+
+<hr />
+
+<p>There are mixed opinions around the usefulness of generic repositories, some call it an anti-pattern. I personally find them useful so in this article I will explore what I like about the Generic Repository abstraction and how I solve some of the common criticisms of the pattern.</p>
+
+<h3 id="why-are-generic-repositories-controversial">Why are generic repositories controversial?</h3>
+<p>I have read several articles on generic repositories which prompted this post, probably the most prominent was Greg Young’s post <a href="http://codebetter.com/gregyoung/2009/01/16/ddd-the-generic-repository/">DDD: The Generic Repository</a>. In this post Young raises a number of issues with generic repositories. Including the following:</p>
+
+<ul>
+  <li>What happens if you don’t want all CRUD operations available</li>
+  <li>It encourages persistence logic in the domain (you want to be able to unit test without persistence)</li>
+  <li>Specific contracts are an important pointer to specifically what the application requires of the data store.</li>
+</ul>
+
+<p>Young concludes his article by stating that there is a place for generic repositories but they should not be exposed outside of the data tier, that is they should be used to compose other repositories which can be surfaced to the application.</p>
+
+<h3 id="what-is-to-gain-by-using-a-generic-repository">What is to gain by using a generic repository?</h3>
+
+<h4 id="a-personalized-grammar">A personalized grammar</h4>
+<p>For me the most important benefit of using repositories is data-tier isolation; that is to provide a clear boundary between your data access layer and your main application. By creating a repository the effect is to constrain the way your application talks about data to a grammar (language) which you define and control. This in turn acts as a barrier to help reduce data concerns leaking into other layers of your application.</p>
+
+<h4 id="a-centralized-contract">A centralized contract</h4>
+<p>By defining a generic repository what you are actually doing is defining a contract for what your application requires from a persistence layer. This gives key insight into what functions our persistence layers must provide. For example if our application uses LINQ to query our data tiers our generic repositories will expose this requirement so that you understand that any alternate persistence layers must also support LINQ. If a persistence layer can provide all of the functions described by our generic repository it could be a suitable alternative to your current persistence technology.</p>
+
+<h4 id="an-interception-point">An interception point</h4>
+<p>By having the interception point of a generic repository you can perform what-if scenarios, for example <em>what if I upgrade to the latest persistence technology?</em>, or <em>what if I stored this particular entity in XML on disk instead of a database?</em>. By having that generic replacement point you can try these scenarios out much more simply than you perhaps could if there were more places accessing the persistence layer.</p>
+
+<p>A Generic Repository is an interception point to your data tier for actions you want to happen globally, caching and auditing are great examples of where this can be a particularly useful.</p>
+
+<h3 id="when-not-to-use-a-generic-repository">When not to use a generic repository</h3>
+<p>As with any abstraction there are scenarios when your requirements are no longer going to fit and you need to do something a little bit special. Performance is a great example of a reason for which its often necessary to step away from such a pattern.</p>
+
+<p>For example sometimes its necessary to hand-craft the SQL which you are using to access your data. When you get to this point you are diverging from a generic pattern, that logic can only really run on a SQL server. At this point your implementation is very specific and coupled tightly to the technology so a much more specific abstraction is appropriate.</p>
+
+<p>I recommend understanding how your repositories work on the inside. This will help you understand when you need to (or don’t need to) depart from this pattern and chose something more specialized. My generic repository implementation is <a href="https://github.com/lukemcgregor/StaticVoid.Repository">available on GitHub</a> but I would encourage you to read through and understand it and possibly even modify it to make it your own.</p>
+
+<h3 id="how-do-they-work-in-practice">How do they work in practice?</h3>
+
+<p>I’ve spent quite a bit of this article talking through why I like to use generic repositories, perhaps more important is how I use them.</p>
+
+<h4 id="dependency-injection">Dependency Injection</h4>
+<p>I use generic repositories in conjunction with dependency injection. This allows implementations of the repository to easily be bound in specific scenarios.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Bind</span><span class="p">&lt;</span><span class="n">DbContext</span><span class="p">&gt;().</span><span class="n">To</span><span class="p">&lt;</span><span class="n">BlogContext</span><span class="p">&gt;().</span><span class="nf">InRequestScope</span><span class="p">();</span>
+<span class="nf">Bind</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">IRepositoryDataSource</span><span class="p">&lt;&gt;)).</span><span class="nf">To</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">DbContextRepositoryDataSource</span><span class="p">&lt;&gt;));</span>
+<span class="nf">Bind</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">IRepository</span><span class="p">&lt;&gt;)).</span><span class="nf">To</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">SimpleRepository</span><span class="p">&lt;&gt;));</span>
+</code></pre></div></div>
+
+<p>What makes this approach so powerful is that when you need more than the stock repository you can flip it out for something a little more specific by binding over the top of the generic binding.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Rebind</span><span class="p">&lt;</span><span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Data</span><span class="p">.</span><span class="n">Post</span><span class="p">&gt;&gt;().</span><span class="n">To</span><span class="p">&lt;</span><span class="n">CachedPostRepository</span><span class="p">&gt;();</span>
+</code></pre></div></div>
+
+<p>In the above example you bind in a custom repository which is going to cache all our posts in memory so that they are nice and quick when you retrieve them. What is nice about this method is that when you are consuming this in our application it doesn’t actually concern us if this information is retrieved from a cache or directly from the database so long as you are able to work with it in an <code class="highlighter-rouge">IRepository&lt;&gt;</code> way.</p>
+
+<h4 id="extension-methods">Extension Methods</h4>
+<p>With any application you will implement a lot of logic around how you access your applications data. I use extension methods to implement my application specific data logic. This method works really well and I find it keeps application data logic clean and tidy. Its also not limited to to a generic repository scenario, and you can use this style of code in many with many other data access methodologies.</p>
+
+<p>In my blog engine for example the concept of published posts is important and is used everywhere, so I have the following extension method:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">static</span> <span class="n">IQueryable</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="nf">PublishedPosts</span><span class="p">(</span><span class="k">this</span> <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">repo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">repo</span><span class="p">.</span><span class="nf">GetAll</span><span class="p">().</span><span class="nf">Where</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Status</span> <span class="p">==</span> <span class="n">PostStatus</span><span class="p">.</span><span class="n">Published</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I often need something more specific than just published posts though, for example if you go to <a href="http://blog.staticvoid.co.nz">http://blog.staticvoid.co.nz</a> it will forward you to the latest published post, so I have:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">static</span> <span class="n">Post</span> <span class="nf">LatestPublishedPost</span><span class="p">(</span><span class="k">this</span> <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">repo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">repo</span><span class="p">.</span><span class="nf">PublishedPosts</span><span class="p">().</span><span class="nf">OrderByDescending</span><span class="p">(</span><span class="n">p</span><span class="p">=&gt;</span><span class="n">p</span><span class="p">.</span><span class="n">Posted</span><span class="p">).</span><span class="nf">FirstOrDefault</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I then use this in my controller to redirect the request to the latest post.</p>
+
+<div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">post</span> <span class="p">=</span> <span class="n">_postRepository</span><span class="p">.</span><span class="nf">LatestPublishedPost</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">post</span><span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">HttpException</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">NotFound</span><span class="p">,</span> <span class="s">"No posts have been published"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nf">Redirect</span><span class="p">(</span><span class="s">"/"</span> <span class="p">+</span> <span class="n">post</span><span class="p">.</span><span class="n">Path</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As you can see this lets you chain data logic concepts together into simple readable bites.</p>
+
+<p>Because all of these extension methods are built on top of a generic concept the logic is separated from the specific Entity Framework implementation I use and any implementation which fulfills my <code class="highlighter-rouge">IRepository&lt;&gt;</code> contract (such as my caching repository) will now work in my application.</p>
+
+<h4 id="unit-testing">Unit Testing</h4>
+<p>Allowing us to switch out that generic implementation becomes even more valuable when you want to test our code. At this point you can switch our actual implementation out for an in memory repository so you don’t have to actually query a database and can maintain our state a little more tightly. Below are the tests for post redirection:</p>
+
+<div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">[TestMethod]</span>
+<span class="na">[ExpectedException(typeof(HttpException))]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">RedirectToLatestPostWithNoPostsTest</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">postRepo</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SimpleRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">InMemoryRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;());</span>
+    <span class="n">PostController</span> <span class="n">sut</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">PostController</span><span class="p">(</span><span class="n">postRepo</span><span class="p">);</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">sut</span><span class="p">.</span><span class="nf">Index</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">catch</span><span class="p">(</span><span class="n">HttpException</span> <span class="n">ex</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Assert</span><span class="p">.</span><span class="nf">AreEqual</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">NotFound</span><span class="p">,</span> <span class="n">ex</span><span class="p">.</span><span class="nf">GetHttpCode</span><span class="p">());</span>
+        <span class="k">throw</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="na">[TestMethod]</span>
+<span class="na">[ExpectedException(typeof(HttpException))]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">RedirectToLatestPostWithNoPublishedPostsTest</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">postRepo</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SimpleRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">InMemoryRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span>
+        <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="p">{</span>
+            <span class="k">new</span> <span class="n">Post</span> <span class="p">{</span> <span class="n">Status</span> <span class="p">=</span> <span class="n">PostStatus</span><span class="p">.</span><span class="n">Draft</span><span class="p">},</span>
+            <span class="k">new</span> <span class="n">Post</span> <span class="p">{</span> <span class="n">Status</span> <span class="p">=</span> <span class="n">PostStatus</span><span class="p">.</span><span class="n">Unpublished</span><span class="p">}</span>
+        <span class="p">}));</span>
+    <span class="n">PostController</span> <span class="n">sut</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">PostController</span><span class="p">(</span><span class="n">postRepo</span><span class="p">);</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">sut</span><span class="p">.</span><span class="nf">Index</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">HttpException</span> <span class="n">ex</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Assert</span><span class="p">.</span><span class="nf">AreEqual</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">NotFound</span><span class="p">,</span> <span class="n">ex</span><span class="p">.</span><span class="nf">GetHttpCode</span><span class="p">());</span>
+        <span class="k">throw</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="na">[TestMethod]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">RedirectToLatestPostWithOnePublishedPostsTest</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">postRepo</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SimpleRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">InMemoryRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span>
+        <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="p">{</span>
+            <span class="k">new</span> <span class="n">Post</span> <span class="p">{</span>
+                <span class="n">Status</span> <span class="p">=</span> <span class="n">PostStatus</span><span class="p">.</span><span class="n">Published</span><span class="p">,</span>
+                <span class="n">Path</span> <span class="p">=</span><span class="s">"2013/04/14/some-post"</span><span class="p">,</span>
+                <span class="n">Posted</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="m">2013</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">14</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">}));</span>
+    <span class="n">PostController</span> <span class="n">sut</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">PostController</span><span class="p">(</span><span class="n">postRepo</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="n">sut</span><span class="p">.</span><span class="nf">Index</span><span class="p">();</span>
+    <span class="n">Assert</span><span class="p">.</span><span class="nf">AreEqual</span><span class="p">(</span><span class="s">"/2013/04/14/some-post"</span><span class="p">,</span> <span class="p">((</span><span class="n">RedirectResult</span><span class="p">)</span><span class="n">result</span><span class="p">).</span><span class="n">Url</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="na">[TestMethod]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">RedirectToLatestPostWithMultiplePublishedPostsTest</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">postRepo</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SimpleRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">InMemoryRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span>
+        <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="p">{</span>
+            <span class="k">new</span> <span class="n">Post</span> <span class="p">{</span>
+                <span class="n">Status</span> <span class="p">=</span> <span class="n">PostStatus</span><span class="p">.</span><span class="n">Published</span><span class="p">,</span>
+                <span class="n">Path</span> <span class="p">=</span><span class="s">"2013/04/10/some-other-post"</span><span class="p">,</span>
+                <span class="n">Posted</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="m">2013</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">10</span><span class="p">)</span> <span class="p">},</span>
+            <span class="k">new</span> <span class="n">Post</span> <span class="p">{</span>
+                <span class="n">Status</span> <span class="p">=</span> <span class="n">PostStatus</span><span class="p">.</span><span class="n">Published</span><span class="p">,</span>
+                <span class="n">Path</span> <span class="p">=</span><span class="s">"2013/04/14/some-post"</span><span class="p">,</span>
+                <span class="n">Posted</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="m">2013</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">14</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">}));</span>
+    <span class="n">PostController</span> <span class="n">sut</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">PostController</span><span class="p">(</span><span class="n">postRepo</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="n">sut</span><span class="p">.</span><span class="nf">Index</span><span class="p">();</span>
+    <span class="n">Assert</span><span class="p">.</span><span class="nf">AreEqual</span><span class="p">(</span><span class="s">"/2013/04/14/some-post"</span><span class="p">,</span> <span class="p">((</span><span class="n">RedirectResult</span><span class="p">)</span><span class="n">result</span><span class="p">).</span><span class="n">Url</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What is great about this is that you can test right to the edges of our system and ensure that you are producing the intended result for this controller, eg that its going to redirect us to the URL of the latest post without the fragility of testing with a database in the mix.</p>
+
+<h3 id="summing-up">Summing up</h3>
+<p>I find generic repositories to be a very useful pattern which allows you to write more change agile code. They provide a key touch point for being able to work with data in different scenarios. While they are not the right abstraction in all scenarios they provide a useful abstraction for a wide range of applications, especially when combined with a dependency injection framework.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2013/a_case_for_generic_repositories/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2013/a_case_for_generic_repositories'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Generic Repositories",
+ "wordcount": "1999",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2013/a_case_for_generic_repositories/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2013-02-25 00:00:00 +1300",
+ "description": "I have always liked the abstraction provided by a repository pattern. This article aims to articulate why I use generic repositories and what benefits I feel are most important from this approach. I also examine exactly how I use generic repositories in my applications with some practical examples.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>
