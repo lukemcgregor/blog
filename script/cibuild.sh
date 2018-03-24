@@ -2,4 +2,4 @@
 set -e # halt script on error
 
 bundle exec jekyll build
-bundle exec htmlproofer --url-ignore "#" --disable_external ./_site
+bundle exec htmlproofer --disable-external --url-ignore "#"./_site
