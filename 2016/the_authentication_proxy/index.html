@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>The Authentication Proxy</title>
+  <meta name="description" content="When we break down systems duplication and boiler plate drastically increases complexity. Authentication is one area where complexity can be introduced across all of our services at once. In this post I look at a pattern to decouple authentication from your system and allow a richer authentication experience without introducing complexity to every API in the system.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Authentication Proxy">
+  <meta name="twitter:description" content="When we break down systems duplication and boiler plate drastically increases complexity. Authentication is one area where complexity can be introduced across all of our services at once. In this post I look at a pattern to decouple authentication from your system and allow a richer authentication experience without introducing complexity to every API in the system.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="The Authentication Proxy">
+  <meta property="og:description" content="When we break down systems duplication and boiler plate drastically increases complexity. Authentication is one area where complexity can be introduced across all of our services at once. In this post I look at a pattern to decouple authentication from your system and allow a richer authentication experience without introducing complexity to every API in the system.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2016/the_authentication_proxy/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="16 Nov 2016" class="post-meta__date date">16 Nov 2016</time>
+      
+    </div>
+    <h1 class="post-title">The Authentication Proxy</h1>
+  </header>
+
+  <section class="post">
+    <p>SOA and Microservices promote API centric applications where we can build complex sophisticated systems out of smaller simpler ones. This allows us to build bigger and less error prone systems by enabling developers to better understand the impacts of a change. When we break down systems duplication and boiler plate drastically increases complexity. Authentication is one area where complexity can be introduced across all of our services at once. In this post I look at a pattern to decouple authentication from your system and allow a richer authentication experience without introducing complexity to every API in the system.</p>
+
+<h3 id="multiple-authentication-paths">Multiple authentication paths</h3>
+
+<p>As applications grow many different types of consumers may use APIs. Different consumers have different needs and authentication methods which work well. For example a website may consume your API and it makes sense to use cookies to do so. An automated process may also consume the API and it might make sense to use an API Key type of authentication for that use case. A native mobile application may use OAuth or JWT directly to consume your APIs.</p>
+
+<p>Each of these scenarios make sense internally but having multiple authentication mechanisms across our APIs make things complex. This gets worse as we have more APIs in our system, especially if they are deployed independently.</p>
+
+<h4 id="authentication-is-a-global-concern-authorisation-a-local-one">Authentication is a global concern authorisation a local one</h4>
+
+<p>Authentication is essentially the same anywhere throughout our applications, identifying <strong>who</strong> is using the system is a global concern across the whole system. Allowing access to certain functions on the other hand is a local concern which can only be decided by the function which is currently being executed. Authorisation is not about who but rather about can some(one/thing) like this do that. This is a subtle but important distinction.</p>
+
+<p>These concerns should be separated and dealt with at the appropriate scope.</p>
+
+<h2 id="the-authentication-proxy">The Authentication Proxy</h2>
+<p>The authentication proxy pattern separates the global concern of Authentication from the local concern of authorisation by intercepting all requests to APIs and replacing the specific by reference authentication with a standardised by value claims based token. This means that individual APIs need only validate and check authorisation on one token type.</p>
+
+<p><img src="/images/posts/2016/authentication-proxy.png" alt="Authentication proxy" /></p>
+
+<p>The authentication proxy has the following behavior/pseudocode</p>
+
+<ol>
+  <li>Receive request</li>
+  <li>Decode authentication used by caller</li>
+  <li>Produce relevant claims for the authenticated user</li>
+  <li>Replace the Authentication on the incoming request with a signed set of claims (eg JWT by value)</li>
+  <li>Forward the request to the API implementation</li>
+  <li>Send the response back to the caller</li>
+</ol>
+
+<h3 id="by-reference-and-by-value">By reference and by value</h3>
+
+<p>There are two different types of authentication token, each has their place. By reference tokens simply have a key contained in the token which needs to get looked up server side to get the actual permissions, they are opaque meaning only the server understands the actual information this token contains. By value tokens contain information directly within the token, this means if the token contains the information you need you don’t need to look up any information later. By value tokens can either by opaque or transparent depending on if they are encrypted or signed. By reference tokens are tiny, but require a second lookup stage and by value tokens are bigger but avoid subsequent lookups.</p>
+
+<p>By reference tokens are useful when they are appended onto every request and bandwidth is important. There is no point transmitting lots of information when a little could do. By value tokens are better when we want to remove a lookup later in the system. With the authentication proxy it makes sense to use by reference tokens externally and by value tokens internally (where bandwidth is less relevant).</p>
+
+<h3 id="authorisation">Authorisation</h3>
+
+<p>The API implementation can then ignore the actual user lookup and authentication handshake and simply examine the claims to authorise a behavior. For example instead of looking up the user ID and seeing if they are assigned the edit blog post permission we can simply check the claims to see if they have an edit blog post claim. This scales far better especially if we have non-user things in our system as well (such as an API key) which may use an entirely different permission model.</p>
+
+<p>More importantly that user lookup component (which previously had to be in every API) can now be performed centrally decoupling the permission tree from every API.</p>
+
+<h3 id="routing">Routing</h3>
+
+<p>Routing is an important component when multiple APIs are at play, how does the authentication proxy know where to send the request. There are many ways to approach this problem but I like the following the best.</p>
+
+<p>Get your API proxy to receive requests for api.example.con, reserve all subdomains for your actual APIs (it’s important that you control the DNS lookup of <code class="highlighter-rouge">*.api.example.con</code> from your proxy machine for security reasons). Then use the first segment of the url to select the API subdomain to use. eg a request for <a href="#">https://api.example.con/posts/v1/edit</a> might get routed to the API <a href="#">https://posts.api.example.con/v1/edit</a>. This kind of URL routing is readable and presents a contiguous api front to consumers. In this example there is no need to publish the posts.api.example.con API publically, only the proxy needs to be able to access it directly. However in some cases it may be desirable to allow APIs to call each other internally as well as the authentication proxy.</p>
+
+<p>###Costs
+As with any proxy system the Authentication proxy introduces synchronous latency into your applications, <a href="https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing">Latency is not zero</a> so it is important to understand, measure and minimise the impact of this on your application. While the request overhead may not be controllable in this pattern there are several techniques you can use to minimise latency.</p>
+
+<p>Tip 1:
+Host the APIs on the same server as the proxy, and always request the instance of the API running on the local machine. This essentially removes the network cost from the latency. You can then load balance the proxy which will in turn load balance the APIs. Do note when you deploy an API you will also need to take the proxy out of the load balancer during the deploy to avoid a failure.</p>
+
+<p>Tip 2:
+Introduce caching on your claims generation. The generation step is probably the most costly part of the proxy and by caching this lookup you can remove time out of your requests. If you weren’t previously caching the authentication check in your application this may well improve performance overall. Do note you will also need a good invalidation mechanism.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2016/the_authentication_proxy/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/the_authentication_proxy'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "The Authentication Proxy",
+ "wordcount": "1083",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2016/the_authentication_proxy/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2016-11-16 00:00:00 +1300",
+ "description": "When we break down systems duplication and boiler plate drastically increases complexity. Authentication is one area where complexity can be introduced across all of our services at once. In this post I look at a pattern to decouple authentication from your system and allow a richer authentication experience without introducing complexity to every API in the system.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

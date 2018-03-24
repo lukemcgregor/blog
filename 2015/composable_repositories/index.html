@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Composable repositories</title>
+  <meta name="description" content="This post discusses some issues I have with traditional repository pattern implementations and how I use extension methods to get around them.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Composable repositories">
+  <meta name="twitter:description" content="This post discusses some issues I have with traditional repository pattern implementations and how I use extension methods to get around them.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Composable repositories">
+  <meta property="og:description" content="This post discusses some issues I have with traditional repository pattern implementations and how I use extension methods to get around them.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2015/composable_repositories/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="8 Sep 2015" class="post-meta__date date">8 Sep 2015</time>
+      
+    </div>
+    <h1 class="post-title">Composable repositories</h1>
+  </header>
+
+  <section class="post">
+    <h4 id="i-love-simple-reusable-code">I love simple reusable code.</h4>
+
+<p>I have used the repository pattern extensively as a way to achieve reuse and cluster my query logic into a single place. This is great as it means my queries can be reused and I know where to go to fix a database problem. However over the years I have encountered a number of problems with repositories.</p>
+
+<h3 id="five-issues-with-traditional-repositories">Five issues with traditional repositories</h3>
+
+<h4 id="the-super-generic-method">The super generic method</h4>
+
+<p>In order to gain reuse on a repository method it takes a whole heap of parameters so that it fits all the places and specific scenarios which might use this repository.</p>
+
+<p>eg:</p>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="nf">FindPeople</span><span class="p">(</span>
+	<span class="kt">string</span> <span class="n">name</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+	<span class="kt">int</span><span class="p">?</span> <span class="n">olderThan</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+	<span class="kt">bool</span> <span class="n">includeAddress</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+	<span class="kt">int</span><span class="p">?</span> <span class="n">page</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+	<span class="kt">int</span><span class="p">?</span> <span class="n">pageSize</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This kind of method is usable in a lot of places which is great, but it lends itself to increasingly complex implementations which are hard to test.</p>
+
+<h4 id="the-illusion-of-reuse">The illusion of reuse</h4>
+
+<p>Visual studio 2015 has an awesome improvement, it lists out the number of places each method is used. But do all your repository methods look like this with only one consumer?</p>
+
+<p><img src="/images/posts/2015/only-one-reference.png" alt="Only one reference" /></p>
+
+<p>Sadly while we have built this method to be reusable in reality there is only one place in our application where we need a paged list of people. In fact almost all of our repository methods are specific enough that we only use them in one place.</p>
+
+<h4 id="the-where-do-i-put-it-problem">The where do I put it problem</h4>
+
+<p>Say you want to find all of the people which live in a specific region. Where do you put this? Does it belong in a repository that deals with people? Or one that deals with addresses? Do we need a new repository entirely to deal with this new region based concern? Is it OK to return a list of people from a region repository?</p>
+
+<p>Ever struggled with this kind of thing? Naming is a hard programming art form.</p>
+
+<h4 id="the-close-enough-overfetch">The close enough overfetch</h4>
+
+<p>Say you have a repository which will give you a list of people. People have addresses and when you list out all of the people in your neighborhood you want to see all of the addresses of the people. So you join onto the address table and populate an address property on each of your people. But sadly you have also performed this unused join for every other consumer of the method. This causes an overfetch problem where you are returning more data than you need and wasting resources. Most of the time this problem doesn’t amount to enough extra load to bother solving but its still there.</p>
+
+<h4 id="the-reuse-by-underfetch">The reuse by underfetch</h4>
+
+<p>We have two repository methods, one which gets a list of people and another which gets an address for a person. To get reuse in our code we call two repository methods</p>
+
+<p>eg:</p>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">foreach</span><span class="p">(</span><span class="kt">var</span> <span class="n">person</span> <span class="k">in</span> <span class="n">personRepository</span><span class="p">.</span><span class="nf">GetPeoplePaged</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">100</span><span class="p">))</span>
+<span class="p">{</span>
+	<span class="kt">var</span> <span class="n">address</span> <span class="p">=</span> <span class="n">addressRepository</span><span class="p">.</span><span class="nf">GetAddressForPerson</span><span class="p">(</span><span class="n">person</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+	<span class="c1">//other things...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As you can see this will create a performance issue (101 queries where one could have done), but sometimes its less visible than this.</p>
+
+<h3 id="extension-methods-to-the-rescue">Extension methods to the rescue</h3>
+
+<p>Most of us are using an ORM with a LINQ provider. What these do is to use an IQueryable to compile a deferred query and then execute that later (when we enumerate the set).</p>
+
+<p>This provides an interesting avenue for writing repositories using smaller much more reusable chunks.</p>
+
+<p>Consider the following repository call to generate an MVC view:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">people</span> <span class="p">=</span> <span class="n">personRepository</span><span class="p">.</span><span class="nf">FindPeople</span><span class="p">(</span><span class="n">includeAddress</span><span class="p">:</span> <span class="k">true</span><span class="p">,</span> <span class="n">inRegion</span><span class="p">:</span> <span class="s">"The Shire"</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span><span class="m">10</span><span class="p">,</span> <span class="n">pageSize</span><span class="p">:</span> <span class="m">20</span><span class="p">);</span>
+<span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="n">PersonViewModel</span> <span class="p">{</span>
+	<span class="n">Name</span> <span class="p">=</span> <span class="n">p</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span>
+	<span class="n">Address</span> <span class="p">=</span> <span class="n">p</span><span class="p">.</span><span class="n">Address</span><span class="p">?.</span><span class="n">PostalAddress</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>As you can see we are calling our Super generic method and then converting this to a view model. However there’s a couple of issues with this.</p>
+
+<ul>
+  <li>Its readable but its hard to follow the intent</li>
+  <li>We are using our Super generic method which is a bit hard to test, and people are constantly editing it to do specific things they need.</li>
+  <li>There’s a subtle overfetch going on here, we are querying for all columns of person and address but only using two.</li>
+</ul>
+
+<p>What if we could write it like this:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="nf">View</span><span class="p">(</span>
+	<span class="n">Context</span><span class="p">.</span><span class="n">People</span>
+		<span class="p">.</span><span class="nf">InRegion</span><span class="p">(</span><span class="s">"Shire"</span><span class="p">)</span>
+		<span class="p">.</span><span class="nf">OrderByName</span><span class="p">()</span>
+		<span class="p">.</span><span class="nf">Page</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+		<span class="p">.</span><span class="nf">ToViewModels</span><span class="p">()</span>
+		<span class="p">.</span><span class="nf">ToArray</span><span class="p">());</span>
+</code></pre></div></div>
+
+<p>Looks much simpler right? Its less code and the intent is clearer. What if I told you the generated SQL for this also only selects <code class="highlighter-rouge">Person.Id</code>, <code class="highlighter-rouge">Person.Name</code> and <code class="highlighter-rouge">Address.PostalAddress</code>?</p>
+
+<p>So how do we make this kind of code a reality? How does it work?</p>
+
+<p>To do this we have 4 extension methods. Each performs one simple manipulation and supports chaining.</p>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">static</span> <span class="n">IQueryable</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="nf">InRegion</span><span class="p">(</span><span class="k">this</span> <span class="n">IQueryable</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="n">people</span><span class="p">,</span> <span class="kt">string</span> <span class="n">region</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="n">people</span><span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Addresses</span><span class="p">.</span><span class="nf">Any</span><span class="p">(</span><span class="n">a</span> <span class="p">=&gt;</span> <span class="n">a</span><span class="p">.</span><span class="n">Region</span> <span class="p">==</span> <span class="n">region</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">static</span> <span class="n">IOrderedQueryable</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="nf">OrderByName</span><span class="p">(</span><span class="k">this</span> <span class="n">IQueryable</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="n">people</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="n">people</span><span class="p">.</span><span class="nf">OrderBy</span><span class="p">(</span><span class="n">x</span><span class="p">=&gt;</span><span class="n">x</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">static</span> <span class="n">IQueryable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">Page</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="k">this</span> <span class="n">IOrderedQueryable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">entities</span><span class="p">,</span> <span class="kt">int</span> <span class="n">page</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pageSize</span> <span class="p">=</span> <span class="m">3</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">skip</span> <span class="p">=</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Max</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">page</span> <span class="p">-</span> <span class="m">1</span><span class="p">)</span> <span class="p">*</span> <span class="n">pageSize</span><span class="p">;</span>
+	<span class="k">return</span> <span class="n">entities</span><span class="p">.</span><span class="nf">Skip</span><span class="p">(</span><span class="n">skip</span><span class="p">).</span><span class="nf">Take</span><span class="p">(</span><span class="n">pageSize</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">static</span> <span class="n">IQueryable</span><span class="p">&lt;</span><span class="n">PersonModel</span><span class="p">&gt;</span> <span class="nf">ToViewModels</span><span class="p">(</span><span class="k">this</span> <span class="n">IQueryable</span><span class="p">&lt;</span><span class="n">Person</span><span class="p">&gt;</span> <span class="n">people</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="n">people</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">person</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="n">PersonModel</span>
+	<span class="p">{</span>
+		<span class="n">Name</span> <span class="p">=</span> <span class="n">person</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span>
+		<span class="n">Addresses</span> <span class="p">=</span> <span class="n">person</span><span class="p">.</span><span class="n">Addresses</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">a</span> <span class="p">=&gt;</span> <span class="n">a</span><span class="p">.</span><span class="n">PostalAddress</span><span class="p">)</span>
+	<span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="so-thats-nice-but-what-about-our-reuse">So that’s nice but what about our reuse?</h4>
+
+<p>Say we want to use the same view model but only find a single entity.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="nf">View</span><span class="p">(</span>
+	<span class="n">Context</span><span class="p">.</span><span class="n">People</span>
+		<span class="p">.</span><span class="nf">InRegion</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+		<span class="p">.</span><span class="nf">WithName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+		<span class="p">.</span><span class="nf">ToViewModels</span><span class="p">()</span>
+		<span class="p">.</span><span class="nf">FirstOrDefault</span><span class="p">());</span>
+</code></pre></div></div>
+
+<p>As you can see we still get to reuse the bits we already coded.</p>
+
+<h3 id="noteworthy">Noteworthy</h3>
+
+<ul>
+  <li>As with all ORM based code, be sure to check your generated SQL is sensible.</li>
+  <li>Stick to collection based operations as the provide better reuse and SQL is a collection based language.</li>
+  <li>You don’t need to project directly into your view models. You can just as easily project into your data models and use <code class="highlighter-rouge">.Include</code> wrapped in an extension method to do your projections. This is simply an optimisation for simple queries.</li>
+  <li>You need to follow the rules within the extension methods, when you are acting on the collection you can only use methods which can be translated to SQL.</li>
+  <li>In the examples and sample project I have used EF. However this technique should work with most LINQ providing ORMs, the bits that will differ will most likely be around how projection works.</li>
+</ul>
+
+<h3 id="summing-up">Summing up</h3>
+
+<p>What this pattern gives you is what I would term a composable repository. Its a looser construct than traditional repositories, but very expressive and powerful.</p>
+
+<p>I have put an <a href="https://github.com/lukemcgregor/ComposableRepositories">example application on GitHub</a> that you can check out. The two example methods mentioned in this post can be called with:</p>
+
+<ul>
+  <li><a href="#">/api/people?region=Shire&amp;page=1</a></li>
+  <li><a href="#">/api/person?region=Mordor&amp;name=Sauron</a></li>
+</ul>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2015/composable_repositories/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2015/composable_repositories'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Composable repositories",
+ "wordcount": "1449",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2015/composable_repositories/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2015-09-08 00:00:00 +1200",
+ "description": "This post discusses some issues I have with traditional repository pattern implementations and how I use extension methods to get around them.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

@@ -1,9 +1,3 @@
----
-layout: null
-sitemap:
-  exclude: 'yes'
----
-
 $(document).ready(function () {
 
   $('.btn-mobile-menu').click(function () {

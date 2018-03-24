@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>StaticVoid Repository Pattern - NuGet</title>
+  <meta name="description" content="Repositories are all about decoupling our application from our chosen storage mechanism. This is my take on a Generic Repository with Entity Framework.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="StaticVoid Repository Pattern - NuGet">
+  <meta name="twitter:description" content="Repositories are all about decoupling our application from our chosen storage mechanism. This is my take on a Generic Repository with Entity Framework.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="StaticVoid Repository Pattern - NuGet">
+  <meta property="og:description" content="Repositories are all about decoupling our application from our chosen storage mechanism. This is my take on a Generic Repository with Entity Framework.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2011/staticvoid_repository_pattern-nuget/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="13 Oct 2011" class="post-meta__date date">13 Oct 2011</time>
+      
+    </div>
+    <h1 class="post-title">StaticVoid Repository Pattern - NuGet</h1>
+  </header>
+
+  <section class="post">
+    <p>I recently published a <a href="http://nuget.org/List/Packages/StaticVoid.Core.Repository">NuGet package</a> which contains my version of the repository pattern for EF4.1 so I thought it would be good to write a bit of an explanation of how I use it and what impact this has on the way I access databases within my own applications. My goal is to allow people to use this pattern to reduce the code required to perform the common database tasks while reducing the coupling to the actual underlying database/ORM framework and making the flow of data throughout applications more seamless and hence more elegant.</p>
+
+<div class="nuget-badge install">
+	<a href="https://www.nuget.org/packages/StaticVoid.Core.Repository">
+		<p>
+			<code>StaticVoid.Core.Repository</code>
+		</p>
+	</a>
+</div>
+
+<p>I would also like to outline a few places this method falls down and what the pitfalls are around these specific circumstances.</p>
+
+<p>To use the StaticVoid Repository pattern several things need to be set up.</p>
+
+<h3 id="set-up-the-kernel-bindings">Set up the kernel bindings</h3>
+<p>Kernel bindings tell the dependency injection framework how which concrete implementation to provide to classes when they request them.</p>
+
+<p>Below is an example of the config required to setup Ninject</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">RegisterServices</span><span class="p">(</span><span class="n">IKernel</span> <span class="n">kernel</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="c1">//Key components for StaticVoid Repository configuration,</span>
+	<span class="c1">//this allows injection of IRepository (see GeekLogic)</span>
+	<span class="c1">//The assumption is that T exists within your EF4.1 entities.</span>
+	<span class="n">kernel</span><span class="p">.</span><span class="n">Bind</span><span class="p">&lt;</span><span class="n">DbContext</span><span class="p">&gt;().</span><span class="n">To</span><span class="p">&lt;</span><span class="n">GeekContext</span><span class="p">&gt;().</span><span class="nf">InRequestScope</span><span class="p">();</span>
+	<span class="n">kernel</span><span class="p">.</span><span class="nf">Bind</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">IRepositoryDataSource</span><span class="p">&lt;&gt;))</span>
+		<span class="p">.</span><span class="nf">To</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">DbContextRepositoryDataSource</span><span class="p">&lt;&gt;));</span>
+	<span class="n">kernel</span><span class="p">.</span><span class="nf">Bind</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">IRepository</span><span class="p">&lt;&gt;))</span>
+		<span class="p">.</span><span class="nf">To</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">SimpleRepository</span><span class="p">&lt;&gt;));</span>
+	<span class="n">kernel</span><span class="p">.</span><span class="n">Bind</span><span class="p">&lt;</span><span class="n">IGeekLogic</span><span class="p">&gt;().</span><span class="n">To</span><span class="p">&lt;</span><span class="n">GeekLogic</span><span class="p">&gt;();</span>
+<span class="p">}</span>  
+</code></pre></div></div>
+
+<p>Note that we are binding generic implementations of <code class="highlighter-rouge">IRepository&lt;&gt;</code> and <code class="highlighter-rouge">IRepositoryDataSource&lt;&gt;</code> to concrete implementations provided by the library.</p>
+
+<h3 id="using-the-repository">Using the repository</h3>
+
+<p>Repositories exist against a single entity type within your system. This means that you would consume a repository of a specific type.</p>
+
+<p>Below is an MVC example of consuming a repository of geeks:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">GeekLogic</span><span class="p">:</span><span class="n">IGeekLogic</span>
+<span class="p">{</span>
+	<span class="k">private</span> <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Geek</span><span class="p">&gt;</span> <span class="n">m_GeekRepository</span><span class="p">;</span>
+	<span class="k">public</span> <span class="nf">GeekLogic</span><span class="p">(</span><span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Geek</span><span class="p">&gt;</span> <span class="n">geekRepository</span><span class="p">)</span>
+	<span class="p">{</span>
+			 <span class="n">m_GeekRepository</span> <span class="p">=</span> <span class="n">geekRepository</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="err">#</span><span class="n">region</span> <span class="n">IGeekLogic</span> <span class="n">Members</span>
+	<span class="k">public</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">Geek</span><span class="p">&gt;</span> <span class="nf">OldGeeks</span><span class="p">(</span><span class="n">DateTime</span> <span class="n">olderThan</span><span class="p">)</span>
+	<span class="p">{</span>
+			 <span class="k">return</span> <span class="n">m_GeekRepository</span><span class="p">.</span><span class="nf">GetAll</span><span class="p">().</span><span class="nf">Where</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">.</span><span class="n">DateOfBirth</span> <span class="p">&lt;</span> <span class="n">olderThan</span><span class="p">).</span><span class="nf">ToList</span><span class="p">().</span><span class="nf">AsEnumerable</span><span class="p">();</span>
+	<span class="p">}</span>
+	<span class="err">#</span><span class="n">endregion</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">HomeController</span> <span class="p">:</span> <span class="n">Controller</span>
+<span class="p">{</span>
+	<span class="k">private</span> <span class="n">IGeekLogic</span> <span class="n">m_GeekLogic</span><span class="p">;</span>
+	<span class="k">public</span> <span class="nf">HomeController</span><span class="p">(</span><span class="n">IGeekLogic</span> <span class="n">geekLogic</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">m_GeekLogic</span> <span class="p">=</span> <span class="n">geekLogic</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kt">var</span> <span class="n">oldGeeks</span> <span class="p">=</span> <span class="n">m_GeekLogic</span><span class="p">.</span><span class="nf">OldGeeks</span><span class="p">(</span><span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="m">1970</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">));</span>
+		<span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="k">new</span> <span class="n">GeekListModel</span>
+		<span class="p">{</span>
+			<span class="n">Geeks</span> <span class="p">=</span> <span class="n">oldGeeks</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">g</span><span class="p">=&gt;</span><span class="k">new</span> <span class="n">GeekListItemModel</span><span class="p">{</span>
+				<span class="n">Id</span><span class="p">=</span><span class="n">g</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span>
+				<span class="n">Name</span> <span class="p">=</span> <span class="n">g</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span>
+				<span class="n">Age</span> <span class="p">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)((</span><span class="k">new</span> <span class="nf">TimeSpan</span><span class="p">(</span>
+						<span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">Ticks</span> <span class="p">-</span> <span class="n">g</span><span class="p">.</span><span class="n">DateOfBirth</span><span class="p">.</span><span class="n">Ticks</span>
+					<span class="p">).</span><span class="n">Days</span><span class="p">)</span> <span class="p">/</span> <span class="m">365.25</span><span class="p">)</span> <span class="c1">// quick and dirty age</span>
+			<span class="p">})</span>
+		<span class="p">});</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note that the underlying data technology and type of repository are irrelevant to the controller accessing the repository.</p>
+
+<h3 id="unit-testing-with-repositories">Unit testing with repositories</h3>
+
+<p>Because the individual technology and data source behind the repository is not implied in the usage of the repository it is really easy to test only the components which are important to the usage.</p>
+
+<p>Below is an example of a unit test of a method which uses a repository:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">[TestMethod]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">OldGeeksTest</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">List</span><span class="p">&lt;</span><span class="n">Geek</span><span class="p">&gt;</span> <span class="n">geeks</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Geek</span><span class="p">&gt;</span>
+	<span class="p">{</span>
+		<span class="k">new</span> <span class="n">Geek</span><span class="p">{</span>
+			<span class="n">Id</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span>
+			<span class="n">Name</span> <span class="p">=</span> <span class="s">"Bill Gates"</span><span class="p">,</span>
+			<span class="n">DateOfBirth</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="m">1955</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="m">24</span><span class="p">)</span>
+		<span class="p">},</span>
+		<span class="k">new</span> <span class="n">Geek</span><span class="p">{</span>
+			<span class="n">Id</span> <span class="p">=</span> <span class="m">2</span><span class="p">,</span>
+			<span class="n">Name</span> <span class="p">=</span> <span class="s">"Steve Jobs"</span><span class="p">,</span>
+			<span class="n">DateOfBirth</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="m">1955</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">28</span><span class="p">)</span>
+		<span class="p">},</span>
+		<span class="k">new</span> <span class="n">Geek</span><span class="p">{</span>
+			<span class="n">Id</span> <span class="p">=</span> <span class="m">3</span><span class="p">,</span>
+			<span class="n">Name</span> <span class="p">=</span> <span class="s">"Albert Einstein"</span><span class="p">,</span>
+			<span class="n">DateOfBirth</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="m">1879</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="m">14</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">};</span>
+	<span class="n">IRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Geek</span><span class="p">&gt;</span> <span class="n">geekDataSource</span> <span class="p">=</span>
+		<span class="k">new</span> <span class="n">InMemoryRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Geek</span><span class="p">&gt;(</span><span class="n">geeks</span><span class="p">);</span>
+	<span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Geek</span><span class="p">&gt;</span> <span class="n">geekRepository</span> <span class="p">=</span>
+		<span class="k">new</span> <span class="n">SimpleRepository</span><span class="p">&lt;</span><span class="n">Geek</span><span class="p">&gt;(</span><span class="n">geekDataSource</span><span class="p">);</span>
+	<span class="n">GeekLogic</span> <span class="n">sut</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GeekLogic</span><span class="p">(</span><span class="n">geekRepository</span><span class="p">);</span>
+	<span class="kt">var</span> <span class="n">oldGeeks</span> <span class="p">=</span> <span class="n">sut</span><span class="p">.</span><span class="nf">OldGeeks</span><span class="p">(</span><span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="m">1955</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">1</span><span class="p">)).</span><span class="nf">ToList</span><span class="p">();</span>
+	<span class="n">Assert</span><span class="p">.</span><span class="nf">AreEqual</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="n">oldGeeks</span><span class="p">.</span><span class="nf">Count</span><span class="p">());</span>
+	<span class="n">Assert</span><span class="p">.</span><span class="nf">AreEqual</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">oldGeeks</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Id</span><span class="p">);</span>
+	<span class="n">Assert</span><span class="p">.</span><span class="nf">AreEqual</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="n">oldGeeks</span><span class="p">[</span><span class="m">1</span><span class="p">].</span><span class="n">Id</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note the InMemoryRepositoryDataSource which is used in this example has some differences to the actual EF4.1 data source. One important difference is that when objects are added to an EF data source the foreign keys are populated in both directions whereas with the in memory repository they are only populated in the direction to which you are adding objects.</p>
+
+<p>An example solution is available <a href="/files/posts/2011/StaticVoid.Repository.Demo.zip">here</a> which shows the above examples in a running site.</p>
+
+<p>I hope this post is helpful.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2011/staticvoid_repository_pattern-nuget/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2011/staticvoid_repository_pattern-nuget'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "StaticVoid Repository Pattern - NuGet",
+ "wordcount": "1019",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2011/staticvoid_repository_pattern-nuget/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2011-10-13 00:00:00 +1300",
+ "description": "Repositories are all about decoupling our application from our chosen storage mechanism. This is my take on a Generic Repository with Entity Framework.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

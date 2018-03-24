@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Manual decisions are the the enemy of consistency</title>
+  <meta name="description" content="On why continuous deployment is better than continuous delivery">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Manual decisions are the the enemy of consistency">
+  <meta name="twitter:description" content="On why continuous deployment is better than continuous delivery">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Manual decisions are the the enemy of consistency">
+  <meta property="og:description" content="On why continuous deployment is better than continuous delivery">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2016/when-deploying-decisions-are-liabilities/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="11 Oct 2016" class="post-meta__date date">11 Oct 2016</time>
+      
+    </div>
+    <h1 class="post-title">Manual decisions are the the enemy of consistency</h1>
+  </header>
+
+  <section class="post">
+    <p>Many of our modern software development methodologies focus on short iteration loops to be able to quickly and safely change and build our software. These iterative methodologies work particularly well with our modern SaaS and automatically deployed applications. Iterative development allows us to fail earlier and fix issues faster. I’m a believer.</p>
+
+<p>Many organisations adopt some form of continuous delivery whereby as code is checked in, it is tested and packaged for deployment. It may then go through various test and pre-production environments for further manual or automated testing. Deployment is done by someone (normally a developer) pushing that package into production. We are the masters of the system so we know that this deploy will work, we got this, it’s all good, Ship it.</p>
+
+<p><img src="http://i.memecaptain.com/gend_images/zyCwXg.jpg" alt="Ship it" /></p>
+
+<p>The problem is that we often aren’t the masters we think we are. I have often found (and I’m sure you have too) situations where the decision to deploy was wrong because we did not take into account some obscure failure condition. These often seem to originate from system interop not necessarily the lines of code we are so sure are ok. This really sucks.</p>
+
+<p>We must have made a mistake, we will do better next time I promise. We now understand the system a bit better, its all good now. Just watch this deploy will go OK…</p>
+
+<p>The problem here is that we as humans, and especially developers are ill equipped to perform the kind of checks necessary to deploy a piece of software. These checks are really a collection of many years of requirements and interop. We can at best check only a small portion of the system if we want to keep our iterations short. Worse than that we have a nasty habit of not checking things we are sure will be fine. The net effect is that we may be able to pick up problems with obvious interactions but we are terrible at finding obscure interaction problems or issues with unexpected areas of the system.</p>
+
+<p><strong>If we want to deploy consistently stable software we need to take the human element out of deployment.</strong></p>
+
+<p>This means automating the decision to put code into production (continuous deployment). If that thought currently scares you it’s probably because you don’t have confidence in your automated testing. The problem is that it’s very hard to be confident in your automated test suite before you give it any formal responsibility.</p>
+
+<p>So how do you go from fear of automating deployment to confidence?</p>
+
+<p>The first thing to realise is that automated tests don’t need to be perfect, they just need to be better than the tests you would do. Start building up your automated tests with the goal that they will replace your decision on deployment, check out my article on <a href="http://blog.staticvoid.co.nz/2015/5/28/useful_tests">Useful Tests</a> for some ideas about what your tests should include.</p>
+
+<p>The next step is to keep a journal of the state of the tests vs your decisions about deployments. Every time your tests are green but you decided not to deploy is an example of a place you may be missing an automated test. By keeping a journal you will gain confidence that your tests are picking up issues which could prevent a stable deploy. When the tests status always matches your deployment decision you are ready for continuous deployment. After you are doing continuous deployment you can measure the success of the system by comparing your journal of deployments pre and post.</p>
+
+<p>Manual decisions are the the enemy of consistency.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2016/when-deploying-decisions-are-liabilities/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/when-deploying-decisions-are-liabilities'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Manual decisions are the the enemy of consistency",
+ "wordcount": "591",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2016/when-deploying-decisions-are-liabilities/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2016-10-11 00:00:00 +1300",
+ "description": "On why continuous deployment is better than continuous delivery",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>One Day Projects - StackTweeter</title>
+  <meta name="description" content="While patterns and practices are an important part of producing quality software, its important that as developers we don't just blindly follow such patterns. Having a hack day and breaking some rules is a great way of having some fun and learning to work outside some of our regular practice. This is my hack day making a twitter bot to tweet Entity Framework questions from Stack Overflow.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="One Day Projects - StackTweeter">
+  <meta name="twitter:description" content="While patterns and practices are an important part of producing quality software, its important that as developers we don't just blindly follow such patterns. Having a hack day and breaking some rules is a great way of having some fun and learning to work outside some of our regular practice. This is my hack day making a twitter bot to tweet Entity Framework questions from Stack Overflow.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="One Day Projects - StackTweeter">
+  <meta property="og:description" content="While patterns and practices are an important part of producing quality software, its important that as developers we don't just blindly follow such patterns. Having a hack day and breaking some rules is a great way of having some fun and learning to work outside some of our regular practice. This is my hack day making a twitter bot to tweet Entity Framework questions from Stack Overflow.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2012/one_day_projects-stacktweeter/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="30 Sep 2012" class="post-meta__date date">30 Sep 2012</time>
+      
+    </div>
+    <h1 class="post-title">One Day Projects - StackTweeter</h1>
+  </header>
+
+  <section class="post">
+    <p>As professional developers we are encouraged to follow a bunch of patterns and practices for getting the best lifespan out of our applications, stuff like coding for reuse modularity and understandability for those who will perhaps be maintaining our codebases. We follow patterns such as <a href="http://en.wikipedia.org/wiki/Inversion_of_control">Inversion of Control</a>, <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle">Single Responsibility</a> and <a href="http://en.wikipedia.org/wiki/DRY">DRY</a>. All of these patterns help us write and maintain large code bases which can allow our apps to last longer and cause less pain as they change. These principals are great and I am a solid believer in applying them to our applications.</p>
+
+<p>But sometimes as developers we get bogged down by processes, practices and patterns. We spend lots of time tweaking, re-factoring, tidying, handling every error condition and perfecting our patterns and perhaps forget how to just whip something up in an afternoon, quick and dirty.</p>
+
+<p>I think its really important to be able to just hack something together quickly without needing to worry about all of the extra bits. Its a rapid prototyping skill we often loose and something I personally should do more often.</p>
+
+<p>So last weekend I decided to just spend one day writing an app from start to finish. I didn’t focus on testing, reuse or maintainability, I just coded until it was working and had a lot of fun. Its a bit like a <a href="http://en.wikipedia.org/wiki/Hackathon">hack day</a> but just for me.</p>
+
+<h3 id="the-concept">The Concept</h3>
+<p>I spend quite a bit of time on <a href="http://stackoverflow.com/">StackOverflow</a> because I think its a great way to contribute to the development community and plenty of the questions have helped me out personally. One of the things I find hard is to find questions which I’m interested in responding to on StackOverflow. I would also really like to get some kind of notification when there is a question which I care about. So I decided to write a twitter bot which looks at all of the new questions from StackOverflow and tweets any which are in the tags I care about. This also let me play with two APIs I’ve never interfaced with before (StackOverflow and Twitter).</p>
+
+<p>Because I’m a bit of an EF guy I made my bot tweet all of the questions tagged with EF relevant tags.</p>
+
+<h3 id="how-it-works">How it works</h3>
+<p>I poll StackOverflow for new questions every minute and when there is a new question. When there is I check each of the tags attached to the question against a database to see if anyone cares about the question. If someone cares I look up the twitter credentials for that user in my database and post the title and a link to that twitter account. This means I can have different topics automatically posted to different twitter bots.</p>
+
+<h3 id="the-time">The time</h3>
+<p>I spent around 6hrs on this (start to finish) and most of that time was working out how the two APIs work and finding decent interface libraries.</p>
+
+<h3 id="build-quality">Build quality</h3>
+<p>The app is by no means high quality, it has no tests and no error handling. Its not terribly stable either as it crashes every few days. But I don’t really mind too much (well not enough to actually put in a catch statement).</p>
+
+<h3 id="was-it-successful">Was it successful?</h3>
+<p>Absolutely, I use it all the time. I’ve chained it up with <a href="https://chrome.google.com/webstore/detail/ikknnkomiokeodcdkknnhgjmncfiefmn">Twitter Notifier</a> so that I get a popup within a minute of an EF question getting added to StackOverflow . This also means I don’t feel like I need to be constantly refreshing StackOverflow for new questions. And I suppose the main point was to have a bit of fun doing it.</p>
+
+<p><img src="/images/posts/2012/stack-tweeter.png" alt="StackTweeter" /></p>
+
+<h3 id="if-youre-interested">If you’re interested</h3>
+<p>If you too are interested in EF questions on StackOverflow, follow my bot on twitter, <a href="https://twitter.com/StkTwtr_EF">@StkTwtr_EF</a>.</p>
+
+<p>If you want to have your own tags tweeted send me some twitter API keys for an account to tweet to and a list of the tags you want and I’ll hack them in there.</p>
+
+<p>If you want to look at the code let me know and ill put it onto github.</p>
+
+<p>And most of all go and do an app in a day yourself, have fun and tell me how it works out.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2012/one_day_projects-stacktweeter/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2012/one_day_projects-stacktweeter'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "One Day Projects - StackTweeter",
+ "wordcount": "701",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2012/one_day_projects-stacktweeter/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2012-09-30 00:00:00 +1200",
+ "description": "While patterns and practices are an important part of producing quality software, its important that as developers we don't just blindly follow such patterns. Having a hack day and breaking some rules is a great way of having some fun and learning to work outside some of our regular practice. This is my hack day making a twitter bot to tweet Entity Framework questions from Stack Overflow.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

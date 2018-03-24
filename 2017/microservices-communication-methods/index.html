@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Microservice communication methods</title>
+  <meta name="description" content="Communication between microservices allows us to build complex behaviours out of simple components. Most people tend to think of webservices when thinking of microservices however there are a number of other communication methods which are applicable in different situations.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Microservice communication methods">
+  <meta name="twitter:description" content="Communication between microservices allows us to build complex behaviours out of simple components. Most people tend to think of webservices when thinking of microservices however there are a number of other communication methods which are applicable in different situations.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Microservice communication methods">
+  <meta property="og:description" content="Communication between microservices allows us to build complex behaviours out of simple components. Most people tend to think of webservices when thinking of microservices however there are a number of other communication methods which are applicable in different situations.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2017/microservices-communication-methods/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="31 May 2017" class="post-meta__date date">31 May 2017</time>
+      
+    </div>
+    <h1 class="post-title">Microservice communication methods</h1>
+  </header>
+
+  <section class="post">
+    <p>Communication between microservices allows us to build complex behaviours out of simple components. Most people tend to think of webservices when thinking of microservices however there are a number of other communication methods which are applicable in different situations.</p>
+
+<h3 id="what-does-a-communication-method-need">What does a communication method need?</h3>
+<p>In order to use a specific communication method for talking between microservices the method must be versioned and have deployment independence.</p>
+
+<h4 id="deployment-independence">Deployment independence</h4>
+<p>The entire microservice (including any communication components) must be able to be deployed without orchestration with other services. Similarly the deployment of a consuming service must not necessitate a change from the provider. Or to think of it simply you must be able to deploy both provider and consumer without thinking of the other.</p>
+
+<h4 id="versioning">Versioning</h4>
+<p>A communication method must support versioning in order to allow for changes in the contracts, ensuring that consumers will not break as the contract changes. For more information on versioning in microservice systems see <a href="/2017/microservice_versioning;_how_to_make_breaking_changes_without_breaking_stuff/">Microservice versioning; How to make breaking changes without breaking stuff</a></p>
+
+<h3 id="communication-characteristics">Communication characteristics</h3>
+<p>Different communication methods may have different characteristics which suit them to specific use cases.</p>
+
+<h4 id="trusted-vs-untrusted">Trusted vs untrusted</h4>
+<p>With some communication methods we require that in order to use the medium itself clients must trust each other. For example you might allow external clients to call a webservice but probably not send messages on your message system.</p>
+
+<h4 id="synchronous-and-asynchronous">Synchronous and asynchronous</h4>
+<p>Synchronous communication methods are generally request-response or call based. Synchronous methods work well for looking up some information or for performing actions which require immediate consistency.</p>
+
+<p>Asynchronous communication methods are generally event based. Asynchronous methods work well for notifications about events which have occurred or for actions which can have eventual consistency.</p>
+
+<h3 id="http-requests">HTTP Requests</h3>
+<p>The most common method of microservice communication is via HTTP webservices. This is probably because its familiar for developers using web stacks, and can be used both for services in you network as well as <strong>untrusted</strong> external access. HTTP is by nature <strong>synchronous</strong> (request-response).</p>
+
+<p><img src="/images/posts/2017/microservice-http-communication.png" alt="HTTP Microservice Communication" /></p>
+
+<p>An HTTP communication method is implemented by the providing service creating an HTTP endpoint at a specific URL. Under this URL resources and methods exist which may be called by another service. The HTTP endpoint itself normally allows untrusted connections however security may be introduced by the service to enforce specific authorisations that may be relevant.</p>
+
+<p>Ideally authentication should not be performed directly by the service, rather a signed token should be passed with the request which allows the service to perform any required authorisation checks.</p>
+
+<h3 id="message-passing">Message passing</h3>
+<p>Message passing is a common technique for <strong>asynchronous</strong> communication with microservices and generally occurs over a <strong>trusted</strong> medium (eg the messaging system). This involves publishing a message which another microservice can subscribe to, or sending a command to a microservice requesting an eventually consistent action.</p>
+
+<p><img src="/images/posts/2017/microservice-messaging-communication.png" alt="Messaging Microservice Communication" /></p>
+
+<h3 id="webhook-subscriptions">Webhook subscriptions</h3>
+<p>Webhooks are an HTTP version of pub/sub message passing and are <strong>asynchronous</strong> by nature. While most messaging systems require all direct users of the system to be trusted, webhooks work well for pub/sub between endpoints which don’t implicitly trust each other (eg <strong>untrusted</strong>), for example between services maintained by different organisations.</p>
+
+<p><img src="/images/posts/2017/microservice-webhook-communication.png" alt="Webhook Microservice Communication" /></p>
+
+<p>Versioning for webhooks is done in a similar way to that used for other HTTP based services however instead of the version being associated with the request URL it is associated with the subscription itself.</p>
+
+<h3 id="runtime-plugins">Runtime plugins</h3>
+<p>Runtime plugins can be used as a communication method with microservices under certain situations. I think most developers wouldn’t even consider runtime plugins in microservice environments as most runtime techniques introduce significant coupling. However with a little cleverness this can be avoided. Runtime plugins are generally <strong>synchronous</strong> and always <strong>trusted</strong> as they require injecting code into the consumers running process.</p>
+
+<p><img src="/images/posts/2017/runtime-microservice-plugins.png" alt="Runtime plugins" /></p>
+
+<p>There are two important components when using runtime microservice plugins, which are to do with versioning; <em>the consumer should not need to be changed when the provider changes</em> and deployment independence; <em>the provider can deploy whenever they want and the consumer should not need to be redeployed (or restarted when the provider changes)</em>.</p>
+
+<h4 id="versioning-1">Versioning</h4>
+<p>By introducing a versioned contract package into our consumer we are able to reference the contract in application code, this allows the implementation to change underneath so long as it continues to support the versioned contract. This allows us to update the implementation at will, in a similar way to how webservices are versioned.</p>
+
+<h4 id="deployment-independence-1">Deployment independence</h4>
+<p>In order to gain deployment independence we need to ensure two things, firstly that the plugin can be upgraded at runtime based on an external deployment, and secondly that the upgrade will happen in a predictable time window. In order to achieve this we must make the plugin actively watch a repository and in-place upgrade itself when a change occurs. If the repository cannot be contacted within the deployment window the plugin should stop functioning in order to provide a guarantee that a deployment has successfully completed after that window expires.</p>
+
+<h4 id="an-example">An example</h4>
+<p>In the .NET world runtime plugins can be built using AppDomains and a shared folder (as one example).</p>
+
+<p><strong>Components:</strong></p>
+
+<ul>
+  <li>A runtime plugin library</li>
+  <li>A contracts package; built from the provider services’ solution, deployed to NuGet</li>
+  <li>The plugin itself; built from the provider services’ solution, deployed to a shared folder</li>
+</ul>
+
+<p><strong>Lifecycle:</strong></p>
+
+<ul>
+  <li>Consumer installs the contracts package and runtime plugin library from NuGet</li>
+  <li>Consumer requests a proxy to the contract at runtime from the plugin library</li>
+  <li>Plugin library looks in the shared folder for the current implementation of the plugin, loads it into an isolated app domain and returns a transparent proxy which will call the app-domain</li>
+  <li>Plugin library starts a directory watcher looking for changes in the shared folder</li>
+  <li>When a change occurs the plugin library loads the new implementation into a new AppDomain and updates proxies to point at the new AppDomain</li>
+  <li>Plugin library unloads old AppDomain</li>
+</ul>
+
+<h4 id="when-to-use-runtime-plugins">When to use runtime plugins</h4>
+<p>Runtime plugins solve a very specific microservice problem. They should generally be approached with caution and only used when other options are inappropriate.</p>
+
+<p>Scenarios where runtime plugins are appropriate</p>
+
+<ul>
+  <li>Exceptionally low latency is required</li>
+  <li>Microservices which are heavy on logic but store little to no data (<a href="/2017/library_vs_microservice/">eg, because of implementation consistency</a>)</li>
+  <li>When client state is important (eg transaction coordination)</li>
+</ul>
+
+<h3 id="how-to-pick-a-communication-method">How to pick a communication method</h3>
+<p>Selecting a communication method is about working out the characteristics your consumers will require and selecting a method which will satisfy those. For example if you need to provide data on request (synchronous) to clients which are not part of your organisation (untrusted) then you should use HTTP requests as a method.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2017/microservices-communication-methods/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2017/microservices-communication-methods'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Microservice communication methods",
+ "wordcount": "1127",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2017/microservices-communication-methods/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2017-05-31 00:00:00 +1200",
+ "description": "Communication between microservices allows us to build complex behaviours out of simple components. Most people tend to think of webservices when thinking of microservices however there are a number of other communication methods which are applicable in different situations.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

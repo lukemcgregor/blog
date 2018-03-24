@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Migrating my blog to Jekyll and GitHub Pages</title>
+  <meta name="description" content="How I moved my blog to Jekyll and Github pages and the lessons I learnt along the way.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Migrating my blog to Jekyll and GitHub Pages">
+  <meta name="twitter:description" content="How I moved my blog to Jekyll and Github pages and the lessons I learnt along the way.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Migrating my blog to Jekyll and GitHub Pages">
+  <meta property="og:description" content="How I moved my blog to Jekyll and Github pages and the lessons I learnt along the way.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2017/migrating-my-blog-to-jekyll-and-github-pages/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="3 May 2017" class="post-meta__date date">3 May 2017</time>
+      
+    </div>
+    <h1 class="post-title">Migrating my blog to Jekyll and GitHub Pages</h1>
+  </header>
+
+  <section class="post">
+    <p>Over the last 5 years I have been using a blog engine I wrote myself. Its not bad but I’m no designer and I would really like it to have a better style and typography. I also wanted to put the content in GitHub so that if people find mistakes they can <a href="https://github.com/lukemcgregor/lukemcgregor.github.io">fix them with a pull request</a>.</p>
+
+<p>This makes <a href="https://pages.github.com">GitHub pages</a> (free static site hosting) and <a href="https://jekyllrb.com/">Jekyll</a> (a static site generator GitHub runs) a great solution for running my blog.</p>
+
+<p>In this article I’m going to talk about my experience with moving to Jekyll and what I liked/disliked about the process.</p>
+
+<h2 id="before">Before</h2>
+<p><img src="/images/posts/2017/old-blog.png" alt="Before" /></p>
+
+<h2 id="and-after">And after</h2>
+<p><img src="/images/posts/2017/new-blog.png" alt="After" /></p>
+
+<h2 id="the-theme">The Theme</h2>
+<p>One of the nice things about Jekyll is the number of themes available for blogs. It looks like a lot of people use Jekyll for tech blogs so there are many themes available. In terms of themes you can either use a <a href="https://pages.github.com/themes/">bundled theme</a>, or get a <a href="http://jekyllthemes.org">theme someone else has made</a> from GitHub and fork it to run your blog.</p>
+
+<p>Bundled themes are pretty nice in that you can set them up very easily, eg in your <code class="highlighter-rouge">_config.yaml</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">theme</span><span class="pi">:</span> <span class="s">jekyll-theme-architect</span>
+</code></pre></div></div>
+
+<p>But there is far less selection available. It also doesn’t offer a great experience if you want to fix or change things about the theme to suit your use case which I ended up needing to do.</p>
+
+<p>There are thousands of Jekyll themes available on GitHub but I picked <a href="https://github.com/joshgerdes/jekyll-uno">jekyll-uno</a> by <a href="http://joshgerdes.com/2016/jekyll-uno-a-minimal-responsive-theme-for-jekyll/">@joshgerdes</a> as I liked the way it looked.</p>
+
+<h2 id="the-upgrade-process">The upgrade process</h2>
+
+<p>Setting up Jekyll and migrating my content was reasonably easy. I spent most of my time refactoring old posts into markdown as many of theme dated back to when I used blogspot.</p>
+
+<h3 id="creating-a-test-site">Creating a test site</h3>
+
+<p>Once I had decided on a theme the next step was to set it up on <a href="https://pages.github.com">GitHub pages</a>. To do this I forked the Jekyll-Uno repository. By default this creates a repository named <code class="highlighter-rouge">&lt;username&gt;/jekyll-uno</code>.</p>
+
+<p>GitHub pages requires a repository with a name <code class="highlighter-rouge">&lt;username&gt;/&lt;username&gt;.github.io</code> in order to create a site at the root of a domain like my blog, so I renamed the repository as above. To do this go to the settings on the forked repository.</p>
+
+<p><img src="/images/posts/2017/github-rename.png" alt="Rename github repo" /></p>
+
+<p><strong>NOTE</strong> After the rename it took a check-in to get GitHub pages to create the site.</p>
+
+<h3 id="migrating-the-content">Migrating the content</h3>
+
+<p>From here I imported all of my posts (and removed the default one). This meant creating a markdown file for each post in the <code class="highlighter-rouge">_posts</code> directory. Each post needs to be named <code class="highlighter-rouge">yyyy-mm-dd-name_of_the_article.md</code>, By default with Jekyll-uno this creates a post hosted at <code class="highlighter-rouge">/jekyll-uno/yyyy/name_of_the_article</code>. As my old blog was already using markdown this wasn’t too bad but some of my older articles were still in HTML so I fixed them up at the same time.</p>
+
+<p>I added support for setting the canonical link for the page, this allowed me to run my blog on github pages before I migrated the URL without having a duplicate content problem. By default the theme does set the canonical link but in my case I wanted this to point back to my old blog. While I imported each post I took care to add a canonical header to ensure if the new site was crawled at <code class="highlighter-rouge">username.github.io</code> it wouldn’t affect the existing content hosted on my blog.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">canonical</span><span class="pi">:</span> <span class="s">http://blog.staticvoid.co.nz/2012/3/24/entity_framework_comparative_performance</span>
+</code></pre></div></div>
+
+<p>Next I corrected the URL structure by setting a baseurl of <code class="highlighter-rouge">''</code> in the <code class="highlighter-rouge">_config.yaml</code> file.</p>
+
+<p><strong>NOTE</strong> jekyll-uno had some bugs around setting an empty baseurl, you will need <a href="https://github.com/joshgerdes/jekyll-uno/pull/60">this pull request</a> to make it all work properly</p>
+
+<p>The URL structure was slightly different from my old blog which uses <code class="highlighter-rouge">/yyyy/m/d/title</code> as the format. I quite like just having the year in the URL so instead of re-implementing my old URL scheme I decided to add in redirects from the original URLs to the new ones. To do this I installed a redirection plugin <a href="https://github.com/jekyll/jekyll-redirect-from">jekyll-redirect-from</a>. This allows the addition of front matter to list all of the URLs this page is known by. For some of my older pages this also includes redirects from when I used blogspot.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">redirect_from</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">2012/3/24/entity_framework_comparative_performance</span>
+  <span class="pi">-</span> <span class="s">2012/03/entity-framework-comparative.html</span>
+</code></pre></div></div>
+
+<h3 id="personalising">Personalising</h3>
+
+<p>I made several modifications to the theme itself to suit what I was wanting for a blog.</p>
+
+<p>The default theme had a very narrow max content width. This means on a large screen the content band is (IMO) too narrow. I upped this from 640px to 800px, which I felt looks a lot nicer especially with the default font size of 16px (which does make it nice to read).</p>
+
+<p>I got rid of the full screen landing page and went directly to the post list. While the landing page looked really nice I didn’t think it was terribly functional and as a reader I would just want to see an index. It was also implemented in javascript so if you go to any of the index pages without javascript enabled you see the landing page and cant get access to the actual index. This probably wouldn’t have stopped search bots but I don’t think it would be great for SEO to have your actual content not visible.</p>
+
+<p>I renamed the ‘Blog’ button to ‘Archive’ as without the landing page it makes more sense that you are going to the index of old posts rather than the blog section of a larger site.</p>
+
+<p>Images are by default left aligned, I didn’t really like this so I centered everything by default.</p>
+
+<p>There was no default tab width set for code blocks so it used the default 8 wide tabs, this made all my code samples look super indented, so I set a default tab width of 4 on code blocks (which is now settable in CSS3).</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">pre</span>
+<span class="p">{</span>
+    <span class="nl">-moz-tab-size</span><span class="p">:</span> <span class="m">4</span><span class="p">;</span>
+    <span class="nl">-o-tab-size</span><span class="p">:</span>   <span class="m">4</span><span class="p">;</span>
+    <span class="nl">tab-size</span><span class="p">:</span>      <span class="m">4</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I customised the look to bring some of my old blog through (like the logo and favicon) and also added a different background image. For anyone who is interested this image was taken at <a href="https://www.google.co.nz/maps/place/Lake+Louise,+AB,+Canada/@51.4139042,-116.2406884,15.25z/data=!4m5!3m4!1s0x53775d28a0e1ce11:0x3c373c7b6365bce6!8m2!3d51.4253705!4d-116.1772552">Lake Louise</a> in Alberta. I love the snow (which we don’t get much of in New Zealand) and this brings back good memories of our trip there a few years ago.</p>
+
+<p><img src="/images/posts/2017/cover.jpg" alt="Lake Louise" /></p>
+
+<p>I also did a bunch of minor fixes as pull requests back to the original theme:</p>
+
+<ul>
+  <li><a href="https://github.com/joshgerdes/jekyll-uno/pull/64">Markdown table style</a></li>
+  <li><a href="https://github.com/joshgerdes/jekyll-uno/pull/62">Cache busters</a></li>
+  <li><a href="https://github.com/joshgerdes/jekyll-uno/pull/61">No tags render</a></li>
+  <li><a href="https://github.com/joshgerdes/jekyll-uno/pull/60">Corrected baseurl conventions</a></li>
+</ul>
+
+<p>It was great to be able to make these fixes back into the original repository.</p>
+
+<h3 id="making-it-live">Making it live</h3>
+
+<p>The next step was to make the new blog live on my real URL. The first step of this was to go to the repository settings in github and set a custom domain.</p>
+
+<p><img src="/images/posts/2017/github-custom-domain.png" alt="Github custom domain" /></p>
+
+<p>This makes the github site respond to requests with my blogs URL. The final step was to create a CNAME from my <code class="highlighter-rouge">blog.staticvoid.co.nz</code> to <code class="highlighter-rouge">lukemcgregor.github.io</code>. This sends traffic to github instead of my old instance. Once the DNS propagated my blog was now live.</p>
+
+<p>I then made the canonical links point to the new URL scheme (by removing the manual canonical setting on each post). This allows search engines to update their index to point to the new URL scheme avoiding the need for a redirect when someone browses from search results.</p>
+
+<h3 id="moving-the-comments">Moving the comments</h3>
+
+<p>Given I had changed the URLs for all my posts I also needed to update the paths for Disqus to point old comments to the correct pages. This can be done with the <a href="https://disqus.com/admin/discussions/migrate/">Diqus migration tool</a>. This process was a bit fiddly as the automated mapping tool only respects 30* redirects. As this is a static site when <a href="https://github.com/jekyll/jekyll-redirect-from">jekyll-redirect-from</a> performs a redirect it uses a flat file method (aka meta <code class="highlighter-rouge">HTTP-REFRESH</code>). This means you need to use a csv mapping old to new URLs which was easiest to compile manually.</p>
+
+<h3 id="testing-things-out">Testing things out</h3>
+<p>As soon as the blog was live I did a manual test (including some of the redirected links) and checked analytics. This let me know that everything was up and running and I was still getting people visit the blog.</p>
+
+<p>I also have live monitoring on the site with <a href="https://uptimerobot.com">Uptime Robot</a> which emails me when it goes down. It also tracks some basic performance stats for the blog. It was really nice to see a significant performance boost from moving to a static generated site.</p>
+
+<p><img src="/images/posts/2017/uptime-and-performance.png" alt="Uptime and performance" /></p>
+
+<p>Once the new blog had been live for a few days I took a look at <a href="https://www.google.com/webmasters/tools/">Google webmaster tools</a> to make sure the site was getting correctly indexed. Organic search accounts for 2/3 of my traffic so I like to do all I can to ensure that my search results in Google are the best they can be.</p>
+
+<p><img src="/images/posts/2017/acquisition.png" alt="Acquisition" /></p>
+
+<p>What I saw in webmaster tools was a big jump in the number of pages indexed.</p>
+
+<p><img src="/images/posts/2017/indexed-pages.png" alt="Indexed pages" /></p>
+
+<p>This number should ideally equal the number of unique content pages in the static site (eg the number of posts). Unfortunately it was also indexing the redirect pages and navigational pages (index, tags, categories). This is something I will need to correct, as google thinks your site is most awesome when your content is unique and each page adds unique value.</p>
+
+<h3 id="whats-next">What’s next</h3>
+
+<p>There are still a few things I would like to do around my blog itself.</p>
+
+<ul>
+  <li>Exclude non-post pages from google index</li>
+  <li>Look at what happens if I use <a href="https://www.cloudflare.com">cloudflare</a> (and perhaps enable https)</li>
+  <li>Take a look at <a href="https://developers.google.com/search/docs/guides/intro-structured-data">structured data</a> for <a href="http://jsonld.com/blog-post/">blog posts</a></li>
+  <li>Add a link to correct issues via a pull request</li>
+</ul>
+
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2017/migrating-my-blog-to-jekyll-and-github-pages/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2017/migrating-my-blog-to-jekyll-and-github-pages'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Migrating my blog to Jekyll and GitHub Pages",
+ "wordcount": "1695",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2017/migrating-my-blog-to-jekyll-and-github-pages/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2017-05-03 00:00:00 +1200",
+ "description": "How I moved my blog to Jekyll and Github pages and the lessons I learnt along the way.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

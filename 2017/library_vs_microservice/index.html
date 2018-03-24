@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Library vs microservice</title>
+  <meta name="description" content="Microservices and libraries both have benefits in terms of providing reusable components. This article looks at the differences between microservices and libraries and looks at why you might choose one over another.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Library vs microservice">
+  <meta name="twitter:description" content="Microservices and libraries both have benefits in terms of providing reusable components. This article looks at the differences between microservices and libraries and looks at why you might choose one over another.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Library vs microservice">
+  <meta property="og:description" content="Microservices and libraries both have benefits in terms of providing reusable components. This article looks at the differences between microservices and libraries and looks at why you might choose one over another.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2017/library_vs_microservice/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="7 Mar 2017" class="post-meta__date date">7 Mar 2017</time>
+      
+    </div>
+    <h1 class="post-title">Library vs microservice</h1>
+  </header>
+
+  <section class="post">
+    <p>Both libraries and microservices provide a way of providing a functionality behind a versioned interface. In the case of a microservice the versioning needs to be supported by the service on its external interfaces (eg versioned messages or apis), in the case of a library the version is applied by the version of the package. In each case we have decoupled functionality.</p>
+
+<p>Each method has particular advantages and scenarios which it suits best.</p>
+
+<h3 id="tldr">TL;DR</h3>
+
+<p><img src="/images/posts/2017/library-or-microservice.png" alt="Library or Microservice" /></p>
+
+<h3 id="opt-in-vs-automatic-updates">Opt in vs automatic updates</h3>
+
+<p>Libraries and microservices have one defining difference which is who makes the decision to change the running implementation. In the case of a library the consumer opts for a new implementation, in the case of microservices the provider provides a new implementation at will (hopefully) meet the previous version contracts.</p>
+
+<p>To use an analogy a microservice is similar to a SaaS application whereas a library is like an installed application.</p>
+
+<h3 id="globally-vs-internally-consistent-implementation">Globally vs internally consistent implementation</h3>
+
+<p>Microservices provide a consistent implementation for all consumers at any given time. This means that changes to the implementation are immediately applied everywhere.  However if an application makes two calls to a microservice the implementation may differ between these calls. In contrast two calls to the same library are guaranteed to use the same implementation, however two applications using the same library are not guaranteed to be using the same implementation.</p>
+
+<p>To look at it another way if you want repeated calls to return the same result then a library is the best answer, however if you want all consumers to receive the same result then a microservice is best.</p>
+
+<h3 id="versioned-vs-unversioned-internal-persisted-state">Versioned vs unversioned internal persisted state</h3>
+
+<p>Internal state is state which is used by the implementation, not passed by the caller and shared between all instances of the implementation (for example data in a database). For a library to use internal state it must be backward compatible with all previous versions, so that any version of the implementation can write valid state. This practically means that any new data added by new implementations must be nullable, and old data cannot change its format. In my opinion this restriction means that it’s best not to use internal persisted state with library code. If you require persisted state get it passed in by the caller, who is responsible for handling any version mutations.</p>
+
+<p>In comparison microservice can have un-versioned internal persisted state without causing an update problem when changing the representation of that state. This allows a microservice to confidently change its internal state representation without breaking any of the consumers of the service.</p>
+
+<p>In my opinion this is the biggest separator of microservices and libraries.</p>
+
+<h3 id="failure-conditions">Failure conditions</h3>
+
+<p>Libraries and microservices have different failure conditions. These largely depend on the transport used to consume the microservice. In most cases a library will have far fewer failure scenarios as microservices have more moving parts (for example web servers, other running processes etc.) however if you are using asynchronous communication (such as messaging) microservices have some benefits in terms of failure scenarios. For example if an error occurs in a library the consumer must handle that failure, however if an error occurs inside a microservice consuming a message, the message can be deferred and replayed automatically allowing the error to be resolved rather than handled. This can be a big benefit in some scenarios.</p>
+
+<p>If your microservice uses synchronous communication (such as http), it is exposed to many more failure conditions, such as what do you do if its is unavailable, slow, or there is some kind of infrastructure issue.</p>
+
+<h3 id="low-overheads-vs-horizontal-scaling">Low overheads vs horizontal scaling</h3>
+
+<p>Libraries naturally have lower overheads as they operate without requiring serialisation and other cross process/machine costs which microservice transports are subject to. While there are techniques to mitigate these costs, microservices will always have some kind of overhead which may affect synchronous communication. However when it comes to asynchronous communication microservices allow the processing to be spread across multiple machines easily which gives a horizontal scaling characteristic.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2017/library_vs_microservice/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2017/library_vs_microservice'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Library vs microservice",
+ "wordcount": "674",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2017/library_vs_microservice/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2017-03-07 00:00:00 +1300",
+ "description": "Microservices and libraries both have benefits in terms of providing reusable components. This article looks at the differences between microservices and libraries and looks at why you might choose one over another.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>MSSQL and large INSERT statements</title>
+  <meta name="description" content="There are several different ways of inserting data in MSSQL. In this post I explore several ways of inserting data and examine how they perform.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="MSSQL and large INSERT statements">
+  <meta name="twitter:description" content="There are several different ways of inserting data in MSSQL. In this post I explore several ways of inserting data and examine how they perform.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MSSQL and large INSERT statements">
+  <meta property="og:description" content="There are several different ways of inserting data in MSSQL. In this post I explore several ways of inserting data and examine how they perform.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2012/mssql_and_large_insert_statements/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="17 Aug 2012" class="post-meta__date date">17 Aug 2012</time>
+      
+    </div>
+    <h1 class="post-title">MSSQL and large INSERT statements</h1>
+  </header>
+
+  <section class="post">
+    <p>When Entity Framework was made open source (which by the way I think is awesome) I posted a possible improvement to the framework which could improve performance especially in scenarios where a set of rows are inserted into a table. There are several different methods of inserting large amounts of data into SQL.</p>
+
+<p>In this post I’m going to outline each approach to bulk inserts and any issues with the approach and then do a comparison on the actual performance of these different methods.</p>
+
+<h3 id="appending-all-of-the-statements-into-a-single-command-text">Appending all of the statements into a single command text</h3>
+
+<p>Queries to a SQL server are inherently ordered in nature, we cant insert a new row until the previous one is written as SQL has to lock the table to perform our insert operation. This means that for each row we insert we need to go through a series of steps, each of which takes time.</p>
+
+<p><img src="/images/posts/2012/sql-query-execution.png" alt="SQL Query Execution" /></p>
+
+<p>The more latency on our network the longer the green blocks become. So if these are the steps which we go through for a single insert, what does it look like for multiple inserts.</p>
+
+<p><img src="/images/posts/2012/sql-query-execution-multiples.png" alt="SQL Query Execution - multiples" /></p>
+
+<p>As you can see we spend a lot of time doing all of the wrapping around the statement and not a lot of time actually inserting rows in SQL.</p>
+
+<p>By appending all of the statements into a single command text what we are essentially doing is bundling all of the separate actions we need to perform in out insert together. This give us something like the following:</p>
+
+<p><img src="/images/posts/2012/sql-query-execution-multiples-batched.png" alt="SQL Query Execution - multiples batched" /></p>
+
+<p>As you can see this theoretically makes the query much more efficient.</p>
+
+<p>An example of this is if we put the following into a single commandtext</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="p">[</span><span class="n">StaticVoid</span><span class="p">.</span><span class="n">OrmPerformance</span><span class="p">.</span><span class="n">Test</span><span class="p">].[</span><span class="n">dbo</span><span class="p">].[</span><span class="n">TestEntities</span><span class="p">]</span>
+       <span class="p">([</span><span class="n">TestString</span><span class="p">],</span> <span class="p">[</span><span class="n">TestDate</span><span class="p">],</span> <span class="p">[</span><span class="n">TestInt</span><span class="p">])</span>
+<span class="k">VALUES</span> <span class="p">(</span><span class="s1">'some gumph'</span><span class="p">,</span><span class="s1">'2012-1-1'</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="p">[</span><span class="n">StaticVoid</span><span class="p">.</span><span class="n">OrmPerformance</span><span class="p">.</span><span class="n">Test</span><span class="p">].[</span><span class="n">dbo</span><span class="p">].[</span><span class="n">TestEntities</span><span class="p">]</span>
+       <span class="p">([</span><span class="n">TestString</span><span class="p">],</span> <span class="p">[</span><span class="n">TestDate</span><span class="p">],</span> <span class="p">[</span><span class="n">TestInt</span><span class="p">])</span>
+<span class="k">VALUES</span> <span class="p">(</span><span class="s1">'some gumph 2'</span><span class="p">,</span><span class="s1">'2012-1-2'</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="p">[</span><span class="n">StaticVoid</span><span class="p">.</span><span class="n">OrmPerformance</span><span class="p">.</span><span class="n">Test</span><span class="p">].[</span><span class="n">dbo</span><span class="p">].[</span><span class="n">TestEntities</span><span class="p">]</span>
+       <span class="p">([</span><span class="n">TestString</span><span class="p">],</span> <span class="p">[</span><span class="n">TestDate</span><span class="p">],</span> <span class="p">[</span><span class="n">TestInt</span><span class="p">])</span>
+<span class="k">VALUES</span> <span class="p">(</span><span class="s1">'some gumph 3'</span><span class="p">,</span><span class="s1">'2012-1-3'</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="using-a-multi-row-insert-statement-aka-row-constructors">Using a multi-row insert statement (Aka Row Constructors)</h3>
+
+<p>Like a single command text a multi insert statement has the benefit of reducing the number of round trips to the database. In addition inserting multiple rows with a single statement improves the efficiency of the actual SQL execution as it is executed all in one hit. This means that it only needs to do all the fun stuff that SQL need to do for every query once (like generating query plans, locking tables and other things I don’t really understand). This basically gets us back to:</p>
+
+<p><img src="/images/posts/2012/sql-query-execution.png" alt="SQL Query Execution" /></p>
+
+<p>An example of a multi-row insert statement is the following</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="p">[</span><span class="n">StaticVoid</span><span class="p">.</span><span class="n">OrmPerformance</span><span class="p">.</span><span class="n">Test</span><span class="p">].[</span><span class="n">dbo</span><span class="p">].[</span><span class="n">TestEntities</span><span class="p">]</span>
+       <span class="p">([</span><span class="n">TestString</span><span class="p">],</span> <span class="p">[</span><span class="n">TestDate</span><span class="p">],</span> <span class="p">[</span><span class="n">TestInt</span><span class="p">])</span>
+<span class="k">VALUES</span> <span class="p">(</span><span class="s1">'some gumph'</span><span class="p">,</span><span class="s1">'2012-1-1'</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+      <span class="p">,(</span><span class="s1">'some gumph 2'</span><span class="p">,</span><span class="s1">'2012-1-2'</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+      <span class="p">,(</span><span class="s1">'some gumph 3'</span><span class="p">,</span><span class="s1">'2012-1-3'</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>As you can see this is also a lot less text than the above example so it has an additional benefit of reducing the size of the data which needs to be transmitted (and parsed).</p>
+
+<p>One of the interesting things about multi-row insert statements is that MSSQL actually appears to have some limits on the query itself.</p>
+
+<ul>
+  <li>A maximum of 1000 rows can be inserted with row constructors. This is a hard limit which means you get an exception when exceeding this limit.
+ -When you exceed 1000 values in your statement SQL shifts its optimisations to reduce the size of its query plans, this means that there is a sharp spike in query execution times when this value is exceeded.</li>
+</ul>
+
+<p><strong>NOTE</strong> row constructors are only available in SQL 2008 and above.</p>
+
+<h3 id="sql-bulk-copy">SQL bulk copy</h3>
+
+<p>The very best insert performance for inserting large volumes of data can be attained by using SQL Bulk Copy. This method bypasses the SQL query language entirely and streams data directly to SQL.</p>
+
+<p>While SQL bulk copy is exceptionally fast at inserting large volumes of data there are several downsides to using this method.</p>
+
+<ul>
+  <li>There is no way to get a response back from your write, this means that you cant get back generated IDs for your newly inserted rows.</li>
+  <li>There is a set up cost incurred with running SQL bulk copy. This means it is not efficient for small datasets.</li>
+</ul>
+
+<h3 id="how-they-compare">How they compare</h3>
+
+<p><img src="/images/posts/2012/bulk-insert-methods.png" alt="Bulk Insert Methods" /></p>
+
+<p>The above graph tells us some interesting things about the way each of these bulk methods work and their individual weaknesses.</p>
+
+<p>At point <code class="highlighter-rouge">A</code> we can see a large spike in the execution time for our multi-row insert statement. This occurs at 334 rows inserted. As we discussed earlier SQL changes its behavior when there are more than 1000 in a single statement. In the above case the SQL statement contained 3 values per row. This means that on the 334th row inserted we have 1002 values in our SQL statement and hence SQL begins to optimise for query plan size. For more info on this particular scenario read <a href="http://stackoverflow.com/a/8640583/1070291">Martin Smiths answer on Stack Overflow</a> (which is a very good read). Its also interesting to note that in my example after this optimisation change we see multi-row inserts become slower than individual SQL insert statements each submitted separately to the database.</p>
+
+<p>If we look at point <code class="highlighter-rouge">B</code> on the graph we can see a series of sudden drops in execution time which occur every 200 rows beginning on the 400th row. This occurs in correlation with beginning a new batch in our batched approach, ie 401 rows in 3 batches takes less time than 400 rows in 2 batches. This is a very interesting result which I need to do more investigation into (if anyone knows any more about this or has a theory I would love to hear about it). My only hypothesis is that the query plan is calculated on the single row insert and then used for the two larger inserts (which have more variables and are hence harder to parse).</p>
+
+<p>With our SQL bulk copy line there are a couple of important points to note. Firstly as you can see there appears to be a set up cost associated with the method of around 25ms. Because of this set up cost SQL bulk copy is significantly slower for small numbers of rows. Secondly the point at which SQL bulk copy becomes more efficient in my example is around 150 rows (point <code class="highlighter-rouge">C</code> on the graph).</p>
+
+<p>Detailed times and memory usage results can be found <a href="/files/posts/2012/Performance%20Results%20-%20SQL%20Bulk%20Insert.xlsx"><strong>here</strong></a>.</p>
+
+<p>Thanks to Eli Weinstock Herman (<a href="https://twitter.com/tarwn">t</a> | <a href="http://tiernok.com/">b</a>) for the bulk copy scenario.</p>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2012/mssql_and_large_insert_statements/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2012/mssql_and_large_insert_statements'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "MSSQL and large INSERT statements",
+ "wordcount": "1230",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2012/mssql_and_large_insert_statements/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2012-08-17 00:00:00 +1200",
+ "description": "There are several different ways of inserting data in MSSQL. In this post I explore several ways of inserting data and examine how they perform.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>

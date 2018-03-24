@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Making Dapper Faster with Transactions</title>
+  <meta name="description" content="Transactions are an often neglected component of how we access databases. They are important when we are writing to databases as they affect how and how often tables are locked. In this post we will examine what kind of difference transactions make in practice.">
+  <meta name="author" content="Luke McGregor">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Making Dapper Faster with Transactions">
+  <meta name="twitter:description" content="Transactions are an often neglected component of how we access databases. They are important when we are writing to databases as they affect how and how often tables are locked. In this post we will examine what kind of difference transactions make in practice.">
+  
+  <meta name="twitter:creator" content="staticv0id">
+  
+  <meta name="twitter:image" content="/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Making Dapper Faster with Transactions">
+  <meta property="og:description" content="Transactions are an often neglected component of how we access databases. They are important when we are writing to databases as they affect how and how often tables are locked. In this post we will examine what kind of difference transactions make in practice.">
+  <meta property="og:image" content="/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css?1521798198461408000">
+  <link rel="canonical" href="http://localhost:4000/2012/making_dapper_faster_with_transactions/">
+  <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+	<div class="panel-main">
+
+		<div class="panel-main__inner panel-inverted">
+			<div class="panel-main__content">
+				<a href="/" title="link to home of StaticVoid">
+					<img src="https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256" class="user-image" alt="Profile Photo">
+					<div class="staticvoid-logo">
+						<div class="wrapper">
+							<div class="code">static void;</div>
+							<div class="comment">// Blog</div>
+						</div>
+					</div>
+				</a>
+				<hr class="panel-cover__divider">
+
+				<div class="navigation-wrapper">
+
+					<nav class="cover-navigation cover-navigation--primary">
+						<ul class="navigation">
+							<li class="navigation__item"><a href="/" title="Archive">Archive</a></li>
+						</ul>
+					</nav>
+
+					<nav class="cover-navigation navigation--social">
+						<ul class="navigation">
+
+							
+							<!-- Twitter -->
+							<li class="navigation__item">
+								<a href="http://twitter.com/staticv0id" title="@staticv0id on Twitter" target="_blank">
+									<i class="icon icon-social-twitter"></i>
+									<span class="label">Twitter</span>
+								</a>
+							</li>
+							   
+							<!-- GitHub -->
+							<li class="navigation__item">
+								<a href="https://www.github.com/lukemcgregor" title="lukemcgregor on GitHub" target="_blank">
+									<i class="icon icon-social-github"></i>
+									<span class="label">GitHub</span>
+								</a>
+							</li>
+							 
+
+							<!-- RSS -->
+							<li class="navigation__item">
+								<a href="/feed.xml" title="Subscribe" target="_blank">
+									<i class="icon icon-rss"></i>
+									<span class="label">RSS</span>
+								</a>
+							</li>
+
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="panel-cover--overlay"></div>
+	</div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="26 Apr 2012" class="post-meta__date date">26 Apr 2012</time>
+      
+    </div>
+    <h1 class="post-title">Making Dapper Faster with Transactions</h1>
+  </header>
+
+  <section class="post">
+    <p>After posting on the performance of several different ORMs I had a chat to <a href="http://samsaffron.com/">Sam Saffron</a> one of the authors of the Dapper framework around how I could make my Dapper test cases faster. My original test results showed Dapper as being around 55% slower for inserts and 23% slower for updates than Entity Framework.</p>
+
+<p>What we found was that by default Entity Framework wraps its batches in a transaction but with Dapper you have to perform this manually. With SQL transactions make batch write operations substantially faster. In this post were going to explore how much difference transactions make and look at some of the reasons why they have an impact on performance. For this post I’m using Dapper for simplicity but the same general principles and performance gains apply to other ORMs.</p>
+
+<h3 id="transaction-performance">Transaction Performance</h3>
+
+<p>I have compared below how dapper performs with and without transactions. As you can see they make a pretty big difference to the execution time of database writes, especially as the number of items increases. My original data for these results can be found <a href="/files/posts/2012/Performance%20Results%20-%20Dapper%20Transactions.xlsx">here</a>.</p>
+
+<p><img src="/images/posts/2012/dapper-insert-comparison.png" alt="Insert Comparison" /></p>
+
+<p><img src="/images/posts/2012/dapper-insert-relative-performance.png" alt="Insert Relative Performance" /></p>
+
+<p><img src="/images/posts/2012/dapper-update-comparison.png" alt="Update Comparison" /></p>
+
+<p><img src="/images/posts/2012/dapper-update-relative-performance.png" alt="Update Relative Performance" /></p>
+
+<h3 id="does-changing-the-isolation-level-alter-performance">Does changing the Isolation Level alter performance?</h3>
+<p>SQL provides several different modes (Isolation Levels) to apply to transactions. These affect how rows which are modified within a transaction are locked and when they can be queried. <a href="http://msdn.microsoft.com/en-us/library/ff647793.aspx#scalenetchapt14 _topic7">MSDN - Improving SQL Server Performance</a> has some great notes on exactly what these lock levels do and what the specific side effects of each method can be. I thought playing with these may affect performance, but I was wrong; <strong>Isolation Levels appear to have no affect on single threaded bulk write performance</strong>.</p>
+
+<p><img src="/images/posts/2012/dapper-transactions-insert-comparison.png" alt="Transactions Insert Comparison" /></p>
+
+<p><img src="/images/posts/2012/dapper-transaction-insert-relative-performance.png" alt="Transactions Insert Relative Performance" /></p>
+
+<p><img src="/images/posts/2012/dapper-transactions-update-comparison.png" alt="Transactions Update Comparison" /></p>
+
+<p><img src="/images/posts/2012/dapper-transactions-update-relative-performance.png" alt="Transactions Update Relative Performance" /></p>
+
+<p><strong><em>NOTE</em></strong> <em>however that these do have an affect on performance if multiple queries affecting the same tables are being performed as you may need to wait for a previous transaction to complete before you can write with some Isolation Levels.</em></p>
+
+<h3 id="what-makes-transactions-so-much-faster">What makes transactions so much faster?</h3>
+
+<p>So there’s a bit of a secret with transactions, under the covers they happen anyway. Whenever you perform a write operation it is implicit that this occurs within a transaction so that it is either completely written or not written at all. What we are really doing when we wrap a query in a transaction is being explicit about when we start and stop the transaction. This means we can perform multiple operations within the same transaction.</p>
+
+<p>Transactions naturally have an overhead to do with performing lock and unlock operations on data. This means that we really want to have less of them. By wrapping 1000 inserts inside a transaction what we are actually achieving is reducing the number of transactions by 999, which obviously improves performance dramatically.</p>
+
+<p>See <a href="http://stackoverflow.com/q/5091084/1070291">Stack Overflow - ADO.net SqlTransaction improves performance</a> for a conversation on this topic.</p>
+
+<h3 id="should-i-use-them-everywhere">Should I use them everywhere?</h3>
+
+<p>Transactions are a useful part of SQL and its really important for performance that your operations are correctly encapsulated inside transactions. If you are performing queries which lend themselves to large batches of data its well worth your while reducing the number of transactions which are occurring by being explicit about when transactions start and finish.</p>
+
+<p>Having said this be aware that if anything inside your transaction fails the entire transaction will be rolled back. This is really important as it means that until you have successfully committed your data, it isn’t really saved. This means you need to conciser what other things will be rolled back on failure and make sure that your data is related enough that its OK that the whole transaction is either committed or not committed.</p>
+
+<p>Another thing to note is that depending on your isolation level you may be blocking other queries to the database for the duration of your transaction. This may have flow on affects on performance to other parts of your system, especially when multiple threads/processes/users are concurrently accessing the database.</p>
+
+<p>To sum up transactions can be dangerous, make sure you understand whats going on behind the scenes with transactions and spend some time thinking about where you place your transaction boundaries.</p>
+
+<h3 id="thanks">Thanks</h3>
+
+<p>I’m particularly grateful to <a href="http://samsaffron.com/">Sam Saffron</a> for his help identifying transactions as the cause of my dapper performance issues.</p>
+
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://localhost:4000/2012/making_dapper_faster_with_transactions/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2012/making_dapper_faster_with_transactions'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//staticvoidblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+       })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script type="application/ld+json">
+{ "@context": "http://schema.org",
+ "@type": "BlogPosting",
+ "headline": "Making Dapper Faster with Transactions",
+ "wordcount": "753",
+ "publisher": "StaticVoid",
+ "mainEntityOfPage": "http://localhost:4000/2012/making_dapper_faster_with_transactions/",
+ "publisher": {
+   "@type": "Organization",
+   "name": "StaticVoid",
+  "logo":{
+    "@type":"ImageObject",
+    "url": "http://localhost:4000/images/favicons/favicon-194x194.png"
+  }
+ },
+ "datePublished": "2012-04-26 00:00:00 +1200",
+ "description": "Transactions are an often neglected component of how we access databases. They are important when we are writing to databases as they affect how and how often tables are locked. In this post we will examine what kind of difference transactions make in practice.",
+   "author": {
+    "@type": "Person",
+    "name": "Luke McGregor"
+	,"image": "https://www.gravatar.com/avatar/46e93e55b8f4f652201516c2f7bf3323?s=256"
+  }
+ }
+</script>
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Luke McGregor. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js?1521798198461408000"></script>
+
+
+    </div>
+  </body>
+</html>
