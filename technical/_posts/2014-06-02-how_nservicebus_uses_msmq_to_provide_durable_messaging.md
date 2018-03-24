@@ -34,7 +34,7 @@ bus.Send("service2.input@machine2",myMessage);
 
 MSMQ introduces a new concept in order to deal with this flow; an outgoing queue. For every remote queue a machine sends messages to MSMQ keeps a local outgoing queue. When we send our message MSMQ writes it first to the outgoing queue and it is then transmitted to the remote machine once the transmission is complete the message is removed from the outgoing queue. This means we get the same durability but across the network. If machine 2 is not contactable the message remains in the outgoing queue until it becomes available and has been sent.
 
-![]({{site.baseurl}}/images/posts/{{page.date | date: '%Y' }}/how_nsb_uses_msmq_to_provide_durable_messaging%202.png)
+![how nsb uses msmq to provide durable messaging]({{site.baseurl}}/images/posts/{{page.date | date: '%Y' }}/how_nsb_uses_msmq_to_provide_durable_messaging%202.png)
 
 #### Publish subscribe
 
@@ -42,7 +42,7 @@ Publish subscribe is a little more complex as there are two separate flows which
 
 The first is the subscription flow. When you start a subscribing application it sends a message to the publishing application with details of what messages you are subscribing to and the address of the subscribing input queue (where to send the messages to). The publishing application receives these subscription messages and updates its local subscription store (in our case a queue).
 
-![]({{site.baseurl}}/images/posts/{{page.date | date: '%Y' }}/how_nsb_uses_msmq_to_provide_durable_messaging%20subscribe.png)
+![how nsb uses msmq to provide durable messaging - subscribe]({{site.baseurl}}/images/posts/{{page.date | date: '%Y' }}/how_nsb_uses_msmq_to_provide_durable_messaging%20subscribe.png)
 
 The second stage occurs when a message is published.
 
@@ -52,11 +52,11 @@ bus.Publish(myMessage);
 
  When a message is published the publisher first checks its local subscription storage and finds a list of subscribers which are interested in the particular published message. It then loops through and sends the message to each of the listed subscribers.
 
-![]({{site.baseurl}}/images/posts/{{page.date | date: '%Y' }}/how_nsb_uses_msmq_to_provide_durable_messaging%203.png)
+![how nsb uses msmq to provide durable messaging - 3]({{site.baseurl}}/images/posts/{{page.date | date: '%Y' }}/how_nsb_uses_msmq_to_provide_durable_messaging%203.png)
 
 In the case where a remote machine is subscribed to a message the same flow occurs with the addition of an outgoing queue.
 
-![]({{site.baseurl}}/images/posts/{{page.date | date: '%Y' }}/how_nsb_uses_msmq_to_provide_durable_messaging%204.png)
+![how nsb uses msmq to provide durable messaging -4]({{site.baseurl}}/images/posts/{{page.date | date: '%Y' }}/how_nsb_uses_msmq_to_provide_durable_messaging%204.png)
 
  So what does all of this mean and why does it matter. By understanding the paths that messages go through debugging your applications becomes much simpler. When you find a message isnt being delivered where you expect you can look in the following places to work out where things went wrong:
 

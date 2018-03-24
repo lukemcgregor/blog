@@ -314,4 +314,4 @@ With the following database tables
 In this post we have looked in detail at navigation properties, what they are, how they are detected and how they are configured. As with many ORMs Entity Framework provides an abstraction over database Foreign Keys. As with any abstraction its really important to understand its limitations. I hope this post helps you better understand how Navigation Properties work and enables you to make good decisions when dealing with Entity Framework.
 
 
-[MSDN - System.Data.Entity.ModelConfiguration.Conventions Namespace]: http://msdn.microsoft.com/en-us/library/system.data.entity.modelconfiguration.conventions(v=vs.103).aspx
+[MSDN - System.Data.Entity.ModelConfiguration.Conventions Namespace]: https://msdn.microsoft.com/en-us/library/system.data.entity.modelconfiguration.conventions(v=vs.103).aspx

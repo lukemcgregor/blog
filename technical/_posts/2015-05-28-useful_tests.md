@@ -32,7 +32,7 @@ If you are expecting your automated tests to catch everything, you're in for som
 
 It's far better to prove that some important use cases are still achievable. This wont make you bug free [but hardly anyone will notice them](http://en.wikipedia.org/wiki/Pareto_principle).
 
-![](http://i.stack.imgur.com/ifOwg.gif)
+![difficult](http://i.stack.imgur.com/ifOwg.gif)
 
 ### Common usage scenarios over edge cases
 

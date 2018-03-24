@@ -24,7 +24,7 @@ I have compared below how dapper performs with and without transactions. As you 
 
 
 ### Does changing the Isolation Level alter performance?
-SQL provides several different modes (Isolation Levels) to apply to transactions. These affect how rows which are modified within a transaction are locked and when they can be queried. [MSDN - Improving SQL Server Performance](http://msdn.microsoft.com/en-us/library/ff647793.aspx#scalenetchapt14 _topic7) has some great notes on exactly what these lock levels do and what the specific side effects of each method can be. I thought playing with these may affect performance, but I was wrong; **Isolation Levels appear to have no affect on single threaded bulk write performance**.
+SQL provides several different modes (Isolation Levels) to apply to transactions. These affect how rows which are modified within a transaction are locked and when they can be queried. [MSDN - Improving SQL Server Performance](https://msdn.microsoft.com/en-us/library/ff647793.aspx#scalenetchapt14 _topic7) has some great notes on exactly what these lock levels do and what the specific side effects of each method can be. I thought playing with these may affect performance, but I was wrong; **Isolation Levels appear to have no affect on single threaded bulk write performance**.
 
 
 ![Transactions Insert Comparison]({{site.baseurl}}/images/posts/{{page.date | date: '%Y' }}/dapper-transactions-insert-comparison.png)

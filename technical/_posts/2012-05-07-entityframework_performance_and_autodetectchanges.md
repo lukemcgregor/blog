@@ -77,7 +77,7 @@ Change tracking is the central and most complex component of Entity Framework, s
  - [Change Tracking][2] - MSDN
 
 
-[1]:http://msdn.microsoft.com/en-us/library/gg696177(v=vs.103).aspx
-[2]:http://msdn.microsoft.com/en-us/library/gg696177(v=vs.103).aspx
+[1]:https://msdn.microsoft.com/en-us/library/gg696177(v=vs.103).aspx
+[2]:https://msdn.microsoft.com/en-us/library/gg696177(v=vs.103).aspx
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async>
