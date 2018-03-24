@@ -17,7 +17,7 @@ Traditionally when we browse web pages we get most of the content on the page im
 While in recent years developers have been building JavaScript heavy applications, many search engine [webcrawlers do not execute javascript when indexing](https://developers.google.com/webmasters/ajax-crawling/docs/learn-more) sites. This is a bit of a problem if you have a single page application and want the content to be indexed by Google.
 
 ### Server-side rendering
-As I posted last week I have just started on [my own project](/2014/12/23/new_beginnings) which I will be working on for the next year. My site is going to be heavily reliant on SEO but I don't want to constrain the user experience because search engines wont execute JavaScript. Enter server-side rendering (SSR).
+As I posted last week I have just started on [my own project](/2014/new_beginnings) which I will be working on for the next year. My site is going to be heavily reliant on SEO but I don't want to constrain the user experience because search engines wont execute JavaScript. Enter server-side rendering (SSR).
 
 The principal behind SSR is to take a JavaScript enabled page and optimistically execute the JavaScript required to reach the initial page state and then send down that generated DOM to the client rather than our skeleton page. This is actually pretty similar to what web technologies have been doing for years with server code generating the DOM and sending that down to users, but our language isn't ASP.Net, Rails or PHP its JavaScript that would normally execute in the browser.
 
