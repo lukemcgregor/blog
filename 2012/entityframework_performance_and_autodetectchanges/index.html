@@ -48,7 +48,7 @@
   <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="/css/main.css?1521888613673402498">
+  <link rel="stylesheet" href="/css/main.css?1521893633085120945">
   <link rel="canonical" href="http://blog.staticvoid.co.nz/2012/entityframework_performance_and_autodetectchanges/">
   <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
 </head>
@@ -188,7 +188,7 @@
 <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span><span class="p">.</span><span class="n">Configuration</span><span class="p">.</span><span class="n">AutoDetectChangesEnabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>But be careful while you have Auto Detect Changes off Entity Framework will not be tracking the changes you have made or fixing up navigation properties. MSDN says this may mean that turning off Auto Detect Changes <em>“can potentially introduce subtle bugs into your application if not used correctly.”</em>(<a href="http://msdn.microsoft.com/en-us/library/gg696177(v=vs.103).aspx">MSDN</a>)</p>
+<p>But be careful while you have Auto Detect Changes off Entity Framework will not be tracking the changes you have made or fixing up navigation properties. MSDN says this may mean that turning off Auto Detect Changes <em>“can potentially introduce subtle bugs into your application if not used correctly.”</em>(<a href="https://msdn.microsoft.com/en-us/library/gg696177(v=vs.103).aspx">MSDN</a>)</p>
 
 <p>Once your done with your bulk changes its worth while manually calling DetectChanges so that you leave the context in an aware state. You can do this as follows:</p>
 
@@ -207,7 +207,7 @@
 
 <ul>
   <li><a href="http://blog.oneunicorn.com/2012/03/10/secrets-of-detectchanges-part-1-what-does-detectchanges-do/">Secrets of DetectChanges Series</a> - Arthur Vickers</li>
-  <li><a href="http://msdn.microsoft.com/en-us/library/gg696177(v=vs.103).aspx">Change Tracking</a> - MSDN</li>
+  <li><a href="https://msdn.microsoft.com/en-us/library/gg696177(v=vs.103).aspx">Change Tracking</a> - MSDN</li>
 </ul>
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="">
@@ -267,7 +267,7 @@
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/js/main.js?1521888613673402498"></script>
+<script type="text/javascript" src="/js/main.js?1521893633085120945"></script>
 
 
     </div>

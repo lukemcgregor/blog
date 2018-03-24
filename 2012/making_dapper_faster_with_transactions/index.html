@@ -48,7 +48,7 @@
   <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="/css/main.css?1521888613673402498">
+  <link rel="stylesheet" href="/css/main.css?1521893633085120945">
   <link rel="canonical" href="http://blog.staticvoid.co.nz/2012/making_dapper_faster_with_transactions/">
   <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
 </head>
@@ -156,7 +156,7 @@
 <p><img src="/images/posts/2012/dapper-update-relative-performance.png" alt="Update Relative Performance" /></p>
 
 <h3 id="does-changing-the-isolation-level-alter-performance">Does changing the Isolation Level alter performance?</h3>
-<p>SQL provides several different modes (Isolation Levels) to apply to transactions. These affect how rows which are modified within a transaction are locked and when they can be queried. <a href="http://msdn.microsoft.com/en-us/library/ff647793.aspx#scalenetchapt14 _topic7">MSDN - Improving SQL Server Performance</a> has some great notes on exactly what these lock levels do and what the specific side effects of each method can be. I thought playing with these may affect performance, but I was wrong; <strong>Isolation Levels appear to have no affect on single threaded bulk write performance</strong>.</p>
+<p>SQL provides several different modes (Isolation Levels) to apply to transactions. These affect how rows which are modified within a transaction are locked and when they can be queried. <a href="https://msdn.microsoft.com/en-us/library/ff647793.aspx#scalenetchapt14 _topic7">MSDN - Improving SQL Server Performance</a> has some great notes on exactly what these lock levels do and what the specific side effects of each method can be. I thought playing with these may affect performance, but I was wrong; <strong>Isolation Levels appear to have no affect on single threaded bulk write performance</strong>.</p>
 
 <p><img src="/images/posts/2012/dapper-transactions-insert-comparison.png" alt="Transactions Insert Comparison" /></p>
 
@@ -245,7 +245,7 @@
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/js/main.js?1521888613673402498"></script>
+<script type="text/javascript" src="/js/main.js?1521893633085120945"></script>
 
 
     </div>

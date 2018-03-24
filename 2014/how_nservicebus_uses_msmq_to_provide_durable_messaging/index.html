@@ -48,7 +48,7 @@
   <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="/css/main.css?1521888613673402498">
+  <link rel="stylesheet" href="/css/main.css?1521893633085120945">
   <link rel="canonical" href="http://blog.staticvoid.co.nz/2014/how_nservicebus_uses_msmq_to_provide_durable_messaging/">
   <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
 </head>
@@ -165,7 +165,7 @@
 
 <p>MSMQ introduces a new concept in order to deal with this flow; an outgoing queue. For every remote queue a machine sends messages to MSMQ keeps a local outgoing queue. When we send our message MSMQ writes it first to the outgoing queue and it is then transmitted to the remote machine once the transmission is complete the message is removed from the outgoing queue. This means we get the same durability but across the network. If machine 2 is not contactable the message remains in the outgoing queue until it becomes available and has been sent.</p>
 
-<p><img src="/images/posts/2014/how_nsb_uses_msmq_to_provide_durable_messaging%202.png" alt="" /></p>
+<p><img src="/images/posts/2014/how_nsb_uses_msmq_to_provide_durable_messaging%202.png" alt="how nsb uses msmq to provide durable messaging" /></p>
 
 <h4 id="publish-subscribe">Publish subscribe</h4>
 
@@ -173,7 +173,7 @@
 
 <p>The first is the subscription flow. When you start a subscribing application it sends a message to the publishing application with details of what messages you are subscribing to and the address of the subscribing input queue (where to send the messages to). The publishing application receives these subscription messages and updates its local subscription store (in our case a queue).</p>
 
-<p><img src="/images/posts/2014/how_nsb_uses_msmq_to_provide_durable_messaging%20subscribe.png" alt="" /></p>
+<p><img src="/images/posts/2014/how_nsb_uses_msmq_to_provide_durable_messaging%20subscribe.png" alt="how nsb uses msmq to provide durable messaging - subscribe" /></p>
 
 <p>The second stage occurs when a message is published.</p>
 
@@ -182,11 +182,11 @@
 
 <p>When a message is published the publisher first checks its local subscription storage and finds a list of subscribers which are interested in the particular published message. It then loops through and sends the message to each of the listed subscribers.</p>
 
-<p><img src="/images/posts/2014/how_nsb_uses_msmq_to_provide_durable_messaging%203.png" alt="" /></p>
+<p><img src="/images/posts/2014/how_nsb_uses_msmq_to_provide_durable_messaging%203.png" alt="how nsb uses msmq to provide durable messaging - 3" /></p>
 
 <p>In the case where a remote machine is subscribed to a message the same flow occurs with the addition of an outgoing queue.</p>
 
-<p><img src="/images/posts/2014/how_nsb_uses_msmq_to_provide_durable_messaging%204.png" alt="" /></p>
+<p><img src="/images/posts/2014/how_nsb_uses_msmq_to_provide_durable_messaging%204.png" alt="how nsb uses msmq to provide durable messaging -4" /></p>
 
 <p>So what does all of this mean and why does it matter. By understanding the paths that messages go through debugging your applications becomes much simpler. When you find a message isnt being delivered where you expect you can look in the following places to work out where things went wrong:</p>
 
@@ -226,7 +226,7 @@
 { "@context": "http://schema.org",
  "@type": "BlogPosting",
  "headline": "How NServiceBus uses MSMQ to provide durable messaging",
- "wordcount": "814",
+ "wordcount": "847",
  "publisher": "StaticVoid",
  "mainEntityOfPage": "http://blog.staticvoid.co.nz/2014/how_nservicebus_uses_msmq_to_provide_durable_messaging/",
  "publisher": {
@@ -254,7 +254,7 @@
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/js/main.js?1521888613673402498"></script>
+<script type="text/javascript" src="/js/main.js?1521893633085120945"></script>
 
 
     </div>
