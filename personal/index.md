@@ -7,3 +7,7 @@ pagination:
   category: personal
   title: 'StaticVoid - personal - page :num'
 ---
+
+<p>
+  A blog about non-technical things, life, God, politics and my own opinions.
+</p>
