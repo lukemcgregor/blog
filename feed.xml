@@ -5,9 +5,12 @@
     <description>A coding blog</description>
     <link>http://blog.staticvoid.co.nz/</link>
     <atom:link href="http://blog.staticvoid.co.nz/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 24 Mar 2018 12:21:19 +0000</pubDate>
-    <lastBuildDate>Sat, 24 Mar 2018 12:21:19 +0000</lastBuildDate>
+    <pubDate>Sun, 25 Mar 2018 04:33:52 +0000</pubDate>
+    <lastBuildDate>Sun, 25 Mar 2018 04:33:52 +0000</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
+    
+    
+    
     
       <item>
         <title>Comparing APIs in go, rust, node and dotnet core</title>
@@ -273,6 +276,8 @@
         
       </item>
     
+    
+    
       <item>
         <title>Microservice communication methods</title>
         <description>&lt;p&gt;Communication between microservices allows us to build complex behaviours out of simple components. Most people tend to think of webservices when thinking of microservices however there are a number of other communication methods which are applicable in different situations.&lt;/p&gt;
@@ -375,6 +380,8 @@
         <category>technical</category>
         
       </item>
+    
+    
     
       <item>
         <title>Migrating my blog to Jekyll and GitHub Pages</title>
@@ -525,6 +532,8 @@
         
       </item>
     
+    
+    
       <item>
         <title>Microservice versioning; How to make breaking changes without breaking stuff</title>
         <description>&lt;p&gt;Versioning is a tool which allows microservices to gain independence from each other while being able to grow and change. Its critical that when we make changes to a microservice we can do so in a way that we are confident will not break our consumers.&lt;/p&gt;
@@ -645,6 +654,8 @@
         
       </item>
     
+    
+    
       <item>
         <title>Library vs microservice</title>
         <description>&lt;p&gt;Both libraries and microservices provide a way of providing a functionality behind a versioned interface. In the case of a microservice the versioning needs to be supported by the service on its external interfaces (eg versioned messages or apis), in the case of a library the version is applied by the version of the package. In each case we have decoupled functionality.&lt;/p&gt;
@@ -694,6 +705,8 @@
         
       </item>
     
+    
+    
       <item>
         <title>How to Microservice</title>
         <description>&lt;p&gt;Over the last 5 years I have been working with microservices in some form.&lt;/p&gt;
@@ -728,6 +741,8 @@
         <category>technical</category>
         
       </item>
+    
+    
     
       <item>
         <title>The Authentication Proxy</title>
@@ -796,6 +811,8 @@ Introduce caching on your claims generation. The generation step is probably the
         <category>technical</category>
         
       </item>
+    
+    
     
       <item>
         <title>Composable Repositories - Nesting Extensions</title>
@@ -967,6 +984,8 @@ Introduce caching on your claims generation. The generation step is probably the
         
       </item>
     
+    
+    
       <item>
         <title>UI tests for OAuth applications are hard</title>
         <description>&lt;p&gt;Automated testing systems with authentication is tricky. You need to make fake users and let them login to your system or fake the token itself. This is even harder if you are using OAuth systems.&lt;/p&gt;
@@ -1012,40 +1031,6 @@ Introduce caching on your claims generation. The generation step is probably the
         
       </item>
     
-      <item>
-        <title>Manual decisions are the the enemy of consistency</title>
-        <description>&lt;p&gt;Many of our modern software development methodologies focus on short iteration loops to be able to quickly and safely change and build our software. These iterative methodologies work particularly well with our modern SaaS and automatically deployed applications. Iterative development allows us to fail earlier and fix issues faster. I’m a believer.&lt;/p&gt;
-
-&lt;p&gt;Many organisations adopt some form of continuous delivery whereby as code is checked in, it is tested and packaged for deployment. It may then go through various test and pre-production environments for further manual or automated testing. Deployment is done by someone (normally a developer) pushing that package into production. We are the masters of the system so we know that this deploy will work, we got this, it’s all good, Ship it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://i.memecaptain.com/gend_images/zyCwXg.jpg&quot; alt=&quot;Ship it&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The problem is that we often aren’t the masters we think we are. I have often found (and I’m sure you have too) situations where the decision to deploy was wrong because we did not take into account some obscure failure condition. These often seem to originate from system interop not necessarily the lines of code we are so sure are ok. This really sucks.&lt;/p&gt;
-
-&lt;p&gt;We must have made a mistake, we will do better next time I promise. We now understand the system a bit better, its all good now. Just watch this deploy will go OK…&lt;/p&gt;
-
-&lt;p&gt;The problem here is that we as humans, and especially developers are ill equipped to perform the kind of checks necessary to deploy a piece of software. These checks are really a collection of many years of requirements and interop. We can at best check only a small portion of the system if we want to keep our iterations short. Worse than that we have a nasty habit of not checking things we are sure will be fine. The net effect is that we may be able to pick up problems with obvious interactions but we are terrible at finding obscure interaction problems or issues with unexpected areas of the system.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;If we want to deploy consistently stable software we need to take the human element out of deployment.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;This means automating the decision to put code into production (continuous deployment). If that thought currently scares you it’s probably because you don’t have confidence in your automated testing. The problem is that it’s very hard to be confident in your automated test suite before you give it any formal responsibility.&lt;/p&gt;
-
-&lt;p&gt;So how do you go from fear of automating deployment to confidence?&lt;/p&gt;
-
-&lt;p&gt;The first thing to realise is that automated tests don’t need to be perfect, they just need to be better than the tests you would do. Start building up your automated tests with the goal that they will replace your decision on deployment, check out my article on &lt;a href=&quot;http://blog.staticvoid.co.nz/2015/5/28/useful_tests&quot;&gt;Useful Tests&lt;/a&gt; for some ideas about what your tests should include.&lt;/p&gt;
-
-&lt;p&gt;The next step is to keep a journal of the state of the tests vs your decisions about deployments. Every time your tests are green but you decided not to deploy is an example of a place you may be missing an automated test. By keeping a journal you will gain confidence that your tests are picking up issues which could prevent a stable deploy. When the tests status always matches your deployment decision you are ready for continuous deployment. After you are doing continuous deployment you can measure the success of the system by comparing your journal of deployments pre and post.&lt;/p&gt;
-
-&lt;p&gt;Manual decisions are the the enemy of consistency.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 11 Oct 2016 00:00:00 +0000</pubDate>
-        <link>http://blog.staticvoid.co.nz/2016/when-deploying-decisions-are-liabilities/</link>
-        <guid isPermaLink="true">http://blog.staticvoid.co.nz/2016/when-deploying-decisions-are-liabilities/</guid>
-        
-        
-        <category>technical</category>
-        
-      </item>
     
   </channel>
 </rss>
