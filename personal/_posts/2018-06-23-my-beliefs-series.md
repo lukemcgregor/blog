@@ -10,7 +10,7 @@ I think that in western society its become incredibly unpopular to talk about Go
 
 I don't intend this blog to be about convincing you, rather of giving you an insight into me.
 
-- Beauty in the works of Gods hands
+- [Beauty in the works of Gods hands]({{site.baseurl}}/2018/beauty-in-the-works-of-Gods-hands/)
 - Free will allowing me to exist as an entity
 - Loss and pain
 - The offer of a relationship with my creator
