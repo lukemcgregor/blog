@@ -1,7 +1,7 @@
 ---
 title:  "Beauty in the works of Gods hands"
 date:   2018-06-23
-url: "/2018/beauty-in-the-works-of-Gods-hands/"
+url: "/2018/beauty-in-the-works-of-Gods-hands"
 personal: true
 ---
 
