@@ -1,0 +1,5 @@
+Perhaps one of the deepest questions about humanity is if we truly have free will. I have heard lots of arguments about free will from both secular and christian sources. We have all been built to have a strong connection to free will and to feel that we are the master of our own decisions (though perhaps not our destiny). I think that this is for us a connection an inward signal of a deeper spiritual truth.
+
+Secular theology examines free will from the perspective of humans being a complex but reproducible machine. That is that if we were to duplicate the physical state and environment of any human we would see identical behavior. Or put another way if we understand/control enough variables we would be able to predict/manipulate consciousness with precision. 
+
+Christian theology rejecting free will is usually grounded on the basis of Paul's letters, especially Romans and Ephesians where Paul credits salvation to an unmerited grace given to sinners. Paul approaches this from the perspective that grace is un-earned, and taking this to its logical conclusion means that we can not have contributed to that grace. 
