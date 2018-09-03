@@ -1,3 +1,9 @@
+---
+title:  "The greatest gift"
+date:   2018-09-03
+personal: true
+---
+
 One of the most distinctive things about christianity is that Almighty God longs for relationship with us. To my knowledge no other religion describes God seeking to repair a relationship with a creation who has disobeyed him. In fact they all teach about distant gods with only a passing interest in the most special humans. This offer is either completely fraudulent or the greatest gift imaginable.
 
 ## Corrupted world
