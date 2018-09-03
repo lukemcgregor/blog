@@ -26,8 +26,16 @@ God longs for our return but he also cannot tolerate the evil we have done. Just
 
 As Lewis adeptly puts it Jesus claims demand an answer. If his claims are true he paid a terrible price to offer us a priceless gift.
 
+
 ## One response
 
-If Jesus was God there can be only one response. We cannot reject his offer of salvation. He has paid a heavy price to give us a gift we do not deserve. Rejecting such a gift precludes us from our very purpose, but it is also a shameful affront to the price which was paid for the gift. Those who do reject the gift will bear the consequences which we all rightfully deserve for no benefit but their own arrogance. Given this any rational person accepting Jesus is God can make only one response, any other is truly madness.
+If Jesus was God there can be only one response. We cannot reject his offer of salvation. He has paid a heavy price to give us a gift we do not deserve. Rejecting such a gift precludes us from our very purpose, but it is also a shameful affront to the price which was paid for the gift. Those who do reject the gift will bear the consequences which we all rightfully deserve for no benefit but their own arrogance. Given this any rational person accepting Jesus is God, can make only one response, any other is truly madness.
 
-I have accepted Christs gift, and as a result I am truly grateful. Its a gift I can never hope to reciprocate or repay but out of respect for the one who paid my debt I will try to live to honor him. It is the only decent thing I can do. To take the gift and live like nothing has changed is to 
+I have accepted Christs gift, and as a result I am truly grateful. Its a gift I can never hope to reciprocate or repay but out of respect for the one who paid my debt I will try to live to honor him. It is the only decent thing I can do. To take the gift and live like nothing has changed is like a prisoner clinging to the bars when a friend has bailed them out, distasteful and ungrateful.
+
+## A glorious future
+We as christians have traded debt for riches, now instead of our own inadequacies we can look forward to a friendship with the creator of all. He who made every wonderfully intricate creature, every breathtaking landscape and every heavenly spectacle has become our companion.
+
+![Supernova](https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/NASA-SNR0519690-ChandraXRayObservatory-20150122.jpg/1280px-NASA-SNR0519690-ChandraXRayObservatory-20150122.jpg)
+
+ We are party to a purpose like no other, to know our Lord, and marvel at the works of his hands. We are to hear answers the deepest mysteries and see wonders we could never hope to see in our lifetimes from him who created them all. Truly this is the greatest gift ever to be received 

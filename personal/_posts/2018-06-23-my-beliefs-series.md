@@ -13,7 +13,7 @@ I don't intend this blog to be about convincing you, rather of giving you an ins
 - [Beauty in the works of Gods hands]({{site.baseurl}}/2018/beauty-in-the-works-of-Gods-hands/)
 - Free will allows me to exist
 - Loss and pain
-- The offer of a relationship with my creator
+- [The offer of a relationship with my creator]({{site.baseurl}}/2018/the-greatest-gift/)
 - Beyond mortality
 - Human society and values
 
