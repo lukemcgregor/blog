@@ -60,7 +60,7 @@
   <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="/css/main.css?1550976240960353205">
+  <link rel="stylesheet" href="/css/main.css?1582158763122903813">
   <link rel="canonical" href="http://blog.staticvoid.co.nz/2016/composable_repositories_-_nesting_extensions/">
   <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
 </head>
@@ -248,7 +248,7 @@
 
 <p>This can be used as follows:</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">[ExpandQueryable]</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">ExpandQueryable</span><span class="p">]</span>
 <span class="k">public</span> <span class="k">static</span> <span class="n">IQueryable</span><span class="p">&lt;</span><span class="n">AddressModel</span><span class="p">&gt;</span> <span class="nf">ToViewModels</span><span class="p">(</span><span class="k">this</span> <span class="n">IQueryable</span><span class="p">&lt;</span><span class="n">Address</span><span class="p">&gt;</span> <span class="n">addresses</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">addresses</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">address</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="n">AddressModel</span>
@@ -275,7 +275,7 @@
 
 <p>This isn’t really usable in our expression tree yet as we don’t have an entry point from our query. Getting an entry point is a little tricky as how do we can’t just use an expression on a singular without invoking it (which would get us right back to the original problem. So we are going to use a little bit of a trick, let’s create an extension method and use it as a placeholder for the actual expression. We will decorate this with an attribute which points back to the actual expression to execute in its place. When we visit such an extension method in our visitor we will replace it with the expression from the attribute in the expression tree.</p>
 
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">[ReplaceInExpressionTree(MethodName = nameof(ToViewModelExpression))]</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="nf">ReplaceInExpressionTree</span><span class="p">(</span><span class="n">MethodName</span> <span class="p">=</span> <span class="k">nameof</span><span class="p">(</span><span class="n">ToViewModelExpression</span><span class="p">))]</span>
 <span class="k">public</span> <span class="k">static</span> <span class="n">AddressModel</span> <span class="nf">ToViewModel</span><span class="p">(</span><span class="k">this</span> <span class="n">Address</span> <span class="n">entity</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// We could throw a not implemented exception here as we won't ever</span>
@@ -337,7 +337,7 @@
 { "@context": "http://schema.org",
  "@type": "BlogPosting",
  "headline": "Composable Repositories - Nesting Extensions",
- "wordcount": "1845",
+ "wordcount": "1855",
  "publisher": "StaticVoid",
  "mainEntityOfPage": "http://blog.staticvoid.co.nz/2016/composable_repositories_-_nesting_extensions/",
  "publisher": {
@@ -361,11 +361,11 @@
       </div>
 
       <footer class="footer">
-  <span class="footer__copyright">&copy; 2019 Luke McGregor. All rights reserved.</span>
+  <span class="footer__copyright">&copy; 2020 Luke McGregor. All rights reserved.</span>
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/js/main.js?1550976240960353205"></script>
+<script type="text/javascript" src="/js/main.js?1582158763122903813"></script>
 
 
     </div>

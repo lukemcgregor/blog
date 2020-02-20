@@ -60,7 +60,7 @@
   <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="/css/main.css?1550976240960353205">
+  <link rel="stylesheet" href="/css/main.css?1582158763122903813">
   <link rel="canonical" href="http://blog.staticvoid.co.nz/2017/Comparing_apis_in_go_node_and_dotnet_core/">
   <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
 </head>
@@ -172,7 +172,7 @@
 <p>I then deleted some of the un-needed bits from the project like logging and config files. This left me with a total of 85 lines of code across 5 files to implement the basic api. This included many of the scaffolded files like the <code class="highlighter-rouge">.csproj</code> and <code class="highlighter-rouge">Startup.cs</code>.</p>
 
 <h3 id="the-code">The code</h3>
-<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">[XmlRoot(ElementName = "numbers")]</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="nf">XmlRoot</span><span class="p">(</span><span class="n">ElementName</span> <span class="p">=</span> <span class="s">"numbers"</span><span class="p">)]</span>
 <span class="k">public</span> <span class="k">class</span> <span class="nc">Numbers</span>
 <span class="p">{</span>   
     <span class="p">[</span><span class="nf">XmlElement</span><span class="p">(</span><span class="s">"value"</span><span class="p">)]</span>     
@@ -206,19 +206,19 @@
 <p>For the node example I started with a blank file and looked at a few tutorials to work out what I needed. The node example is a total of <del>42</del> 38 lines (<a href="https://github.com/lukemcgregor/basic-api/pull/1">thanks tcoats</a>) over two files (including the <code class="highlighter-rouge">package.json</code>). I also added content type negotiation to the POST method (<code class="highlighter-rouge">res.format()</code>) for another 6 lines. This is not strictly necessary for the scenario but I thought it might be nice to compare.</p>
 
 <h3 id="the-code-1">The code</h3>
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'express'</span><span class="p">)()</span>
-<span class="kd">var</span> <span class="nx">xml</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'xml'</span><span class="p">)</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">express</span><span class="dl">'</span><span class="p">)()</span>
+<span class="kd">var</span> <span class="nx">xml</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">xml</span><span class="dl">'</span><span class="p">)</span>
 
-<span class="kd">var</span> <span class="nx">bodyParser</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'body-parser'</span><span class="p">)</span>
-<span class="nx">require</span><span class="p">(</span><span class="s1">'body-parser-xml'</span><span class="p">)(</span><span class="nx">bodyParser</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">bodyParser</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">body-parser</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">body-parser-xml</span><span class="dl">'</span><span class="p">)(</span><span class="nx">bodyParser</span><span class="p">)</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">bodyParser</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">bodyParser</span><span class="p">.</span><span class="nx">xml</span><span class="p">())</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s1">'/add/:x/to/:y'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">app</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/add/:x/to/:y</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="na">sum</span><span class="p">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span> <span class="p">})</span>
 <span class="p">})</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/add'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/add</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">numbers</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">).</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">)</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">format</span><span class="p">({</span>
         <span class="na">xml</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">xml</span><span class="p">({</span><span class="na">sum</span><span class="p">:</span><span class="nx">sum</span><span class="p">})),</span>
@@ -237,61 +237,61 @@
 
 <h3 id="the-code-2">The code</h3>
 
-<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
-</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
-	</span><span class="s">"encoding/xml"</span><span class="x">
-	</span><span class="s">"log"</span><span class="x">
-	</span><span class="s">"net/http"</span><span class="x">
-	</span><span class="s">"strconv"</span><span class="x">
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"encoding/xml"</span>
+	<span class="s">"log"</span>
+	<span class="s">"net/http"</span>
+	<span class="s">"strconv"</span>
 
-	</span><span class="s">"github.com/jchannon/negotiator"</span><span class="x">
-	</span><span class="s">"github.com/julienschmidt/httprouter"</span><span class="x">
-</span><span class="p">)</span><span class="x">
+	<span class="s">"github.com/jchannon/negotiator"</span>
+	<span class="s">"github.com/julienschmidt/httprouter"</span>
+<span class="p">)</span>
 
-</span><span class="k">type</span><span class="x"> </span><span class="n">numbers</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">Value</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="x"> </span><span class="s">`xml:"value"`</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">type</span> <span class="n">numbers</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Value</span> <span class="p">[]</span><span class="kt">int</span> <span class="s">`xml:"value"`</span>
+<span class="p">}</span>
 
-</span><span class="k">type</span><span class="x"> </span><span class="n">sum</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">Sum</span><span class="x"> </span><span class="kt">int64</span><span class="x"> </span><span class="s">`xml:",chardata" json:"sum"`</span><span class="x">
-</span><span class="p">}</span><span class="x">
+<span class="k">type</span> <span class="n">sum</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Sum</span> <span class="kt">int64</span> <span class="s">`xml:",chardata" json:"sum"`</span>
+<span class="p">}</span>
 
-</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
-	</span><span class="n">router</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">httprouter</span><span class="o">.</span><span class="n">New</span><span class="p">()</span><span class="x">
-	</span><span class="n">router</span><span class="o">.</span><span class="n">GET</span><span class="p">(</span><span class="s">"/add/:x/to/:y"</span><span class="p">,</span><span class="x"> </span><span class="k">func</span><span class="p">(</span><span class="n">responseWriter</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span><span class="x"> </span><span class="n">request</span><span class="x"> </span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span><span class="x"> </span><span class="n">params</span><span class="x"> </span><span class="n">httprouter</span><span class="o">.</span><span class="n">Params</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">x</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">strconv</span><span class="o">.</span><span class="n">ParseInt</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">ByName</span><span class="p">(</span><span class="s">"x"</span><span class="p">),</span><span class="x"> </span><span class="m">10</span><span class="p">,</span><span class="x"> </span><span class="m">64</span><span class="p">)</span><span class="x">
-		</span><span class="n">y</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">strconv</span><span class="o">.</span><span class="n">ParseInt</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">ByName</span><span class="p">(</span><span class="s">"y"</span><span class="p">),</span><span class="x"> </span><span class="m">10</span><span class="p">,</span><span class="x"> </span><span class="m">64</span><span class="p">)</span><span class="x">
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">router</span> <span class="o">:=</span> <span class="n">httprouter</span><span class="o">.</span><span class="n">New</span><span class="p">()</span>
+	<span class="n">router</span><span class="o">.</span><span class="n">GET</span><span class="p">(</span><span class="s">"/add/:x/to/:y"</span><span class="p">,</span> <span class="k">func</span><span class="p">(</span><span class="n">responseWriter</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">request</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">params</span> <span class="n">httprouter</span><span class="o">.</span><span class="n">Params</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">strconv</span><span class="o">.</span><span class="n">ParseInt</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">ByName</span><span class="p">(</span><span class="s">"x"</span><span class="p">),</span> <span class="m">10</span><span class="p">,</span> <span class="m">64</span><span class="p">)</span>
+		<span class="n">y</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">strconv</span><span class="o">.</span><span class="n">ParseInt</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">ByName</span><span class="p">(</span><span class="s">"y"</span><span class="p">),</span> <span class="m">10</span><span class="p">,</span> <span class="m">64</span><span class="p">)</span>
 
-		</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">negotiator</span><span class="o">.</span><span class="n">Negotiate</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span><span class="x"> </span><span class="n">request</span><span class="p">,</span><span class="x"> </span><span class="n">sum</span><span class="p">{</span><span class="n">x</span><span class="x"> </span><span class="o">+</span><span class="x"> </span><span class="n">y</span><span class="p">});</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
-			</span><span class="n">http</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="o">.</span><span class="n">Error</span><span class="p">(),</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">StatusInternalServerError</span><span class="p">)</span><span class="x">
-		</span><span class="p">}</span><span class="x">
-	</span><span class="p">})</span><span class="x">
+		<span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">negotiator</span><span class="o">.</span><span class="n">Negotiate</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">sum</span><span class="p">{</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">});</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">http</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">Error</span><span class="p">(),</span> <span class="n">http</span><span class="o">.</span><span class="n">StatusInternalServerError</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">})</span>
 
-	</span><span class="n">router</span><span class="o">.</span><span class="n">POST</span><span class="p">(</span><span class="s">"/add"</span><span class="p">,</span><span class="x"> </span><span class="k">func</span><span class="p">(</span><span class="n">responseWriter</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span><span class="x"> </span><span class="n">request</span><span class="x"> </span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span><span class="x"> </span><span class="n">params</span><span class="x"> </span><span class="n">httprouter</span><span class="o">.</span><span class="n">Params</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
-		</span><span class="n">decoder</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">xml</span><span class="o">.</span><span class="n">NewDecoder</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
-		</span><span class="k">var</span><span class="x"> </span><span class="n">payload</span><span class="x"> </span><span class="n">numbers</span><span class="x">
-		</span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">decoder</span><span class="o">.</span><span class="n">Decode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">payload</span><span class="p">)</span><span class="x">
-		</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
-			</span><span class="n">http</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="o">.</span><span class="n">Error</span><span class="p">(),</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">StatusInternalServerError</span><span class="p">)</span><span class="x">
-			</span><span class="k">return</span><span class="x">
-		</span><span class="p">}</span><span class="x">
-		</span><span class="k">defer</span><span class="x"> </span><span class="n">request</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
-		</span><span class="k">var</span><span class="x"> </span><span class="n">total</span><span class="x"> </span><span class="kt">int64</span><span class="x">
+	<span class="n">router</span><span class="o">.</span><span class="n">POST</span><span class="p">(</span><span class="s">"/add"</span><span class="p">,</span> <span class="k">func</span><span class="p">(</span><span class="n">responseWriter</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">request</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">params</span> <span class="n">httprouter</span><span class="o">.</span><span class="n">Params</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">decoder</span> <span class="o">:=</span> <span class="n">xml</span><span class="o">.</span><span class="n">NewDecoder</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span>
+		<span class="k">var</span> <span class="n">payload</span> <span class="n">numbers</span>
+		<span class="n">err</span> <span class="o">:=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">Decode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">payload</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">http</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">Error</span><span class="p">(),</span> <span class="n">http</span><span class="o">.</span><span class="n">StatusInternalServerError</span><span class="p">)</span>
+			<span class="k">return</span>
+		<span class="p">}</span>
+		<span class="k">defer</span> <span class="n">request</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+		<span class="k">var</span> <span class="n">total</span> <span class="kt">int64</span>
 
-		</span><span class="k">for</span><span class="x"> </span><span class="n">val</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="n">payload</span><span class="o">.</span><span class="n">Value</span><span class="x"> </span><span class="p">{</span><span class="x">
-			</span><span class="n">total</span><span class="x"> </span><span class="o">+=</span><span class="x"> </span><span class="kt">int64</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="x">
-		</span><span class="p">}</span><span class="x">
+		<span class="k">for</span> <span class="n">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">payload</span><span class="o">.</span><span class="n">Value</span> <span class="p">{</span>
+			<span class="n">total</span> <span class="o">+=</span> <span class="kt">int64</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+		<span class="p">}</span>
 
-		</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">negotiator</span><span class="o">.</span><span class="n">Negotiate</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span><span class="x"> </span><span class="n">request</span><span class="p">,</span><span class="x"> </span><span class="n">sum</span><span class="p">{</span><span class="n">total</span><span class="p">});</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
-			</span><span class="n">http</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="o">.</span><span class="n">Error</span><span class="p">(),</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">StatusInternalServerError</span><span class="p">)</span><span class="x">
-		</span><span class="p">}</span><span class="x">
-	</span><span class="p">})</span><span class="x">
+		<span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">negotiator</span><span class="o">.</span><span class="n">Negotiate</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">sum</span><span class="p">{</span><span class="n">total</span><span class="p">});</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">http</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="n">responseWriter</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">Error</span><span class="p">(),</span> <span class="n">http</span><span class="o">.</span><span class="n">StatusInternalServerError</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">})</span>
 
-	</span><span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">ListenAndServe</span><span class="p">(</span><span class="s">":8080"</span><span class="p">,</span><span class="x"> </span><span class="n">router</span><span class="p">))</span><span class="x">
-</span><span class="p">}</span><span class="x">
+	<span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">ListenAndServe</span><span class="p">(</span><span class="s">":8080"</span><span class="p">,</span> <span class="n">router</span><span class="p">))</span>
+<span class="p">}</span>
 
-</span></code></pre></div></div>
+</code></pre></div></div>
 
 <p>I was the least happy with how this code turned out. The serialisation stuff was difficult to do, especially in comparison to node. I also find the code to be much less succinct than either of the other languages. I expect this could be alleviated if I knew a few more libraries to help with these things. Its also important to note that this was my very first go program, whereas I have quite a bit of experience with both c# and client-side javascript.</p>
 
@@ -305,8 +305,8 @@
 
 <p>The rust example is 42 lines without content type negotiation (including the config files required).</p>
 
-<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span><span class="o">!</span><span class="p">[</span><span class="nf">feature</span><span class="p">(</span><span class="n">plugin</span><span class="p">)]</span>
-<span class="err">#</span><span class="o">!</span><span class="p">[</span><span class="nf">plugin</span><span class="p">(</span><span class="n">rocket_codegen</span><span class="p">)]</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#![feature(plugin)]</span>
+<span class="nd">#![plugin(rocket_codegen)]</span>
 
 <span class="k">extern</span> <span class="n">crate</span> <span class="n">rocket</span><span class="p">;</span>
 <span class="k">extern</span> <span class="n">crate</span> <span class="n">elementtree</span><span class="p">;</span>
@@ -431,7 +431,7 @@
 { "@context": "http://schema.org",
  "@type": "BlogPosting",
  "headline": "Comparing APIs in go, rust, node and dotnet core",
- "wordcount": "2314",
+ "wordcount": "2190",
  "publisher": "StaticVoid",
  "mainEntityOfPage": "http://blog.staticvoid.co.nz/2017/Comparing_apis_in_go_node_and_dotnet_core/",
  "publisher": {
@@ -455,11 +455,11 @@
       </div>
 
       <footer class="footer">
-  <span class="footer__copyright">&copy; 2019 Luke McGregor. All rights reserved.</span>
+  <span class="footer__copyright">&copy; 2020 Luke McGregor. All rights reserved.</span>
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/js/main.js?1550976240960353205"></script>
+<script type="text/javascript" src="/js/main.js?1582158763122903813"></script>
 
 
     </div>

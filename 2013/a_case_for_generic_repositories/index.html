@@ -60,7 +60,7 @@
   <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="/css/main.css?1550976240960353205">
+  <link rel="stylesheet" href="/css/main.css?1582158763122903813">
   <link rel="canonical" href="http://blog.staticvoid.co.nz/2013/a_case_for_generic_repositories/">
   <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
 </head>
@@ -245,8 +245,8 @@
 <h4 id="unit-testing">Unit Testing</h4>
 <p>Allowing us to switch out that generic implementation becomes even more valuable when you want to test our code. At this point you can switch our actual implementation out for an in memory repository so you don’t have to actually query a database and can maintain our state a little more tightly. Below are the tests for post redirection:</p>
 
-<div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">[TestMethod]</span>
-<span class="na">[ExpectedException(typeof(HttpException))]</span>
+<div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">TestMethod</span><span class="p">]</span>
+<span class="p">[</span><span class="nf">ExpectedException</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">HttpException</span><span class="p">))]</span>
 <span class="k">public</span> <span class="k">void</span> <span class="nf">RedirectToLatestPostWithNoPostsTest</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">postRepo</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SimpleRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">InMemoryRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;());</span>
@@ -262,8 +262,8 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="na">[TestMethod]</span>
-<span class="na">[ExpectedException(typeof(HttpException))]</span>
+<span class="p">[</span><span class="n">TestMethod</span><span class="p">]</span>
+<span class="p">[</span><span class="nf">ExpectedException</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">HttpException</span><span class="p">))]</span>
 <span class="k">public</span> <span class="k">void</span> <span class="nf">RedirectToLatestPostWithNoPublishedPostsTest</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">postRepo</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SimpleRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">InMemoryRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span>
@@ -283,7 +283,7 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="na">[TestMethod]</span>
+<span class="p">[</span><span class="n">TestMethod</span><span class="p">]</span>
 <span class="k">public</span> <span class="k">void</span> <span class="nf">RedirectToLatestPostWithOnePublishedPostsTest</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">postRepo</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SimpleRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">InMemoryRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span>
@@ -298,7 +298,7 @@
     <span class="n">Assert</span><span class="p">.</span><span class="nf">AreEqual</span><span class="p">(</span><span class="s">"/2013/04/14/some-post"</span><span class="p">,</span> <span class="p">((</span><span class="n">RedirectResult</span><span class="p">)</span><span class="n">result</span><span class="p">).</span><span class="n">Url</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="na">[TestMethod]</span>
+<span class="p">[</span><span class="n">TestMethod</span><span class="p">]</span>
 <span class="k">public</span> <span class="k">void</span> <span class="nf">RedirectToLatestPostWithMultiplePublishedPostsTest</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">IRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;</span> <span class="n">postRepo</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SimpleRepository</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">InMemoryRepositoryDataSource</span><span class="p">&lt;</span><span class="n">Post</span><span class="p">&gt;(</span>
@@ -349,7 +349,7 @@
 { "@context": "http://schema.org",
  "@type": "BlogPosting",
  "headline": "Generic Repositories",
- "wordcount": "1999",
+ "wordcount": "2019",
  "publisher": "StaticVoid",
  "mainEntityOfPage": "http://blog.staticvoid.co.nz/2013/a_case_for_generic_repositories/",
  "publisher": {
@@ -373,11 +373,11 @@
       </div>
 
       <footer class="footer">
-  <span class="footer__copyright">&copy; 2019 Luke McGregor. All rights reserved.</span>
+  <span class="footer__copyright">&copy; 2020 Luke McGregor. All rights reserved.</span>
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/js/main.js?1550976240960353205"></script>
+<script type="text/javascript" src="/js/main.js?1582158763122903813"></script>
 
 
     </div>

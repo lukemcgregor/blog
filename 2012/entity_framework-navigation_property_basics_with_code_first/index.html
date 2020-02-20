@@ -60,7 +60,7 @@
   <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="/css/main.css?1550976240960353205">
+  <link rel="stylesheet" href="/css/main.css?1582158763122903813">
   <link rel="canonical" href="http://blog.staticvoid.co.nz/2012/entity_framework-navigation_property_basics_with_code_first/">
   <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
 </head>
@@ -264,14 +264,14 @@
 <p>When we make this request we get the following:</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-	</span><span class="s2">"posts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+	</span><span class="nl">"posts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
 		</span><span class="p">{</span><span class="w">
-			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-			</span><span class="s2">"author"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+			</span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+			</span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 		</span><span class="p">},</span><span class="w">
 		</span><span class="p">{</span><span class="w">
-			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-			</span><span class="s2">"author"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+			</span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+			</span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 		</span><span class="p">}</span><span class="w">
 	</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -287,10 +287,10 @@
 <p>When we make this request we get the following:</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-	</span><span class="s2">"posts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+	</span><span class="nl">"posts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
 		</span><span class="p">{</span><span class="w">
-			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-			</span><span class="s2">"author"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+			</span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+			</span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 		</span><span class="p">}</span><span class="w">
 	</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -308,19 +308,19 @@
 <p>When we make this request we get the following:</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-	</span><span class="s2">"posts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+	</span><span class="nl">"posts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
 		</span><span class="p">{</span><span class="w">
-			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-			</span><span class="s2">"author"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-				</span><span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-				</span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Luke"</span><span class="w">
+			</span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+			</span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+				</span><span class="nl">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+				</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Luke"</span><span class="w">
 			</span><span class="p">}</span><span class="w">
 		</span><span class="p">},</span><span class="w">
 		</span><span class="p">{</span><span class="w">
-			</span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-			</span><span class="s2">"author"</span><span class="p">:</span><span class="w">  </span><span class="p">{</span><span class="w">
-				</span><span class="s2">"id"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
-				</span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bob"</span><span class="w">
+			</span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+			</span><span class="nl">"author"</span><span class="p">:</span><span class="w">  </span><span class="p">{</span><span class="w">
+				</span><span class="nl">"id"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+				</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bob"</span><span class="w">
 			</span><span class="p">}</span><span class="w">
 		</span><span class="p">}</span><span class="w">
 	</span><span class="p">]</span><span class="w">
@@ -515,11 +515,11 @@
       </div>
 
       <footer class="footer">
-  <span class="footer__copyright">&copy; 2019 Luke McGregor. All rights reserved.</span>
+  <span class="footer__copyright">&copy; 2020 Luke McGregor. All rights reserved.</span>
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/js/main.js?1550976240960353205"></script>
+<script type="text/javascript" src="/js/main.js?1582158763122903813"></script>
 
 
     </div>

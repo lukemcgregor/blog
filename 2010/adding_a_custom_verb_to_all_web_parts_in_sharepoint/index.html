@@ -66,7 +66,7 @@
   <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="/css/main.css?1550976240960353205">
+  <link rel="stylesheet" href="/css/main.css?1582158763122903813">
   <link rel="canonical" href="http://blog.staticvoid.co.nz/2010/adding_a_custom_verb_to_all_web_parts_in_sharepoint/">
   <link rel="alternate" type="application/rss+xml" title="StaticVoid" href="/feed.xml">
 </head>
@@ -166,7 +166,7 @@
 
 <p>This can be done with JQuery and a couple of web services. I created a delegate control containing my script and injected it into the page head. Running the line below on page load will inject a custom menu item into all WebPart dropdowns on the page.</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="s1">'#MSOMenu_WebPartMenu'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">'&lt;ie:menuitem hello="" id="Menu_MyMenuItem" onclick="javascript:alert(" type="option" world");"=""&gt; Hello World&lt;/ie:menuitem&gt;'</span><span class="p">);</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#MSOMenu_WebPartMenu</span><span class="dl">'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="dl">'</span><span class="s1">&lt;ie:menuitem hello="" id="Menu_MyMenuItem" onclick="javascript:alert(" type="option" world");"=""&gt; Hello World&lt;/ie:menuitem&gt;</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></div>
 
 <p>There are however a few limitations to this, Firstly it only works in IE, other browsers render verbs in a completely different way (no dropdown even), and secondly it will only work with javascript enabled.</p>
@@ -199,7 +199,7 @@
 { "@context": "http://schema.org",
  "@type": "BlogPosting",
  "headline": "Adding a custom verb to all web parts in SharePoint",
- "wordcount": "359",
+ "wordcount": "363",
  "publisher": "StaticVoid",
  "mainEntityOfPage": "http://blog.staticvoid.co.nz/2010/adding_a_custom_verb_to_all_web_parts_in_sharepoint/",
  "publisher": {
@@ -225,11 +225,11 @@
       </div>
 
       <footer class="footer">
-  <span class="footer__copyright">&copy; 2019 Luke McGregor. All rights reserved.</span>
+  <span class="footer__copyright">&copy; 2020 Luke McGregor. All rights reserved.</span>
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/js/main.js?1550976240960353205"></script>
+<script type="text/javascript" src="/js/main.js?1582158763122903813"></script>
 
 
     </div>
