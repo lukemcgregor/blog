@@ -32,8 +32,6 @@ If you are expecting your automated tests to catch everything, you're in for som
 
 It's far better to prove that some important use cases are still achievable. This wont make you bug free [but hardly anyone will notice them](http://en.wikipedia.org/wiki/Pareto_principle).
 
-![difficult](http://i.stack.imgur.com/ifOwg.gif)
-
 ### Common usage scenarios over edge cases
 
 Edge case testing can be important but it's not as important to automate. You are much more likely to stop a major issue by testing common scenarios than edge cases. Edge case bugs are likely to affect fewer users.

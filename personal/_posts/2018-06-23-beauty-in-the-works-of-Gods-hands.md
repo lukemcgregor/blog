@@ -26,7 +26,7 @@ That same primordial light has been stretched by expanding space to now be in th
 ## A beautiful world
 I recently went to the Australian Butterfly Sanctuary. The colours on these butterflies seem impossible, especially the brilliant blue Ulysses butterfly. The blue wings are produced by microscopic shapes on the wings which interfere with the light to produce colours no pigment ever could (and no screen could ever reproduce). The beauty of these was really breathtaking. God made such beauty for our enjoyment and his pleasure, he is truly the divine artist. Beauty is a reminder of the perfect world which God originally created for us, and which we subsequently corrupted.
 
-![Ulysses butterfly](https://www.skyrail.com.au/news/wp-content/uploads/2018/01/Ulysses-Butterfly.jpg)
+![Ulysses butterfly](https://upload.wikimedia.org/wikipedia/commons/0/03/CSIRO_ScienceImage_3831_Ulysses_Butterfly.jpg)
 
 ## A beautiful universe
 This beauty extends to both the micro and macroscopic. It give me joy to see the the works that God has made both big and small. God makes beauty even from some of the most destructive events imaginable. The image below is of the Helix nebula which was formed from the explosion of a star, a supernova. The patterns formed are from rings of gas excited by radiation from the supernova. 
